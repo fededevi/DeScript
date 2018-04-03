@@ -8,7 +8,9 @@ import ast.expression.math.Mul;
 import ast.expression.math.Sqrt;
 import ast.expression.math.Sub;
 import ast.statement.Assignment;
+import ast.statement.Condition;
 import ast.statement.Declaration;
+import ast.statement.EmptyStatement;
 import ast.statement.Identifier;
 import ast.statement.Loop;
 
@@ -27,8 +29,11 @@ public class MainTest {
 		dec1.next = dec2;
 		
 		Assignment loopStatement = new Assignment(a, new Sub(new Variable(a), new DInteger(1)));
-		loopStatement.next = new Assignment(b, new Add(new Variable(b),new Mul(new Variable(a), new Variable(a))));
-		
+		Assignment assignB =new Assignment(b, new Add(new Variable(b),new Mul(new Variable(a), new Variable(a))));
+		loopStatement.next = assignB;
+		Assignment increaseB = new Assignment(b, new Add(new Variable (b), new DInteger(1)));
+		Condition c = new Condition(new Sub(new Variable(b), new DInteger(150)),increaseB,new EmptyStatement());
+		assignB.next = c;
 		dec2.next = new Loop(new Variable(a), loopStatement);
 
 		

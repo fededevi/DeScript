@@ -7,8 +7,14 @@ public class Condition extends Statement {
 	public Expression condition;
 	public Statement thenStatement;
 	public Statement elseStatement;
+
+	public Condition(Expression condition, Statement thenStatement, Statement elseStatement)
+	{
+		this.condition = condition;
+		this.thenStatement = thenStatement;
+		this.elseStatement = elseStatement;
+	}
 	
-	@Override
 	public void execute(Context c) {
 		Expression e = condition.evaluate(c);
 		
@@ -32,7 +38,7 @@ public class Condition extends Statement {
 	
 	public String toString()
 	{
-		String a = "If" + "(" + condition + ")\n" + thenStatement + "\nelse\n" + elseStatement;
+		String a = "If" + "(" + condition + ")\n" + thenStatement + "else\n" + elseStatement;
 		
 		if (next != null)
 			a += next;
