@@ -1,0 +1,97 @@
+
+options {
+  LOOKAHEAD = 2;
+  CHOICE_AMBIGUITY_CHECK = 2;
+  OTHER_AMBIGUITY_CHECK = 1;
+  STATIC = false;
+  DEBUG_PARSER = false;
+  DEBUG_LOOKAHEAD = false;
+  DEBUG_TOKEN_MANAGER = false;
+  ERROR_REPORTING = true;
+  JAVA_UNICODE_ESCAPE = false;
+  UNICODE_INPUT = false;
+  IGNORE_CASE = false;
+  USER_TOKEN_MANAGER = false;
+  USER_CHAR_STREAM = false;
+  BUILD_PARSER = true;
+  BUILD_TOKEN_MANAGER = true;
+  SANITY_CHECK = true;
+  FORCE_LA_CHECK = true;
+}
+
+PARSER_BEGIN(DeoclaParser)
+
+package parser.jj;
+
+public class DeoclaParser {
+
+	public static void main(String args[]) throws ParseException, TokenMgrError, NumberFormatException {
+		DeoclaParser parser = new DeoclaParser(System.in);
+		//parser.Input();
+	}
+	
+	double previousValue = 0.0;
+	
+}
+
+PARSER_END(DeoclaParser)
+
+SKIP :
+{
+	" "
+}
+
+TOKEN : { < EOL : "\n" | "\r" | "\r\n" > }
+TOKEN : { < PLU : "+" > }
+TOKEN : { < MIN : "-" > }
+TOKEN : { < #DIG : (["0"-"9"])+ > }
+TOKEN : { < NUMBER : <DIG> | <DIG> "." <DIG> | <DIG> "." | "." <DIG> > }
+TOKEN : { < OPERATOR : <PLU> | <MIN> > }
+
+
+/*Start -> (Expression EOL) * EOF*/
+void Start() :
+{}
+{
+	(previousValue = Expression() <EOL> {System.out.println( previousValue );})* <EOF>
+}
+
+
+/*Expression -> Literal ( OPERATOR Literal )* EOL */
+double Expression() throws NumberFormatException :
+{
+	double i ;
+	double value ;
+}
+{
+	value = Literal()
+	(<OPERATOR>i = Literal(){ value += i; })*
+	{ return value; }
+}
+
+
+/* Literal -> NUMBER*/
+double Literal() throws NumberFormatException :
+{
+	Token t ;
+}
+{
+	t = <NUMBER>
+	{ return Double.parseDouble( t.image ); }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
