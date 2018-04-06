@@ -15,6 +15,7 @@ import ast.statement.Declaration;
 import ast.statement.EmptyStatement;
 import ast.statement.Identifier;
 import ast.statement.Loop;
+import ast.statement.Statement;
 import parser.jj.DeoclaParser;
 import parser.jj.DeoclaParserTokenManager;
 import parser.jj.ParseException;
@@ -22,6 +23,7 @@ import parser.jj.ParseException;
 public class MainTest {
 	public static void main(String[] args)
 	{
+		/*
 		System.out.println("Start");
 
 		Identifier a = new Identifier("a");
@@ -44,11 +46,14 @@ public class MainTest {
 		
 		System.out.println(dec1);
 		
-		dec1.execute(new Context());
+		dec1.execute(new Context());*/
 		
-		DeoclaParser deoclaParser = new DeoclaParser(new StringReader("var a = 6.5;\n\u001a"));
+		DeoclaParser deoclaParser = new DeoclaParser(new StringReader("var a = 6.5;"));
+		
+		
 		try {
-			deoclaParser.Start();
+			Statement stat = deoclaParser.Start();
+			System.out.println(stat);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

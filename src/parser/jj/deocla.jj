@@ -40,10 +40,8 @@ public class DeoclaParser {
 
 PARSER_END(DeoclaParser)
 
-SKIP :
-{
-	" "
-}
+SKIP :{	" "}
+SKIP :{ "\n" | "\r" | "\r\n" }
 
 TOKEN : { < VAR : "var" > }
 TOKEN : { < EOL : "\n" | "\r" | "\r\n" > }
@@ -60,7 +58,8 @@ TOKEN : { < NAME : <LET> > }
 Statement Start() :
 {}
 {
-	(statementParse() <EOL>)* <EOF>
+	(statementParse())*
+	<EOF>
 
 	{
 		return new Declaration(new Identifier("b"), new Mul(new DInteger(5), new DInteger(5)));
