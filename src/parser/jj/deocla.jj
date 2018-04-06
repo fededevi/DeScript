@@ -4,7 +4,7 @@ options {
   CHOICE_AMBIGUITY_CHECK = 2;
   OTHER_AMBIGUITY_CHECK = 1;
   STATIC = false;
-  DEBUG_PARSER = false;
+  DEBUG_PARSER = true;
   DEBUG_LOOKAHEAD = false;
   DEBUG_TOKEN_MANAGER = false;
   ERROR_REPORTING = true;
@@ -25,6 +25,8 @@ package parser.jj;
 
 import ast.expression.*;
 import ast.expression.math.*;
+import ast.expression.bool.*;
+import ast.expression.literal.*;
 import ast.statement.*;
 
 public class DeoclaParser {
@@ -49,6 +51,9 @@ TOKEN : { < IF : "if" > }
 TOKEN : { < ELSE : "else" > }
 TOKEN : { < WHILE : "while" > }
 TOKEN : { < FUNCTION : "function" > }
+
+TOKEN : { < TRUE : "true" > }
+TOKEN : { < FALSE : "false" > }
 
 TOKEN : { < LP : "(" > }
 TOKEN : { < RP : ")" > }
@@ -79,7 +84,7 @@ TOKEN : { < NOT : "!" > }
 
 TOKEN : { < NUMBER : <DIG> | <DIG> "." <DIG> | <DIG> "." | "." <DIG> > }
 TOKEN : { < #DIG : (["0"-"9"])+ > }
-TOKEN : { < #LET : (["a"-"z"])+ > }
+TOKEN : { < #LET : (["a"-"z", "A"-"Z"])+> }
 TOKEN : { < OPERATOR : <ADD> | <SUB> > }
 TOKEN : { < NAME : <LET> > }
 
@@ -197,7 +202,7 @@ FormalParameter formalParameterParse() throws NumberFormatException :
 
 Loop loopParse() throws NumberFormatException :
 {
-  Expression condition = new DInteger(2);
+  Expression condition = null;
   Statement statement = new EmptyStatement();
 }
 {
@@ -214,7 +219,7 @@ Loop loopParse() throws NumberFormatException :
 // Condition(Expression condition, Statement thenStatement, Statement elseStatement)
 Condition conditionParse() throws NumberFormatException :
 {
-  Expression condition = new DInteger(2);
+  Expression condition = null;
   Statement thenStatement = new EmptyStatement();
   Statement elseStatement = new EmptyStatement();
 }
@@ -269,8 +274,22 @@ Identifier identifierParse() throws NumberFormatException :
 }
 }
 
-/* Literal -> NUMBER*/
 Expression expressionParse() throws NumberFormatException :
+{
+	Expression e;
+  }
+{
+  ( 
+   e = additiveExpressionParse()
+    
+  )  
+  {
+    return e;
+  }
+}
+
+/* Literal -> NUMBER*/
+Expression additiveExpressionParse() throws NumberFormatException :
 {
 	Expression left;
 	Expression right;
@@ -286,17 +305,21 @@ Expression expressionParse() throws NumberFormatException :
   }
 }
 
-Expression comparativeExpressionParse() throws NumberFormatException :
+
+Expression multiplicativeExpressionParse() throws NumberFormatException :
 {
-	Expression e;
+	Expression left;
+	Expression right;
   }
 {
+  left = comparativeExpressionParseOr()
   (
-     e = comparativeExpressionParseOr()
-  |  e = multiplicativeExpressionParse()
-  )  
+    (< MUL > right = comparativeExpressionParseOr()) { left = new Mul(left,right); }
+  | (< DIV > right = comparativeExpressionParseOr()) { left = new Div(left,right); }
+  | (< MOD > right = comparativeExpressionParseOr()) { left = new Mod(left,right); }
+  )*
   {
-    return e;
+    return left;
   }
 }
 
@@ -306,7 +329,7 @@ Expression comparativeExpressionParseOr() throws NumberFormatException :
 	Expression right;
   }
 {
-  left = unaryExpressionParse()
+  left = comparativeExpressionParseAnd()
   (
     (< OR > right = comparativeExpressionParseAnd()) { left = new Or(left,right); }
   )*
@@ -321,7 +344,7 @@ Expression comparativeExpressionParseAnd() throws NumberFormatException :
 	Expression right;
   }
 {
-  left = unaryExpressionParse()
+  left = comparativeExpressionParseComparisons()
   (
     (< AND > right = comparativeExpressionParseComparisons()) { left = new And(left,right); }
   )*
@@ -336,7 +359,7 @@ Expression comparativeExpressionParseComparisons() throws NumberFormatException 
 	Expression right;
   }
 {
-  left = unaryExpressionParse()
+  left = comparativeExpressionParseNot()
   (
     (< LT > right = comparativeExpressionParseNot()) { left = new LessThan(left,right); }
   | (< LE > right = comparativeExpressionParseNot()) { left = new LessEqual(left,right); }
@@ -358,24 +381,7 @@ Expression comparativeExpressionParseNot() throws NumberFormatException :
   left = unaryExpressionParse()
   (
     < NOT > left = unaryExpressionParse() { left = new Not(left); }
-  	|       left = unaryExpressionParse()
-  )*
-  {
-    return left;
-  }
-}
-
-Expression multiplicativeExpressionParse() throws NumberFormatException :
-{
-	Expression left;
-	Expression right;
-  }
-{
-  left = unaryExpressionParse()
-  (
-    (< MUL > right = unaryExpressionParse()) { left = new Mul(left,right); }
-  | (< DIV > right = unaryExpressionParse()) { left = new Div(left,right); }
-  | (< MOD > right = unaryExpressionParse()) { left = new Mod(left,right); }
+  	|       left = unaryExpressionParse() 
   )*
   {
     return left;
@@ -388,7 +394,7 @@ Expression e;
 }
 {
 	(
-	  LOOKAHEAD(2) //Because variable and function call start with <NAME>
+	  	LOOKAHEAD(2)
 	  	e = literalParse()
 		| e = functionCallParse()
 	 	| e = variableParse()
@@ -463,13 +469,33 @@ Expression variableParse() throws NumberFormatException:
 /* Literal -> NUMBER*/
 Literal literalParse() throws NumberFormatException :
 {
-	Token t;
-  }
+	Literal l;
+}
 {
-	t = <NUMBER>
+  	(    		l = integerLiteralParse()
+		| 	l = booleanLiteralParse()
+	)
 	{
-	  return new DInteger(Integer.parseInt(t.image));
+		return l; 
 	}
+}
+
+
+IntegerLiteral integerLiteralParse() throws NumberFormatException :
+{
+	Token t;
+}
+{
+	t = <NUMBER> {  return new IntegerLiteral(Integer.parseInt(t.image)); }
+}
+
+BooleanLiteral booleanLiteralParse() throws NumberFormatException :
+{
+	Token t;
+}
+{
+	t = <TRUE> {  return new BooleanLiteral(true); } |
+	t = <FALSE> {  return new BooleanLiteral(false); }
 }
 
 

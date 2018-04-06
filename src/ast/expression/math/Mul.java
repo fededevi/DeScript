@@ -6,9 +6,9 @@ import ast.expression.Expression;
 import ast.expression.literal.IntegerLiteral;
 
 public class Mul extends Binary {
+	
 	public Mul(Expression l, Expression r) {
 		super(l, r);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -18,7 +18,6 @@ public class Mul extends Binary {
 		
 		return new IntegerLiteral( l.value()*r.value());
 	}
-
 
 	public String toString()
 	{

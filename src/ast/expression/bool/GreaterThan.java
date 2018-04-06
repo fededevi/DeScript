@@ -4,22 +4,20 @@ import ast.context.Context;
 import ast.expression.Binary;
 import ast.expression.Expression;
 import ast.expression.literal.BooleanLiteral;
-import ast.expression.literal.IntegerLiteral;
+import ast.expression.literal.Comparable;
 
 public class GreaterThan extends Binary {
 	
 	public GreaterThan(Expression l, Expression r) {
 		super(l, r);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public Expression evaluate(Context c) {
-
-		IntegerLiteral l = (IntegerLiteral)left.evaluate(c);
-		IntegerLiteral r = (IntegerLiteral)right.evaluate(c);
+		Comparable l = (Comparable)left.evaluate(c);
+		Comparable r = (Comparable)right.evaluate(c);
 	
-		return new BooleanLiteral(l.value() > r.value());
+		return new BooleanLiteral(l.compare(r) > 0);
 	}
 
 	public String toString()

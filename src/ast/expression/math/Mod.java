@@ -9,7 +9,6 @@ public class Mod extends Binary {
 	
 	public Mod(Expression l, Expression r) {
 		super(l, r);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

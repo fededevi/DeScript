@@ -9,18 +9,14 @@ public class Add extends Binary {
 	
 	public Add(Expression l, Expression r) {
 		super(l, r);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public Expression evaluate(Context c) {
-		
 		IntegerLiteral l = (IntegerLiteral)left.evaluate(c);
 		IntegerLiteral r = (IntegerLiteral)right.evaluate(c);
 		
-
 		return new IntegerLiteral( l.value()+r.value());
-
 	}
 
 	public String toString()

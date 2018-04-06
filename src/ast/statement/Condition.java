@@ -1,6 +1,7 @@
 package ast.statement;
 import ast.context.Context;
 import ast.expression.Expression;
+import ast.expression.literal.BooleanLiteral;
 import ast.expression.literal.IntegerLiteral;
 
 public class Condition extends Statement {
@@ -21,10 +22,10 @@ public class Condition extends Statement {
 		if (! (e instanceof IntegerLiteral))
 			return; //error
 		
-		IntegerLiteral i = (IntegerLiteral)e;
+		BooleanLiteral i = (BooleanLiteral)e;
 		
 		Context localContext = new Context(c);
-		if (i.value > 0)
+		if (i.value)
 		{
 			thenStatement.execute(localContext);
 		}else

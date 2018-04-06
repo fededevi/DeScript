@@ -6,9 +6,9 @@ import ast.expression.Expression;
 import ast.expression.literal.IntegerLiteral;
 
 public class Div extends Binary {
+	
 	public Div(Expression l, Expression r) {
 		super(l, r);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

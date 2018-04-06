@@ -4,7 +4,6 @@ import ast.context.Context;
 import ast.expression.Binary;
 import ast.expression.Expression;
 import ast.expression.literal.BooleanLiteral;
-import ast.expression.literal.IntegerLiteral;
 
 public class Or extends Binary {
 	

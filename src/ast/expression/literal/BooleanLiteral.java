@@ -3,7 +3,7 @@ package ast.expression.literal;
 import ast.context.Context;
 import ast.expression.Expression;
 
-public class BooleanLiteral  extends Literal {
+public class BooleanLiteral  extends Equatable {
 		
 		public boolean value;
 		
@@ -25,6 +25,12 @@ public class BooleanLiteral  extends Literal {
 		public String toString()
 		{
 			return "" + value;
+		}
+
+		@Override
+		public boolean equal(Equatable e) {
+			
+			return value == ((BooleanLiteral) e).value;
 		}
 	}
 

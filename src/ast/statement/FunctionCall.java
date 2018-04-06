@@ -20,7 +20,7 @@ public class FunctionCall extends Expression {
 		FunctionDeclaration fc = c.getFunction(identifier);
 		
 		//Create new empty context for execution of the function statement
-		Context functionContext = new Context();
+		Context functionContext = new Context(c);
 		
 		//Insert actual parameters in context
 		FormalParameter fp = fc.parameters;

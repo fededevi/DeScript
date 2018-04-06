@@ -3,10 +3,9 @@ package ast.expression.bool;
 import ast.context.Context;
 import ast.expression.Expression;
 import ast.expression.Unary;
-import ast.expression.literal.IntegerLiteral;
+import ast.expression.literal.BooleanLiteral;
 
 public class Not extends Unary {
-
 
 	public Not(Expression p)
 	{
@@ -15,18 +14,9 @@ public class Not extends Unary {
 	
 	public Expression evaluate(Context c) {
 
-		Expression l = param.evaluate(c);
+		BooleanLiteral l = (BooleanLiteral)param.evaluate(c);
 		
-		if (l instanceof IntegerLiteral)
-		{
-			int result = (int) Math.sqrt(((IntegerLiteral)l).value());
-			return new IntegerLiteral(result);
-		}
-		else
-		{
-			//error
-			return null;
-		}
+		return new BooleanLiteral(!l.value);
 	}
 
 
