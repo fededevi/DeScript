@@ -2,6 +2,7 @@ package ast.context;
 
 import java.util.HashMap;
 
+import ast.expression.Expression;
 import ast.expression.Literal;
 import ast.statement.FunctionDeclaration;
 import ast.statement.Identifier;
@@ -12,6 +13,7 @@ public class Context
 	HashMap<Identifier, FunctionDeclaration> functions = new HashMap<>();
 	
 	Context parent;
+	private Expression returnValue = null;
 	
 	public Literal value(Identifier id)
 	{
@@ -82,5 +84,13 @@ public class Context
 			return functions.get(identifier);
 		
 		return parent.getFunction(identifier);
+	}
+
+	public Expression returnValue() {
+		return returnValue ;
+	}
+
+	public void setReturnValue(Expression evaluate) {
+		returnValue = evaluate;
 	}
 }

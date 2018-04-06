@@ -1,9 +1,10 @@
 package ast.statement;
 
 import ast.context.Context;
+import ast.expression.Expression;
 import ast.expression.Literal;
 
-public class FunctionCall extends Statement {
+public class FunctionCall extends Expression {
 	public  Identifier identifier;
 	public  ActualParameter parameters;
 	
@@ -14,7 +15,7 @@ public class FunctionCall extends Statement {
 	}
 
 	@Override
-	public void execute(Context c) {
+	public Expression evaluate(Context c) {
 		//Get function declaration from implementation from this context
 		FunctionDeclaration fc = c.getFunction(identifier);
 		
@@ -35,10 +36,8 @@ public class FunctionCall extends Statement {
 		
 		//Finally execute function with the proper context
 		fc.statement.execute(functionContext);
-
-		//Continue execution of program
-		if (next != null)
-			next.execute(c);
+		
+		return functionContext.returnValue();
 	}
 	
 }

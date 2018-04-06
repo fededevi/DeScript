@@ -12,7 +12,7 @@ while (a)
 	}
 }
 
-function  doSomething (s)
+function  dosomething (s)
 {
 	a = b+c;
 }

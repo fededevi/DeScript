@@ -1,5 +1,6 @@
 package test;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.StringReader;
@@ -52,7 +53,9 @@ public class MainTest {
 		
 		dec1.execute(new Context());*/
 		//String program= new String(Files.readAllBytes(new Path()));
-		DeoclaParser deoclaParser = new DeoclaParser(new FileReader("C:\\workspaceP\\deocla\\bin\\test\\program.dol"));
+		String filePath = new File("").getAbsolutePath();
+		System.out.println(filePath);
+		DeoclaParser deoclaParser = new DeoclaParser(new FileReader(filePath+"\\bin\\test\\program.dol"));
 				
 				/*Files.rea
 				    "var a = 6;"
