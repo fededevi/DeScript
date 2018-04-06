@@ -474,6 +474,8 @@ Literal literalParse() throws NumberFormatException :
 {
   	(    		l = integerLiteralParse()
 		| 	l = booleanLiteralParse()
+		| 	l = stringLiteralParse()
+		| 	l = floatingPointLiteralParse()
 	)
 	{
 		return l; 
@@ -496,6 +498,22 @@ BooleanLiteral booleanLiteralParse() throws NumberFormatException :
 {
 	t = <TRUE> {  return new BooleanLiteral(true); } |
 	t = <FALSE> {  return new BooleanLiteral(false); }
+}
+
+StringLiteral stringLiteralParse() throws NumberFormatException :
+{
+	Token t;
+}
+{
+	 "\""t =<NAME>"\"" {  return new StringLiteral(t.image); }
+}
+
+FloatingPointLiteral floatingPointLiteralParse() throws NumberFormatException :
+{
+	Token t;
+}
+{
+	t = <NUMBER>"."<NUMBER> {  return new FloatingPointLiteral( Double.parseDouble(t.image)); } 
 }
 
 
