@@ -48,7 +48,11 @@ public class MainTest {
 		
 		dec1.execute(new Context());*/
 		
-		DeoclaParser deoclaParser = new DeoclaParser(new StringReader("var a = 6.5;"));
+		DeoclaParser deoclaParser = new DeoclaParser(new StringReader(
+				    "var a = 6;"
+				  + "    b = 6;"
+				  + "var c = 6;"
+				  + "    d = 32;"));
 		
 		
 		try {

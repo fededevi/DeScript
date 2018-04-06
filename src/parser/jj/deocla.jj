@@ -34,7 +34,7 @@ public class DeoclaParser {
 		//parser.Input();
 	}
 	
-	double previousValue = 0.0;
+	Statement lastStatement;
 	
 }
 
@@ -56,39 +56,72 @@ TOKEN : { < NAME : <LET> > }
 
 /*Start -> (Expression EOL) * EOF*/
 Statement Start() :
-{}
 {
-	(statementParse())*
+	Statement initial = new EmptyStatement();
+	Statement last = initial;
+	Statement next = null;
+}
+{
+	(next=statementParse() {
+		last.next = next;
+		last = next;
+	  })*
 	<EOF>
-
 	{
-		return new Declaration(new Identifier("b"), new Mul(new DInteger(5), new DInteger(5)));
+		return initial;
 
 	}
 }
 
 
 /*Expression -> Literal ( OPERATOR Literal )* EOL */
-void statementParse() throws NumberFormatException :
+Statement statementParse() throws NumberFormatException :
 {
+  Statement s = null;
 }
 {
-	declarationParse()	//( <OPERATOR> Literal() )*
+		(
+	  (s = declarationParse()) |
+	  (s = assignmenParse())
+	)
+	{ return s; }
+
 }
 
-void declarationParse() throws NumberFormatException :
+Assignment assignmenParse() throws NumberFormatException :
 {
+  Identifier i;
+  Expression e= new DInteger(2);
 }
 {
-	<VAR> identifierParse() "=" expressionParse() ";"	//( <OPERATOR> Literal() )*
+	i=identifierParse() "=" expressionParse() ";"	
+{
+  return new Assignment(i,e);
+}
 }
 
-void identifierParse() throws NumberFormatException :
+Declaration declarationParse() throws NumberFormatException :
+{
+  Identifier i;
+  Expression e= new DInteger(2);
+}
+{
+	<VAR> i=identifierParse() "=" expressionParse() ";"
+{
+  return new Declaration(i,e);
+}
+}
+
+Identifier identifierParse() throws NumberFormatException :
 {
   	Token t;
 }
 {
-	t = <NAME>	
+	t = <NAME>
+	{
+	  
+	return new Identifier(t.image);
+}
 }
 
 /* Literal -> NUMBER*/
