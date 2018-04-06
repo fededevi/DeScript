@@ -4,7 +4,7 @@ options {
   CHOICE_AMBIGUITY_CHECK = 2;
   OTHER_AMBIGUITY_CHECK = 1;
   STATIC = false;
-  DEBUG_PARSER = false;
+  DEBUG_PARSER = true;
   DEBUG_LOOKAHEAD = false;
   DEBUG_TOKEN_MANAGER = false;
   ERROR_REPORTING = true;
@@ -134,11 +134,26 @@ Statement statementParse() throws NumberFormatException :
 	  s = conditionParse() |
 	  s = loopParse() |
 	  s = functionDeclarationParse() |
-	  s = returnParse()
+	  s = returnParse() |
+	  s = functionCallStatementParse()
 	)
 	
 	{ return s; }
 
+}
+
+FunctionCallStatement functionCallStatementParse() throws NumberFormatException:
+{
+	ActualParameter ap = null;
+	Identifier id;
+}
+{
+	(
+	  	id = identifierParse() <LP> ap = actualParameterParseMulti() <RP> ";"
+	)
+	{
+	  return new FunctionCallStatement(id,ap);
+	}
 }
 
 Return returnParse() throws NumberFormatException :
@@ -396,7 +411,7 @@ Expression e;
 	(
 	  	LOOKAHEAD(2)
 	  	e = literalParse()
-		| e = functionCallParse()
+		| e = functionCallExpressionParse()
 	 	| e = variableParse()
 		| < LP > e = expressionParse() < RP >
 	)
@@ -405,7 +420,7 @@ Expression e;
 	}
 }
 
-FunctionCall functionCallParse() throws NumberFormatException:
+FunctionCallExpression functionCallExpressionParse() throws NumberFormatException:
 {
 	ActualParameter ap = null;
 	Identifier id;
@@ -415,7 +430,7 @@ FunctionCall functionCallParse() throws NumberFormatException:
 	  	id = identifierParse() <LP> ap = actualParameterParseMulti() <RP>
 	)
 	{
-	  return new FunctionCall(id,ap);
+	  return new FunctionCallExpression(id,ap);
 	}
 }
 

@@ -1,14 +1,17 @@
-package ast.statement;
+package ast.expression;
 
 import ast.context.Context;
-import ast.expression.Expression;
 import ast.expression.literal.Literal;
+import ast.statement.ActualParameter;
+import ast.statement.FormalParameter;
+import ast.statement.FunctionDeclaration;
+import ast.statement.Identifier;
 
-public class FunctionCall extends Expression {
+public class FunctionCallExpression extends Expression {
 	public  Identifier identifier;
 	public  ActualParameter parameters;
 	
-	public FunctionCall(Identifier i, ActualParameter p)
+	public FunctionCallExpression(Identifier i, ActualParameter p)
 	{
 		this.identifier = i;
 		this.parameters = p;
