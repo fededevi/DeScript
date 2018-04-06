@@ -1,12 +1,13 @@
-package ast.expression;
+package ast.expression.literal;
 
 import ast.context.Context;
+import ast.expression.Expression;
 
-public class DInteger extends Literal {
+public class IntegerLiteral extends Literal {
 	
 	public int value;
 	
-	public DInteger( int value)
+	public IntegerLiteral( int value)
 	{
 		this.value = value;
 	}

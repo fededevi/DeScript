@@ -1,7 +1,7 @@
 package ast.statement;
 import ast.context.Context;
 import ast.expression.Expression;
-import ast.expression.Literal;
+import ast.expression.literal.Literal;
 
 public class Declaration extends Statement{
 	Identifier identifier;

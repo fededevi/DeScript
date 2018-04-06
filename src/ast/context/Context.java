@@ -3,7 +3,7 @@ package ast.context;
 import java.util.HashMap;
 
 import ast.expression.Expression;
-import ast.expression.Literal;
+import ast.expression.literal.Literal;
 import ast.statement.FunctionDeclaration;
 import ast.statement.Identifier;
 

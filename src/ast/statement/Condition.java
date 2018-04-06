@@ -1,7 +1,7 @@
 package ast.statement;
 import ast.context.Context;
-import ast.expression.DInteger;
 import ast.expression.Expression;
+import ast.expression.literal.IntegerLiteral;
 
 public class Condition extends Statement {
 	public Expression condition;
@@ -18,10 +18,10 @@ public class Condition extends Statement {
 	public void execute(Context c) {
 		Expression e = condition.evaluate(c);
 		
-		if (! (e instanceof DInteger))
+		if (! (e instanceof IntegerLiteral))
 			return; //error
 		
-		DInteger i = (DInteger)e;
+		IntegerLiteral i = (IntegerLiteral)e;
 		
 		Context localContext = new Context(c);
 		if (i.value > 0)

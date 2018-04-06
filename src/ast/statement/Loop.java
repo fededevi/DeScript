@@ -1,7 +1,7 @@
 package ast.statement;
 import ast.context.Context;
-import ast.expression.DInteger;
 import ast.expression.Expression;
+import ast.expression.literal.IntegerLiteral;
 
 public class Loop extends Statement {
 	Expression condition;
@@ -17,7 +17,7 @@ public class Loop extends Statement {
 	@Override
 	public void execute(Context c) {
 			
-		while (((DInteger)condition.evaluate(c)).value() > 0)
+		while (((IntegerLiteral)condition.evaluate(c)).value() > 0)
 		{
 			Context localContext = new Context(c);
 			statement.execute(localContext);

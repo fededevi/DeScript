@@ -1,26 +1,30 @@
-package ast.expression.math;
+package ast.expression.bool;
 
 import ast.context.Context;
 import ast.expression.Binary;
 import ast.expression.Expression;
+import ast.expression.literal.BooleanLiteral;
 import ast.expression.literal.IntegerLiteral;
 
-public class Sub extends Binary {
+public class LessEqual extends Binary {
 	
-	public Sub(Expression l, Expression r) {
+	public LessEqual(Expression l, Expression r) {
 		super(l, r);
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public Expression evaluate(Context c) {
+
 		IntegerLiteral l = (IntegerLiteral)left.evaluate(c);
 		IntegerLiteral r = (IntegerLiteral)right.evaluate(c);
-		
-		return new IntegerLiteral( l.value()-r.value());
-	}
 	
+		return new BooleanLiteral(l.value() <= r.value());
+	}
+
 	public String toString()
 	{
-		return "("+left + "-" + right+")";
+		return "("+left + "||" + right+")";
 	}
+
 }

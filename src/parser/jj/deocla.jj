@@ -56,8 +56,6 @@ TOKEN : { < LGP : "{" > }
 TOKEN : { < RGP : "}" > }
 TOKEN : { < LSP : "[" > }
 TOKEN : { < RSP : "]" > }
-TOKEN : { < LPP : "<" > }
-TOKEN : { < RPP : ">" > }
 
 //TOKEN : { < EOL : "\n" | "\r" | "\r\n" > }
 
@@ -65,6 +63,19 @@ TOKEN : { < ADD : "+" > }
 TOKEN : { < SUB : "-" > }
 TOKEN : { < MUL : "*" > }
 TOKEN : { < DIV : "/" > }
+TOKEN : { < MOD : "%" > }
+
+TOKEN : { < LT : "<" > }
+TOKEN : { < LE : "<=" > }
+TOKEN : { < GE : ">=" > }
+TOKEN : { < GT : ">" > }
+TOKEN : { < EQ : "==" > }
+TOKEN : { < NE : "!=" > }
+
+TOKEN : { < AND : "&&" > }
+TOKEN : { < OR : "||" > }
+
+TOKEN : { < NOT : "!" > }
 
 TOKEN : { < NUMBER : <DIG> | <DIG> "." <DIG> | <DIG> "." | "." <DIG> > }
 TOKEN : { < #DIG : (["0"-"9"])+ > }
@@ -265,33 +276,113 @@ Expression expressionParse() throws NumberFormatException :
 	Expression right;
   }
 {
-  left = parseMultiplicativeExpression()
+  left = multiplicativeExpressionParse()
   (
-    (< ADD > right = parseMultiplicativeExpression()) { left = new Add(left,right); }
-  | (< SUB > right = parseMultiplicativeExpression()) { left = new Sub(left,right); }
+    (< ADD > right = multiplicativeExpressionParse()) { left = new Add(left,right); }
+  | (< SUB > right = multiplicativeExpressionParse()) { left = new Sub(left,right); }
   )*
   {
     return left;
   }
 }
 
-Expression parseMultiplicativeExpression() throws NumberFormatException :
+Expression comparativeExpressionParse() throws NumberFormatException :
+{
+	Expression e;
+  }
+{
+  (
+     e = comparativeExpressionParseOr()
+  |  e = multiplicativeExpressionParse()
+  )  
+  {
+    return e;
+  }
+}
+
+Expression comparativeExpressionParseOr() throws NumberFormatException :
 {
 	Expression left;
 	Expression right;
   }
 {
-  left = parseUnaryExpression()
+  left = unaryExpressionParse()
   (
-    (< MUL > right = parseUnaryExpression()) { left = new Mul(left,right); }
-  | (< DIV > right = parseUnaryExpression()) { left = new Div(left,right); }
+    (< OR > right = comparativeExpressionParseAnd()) { left = new Or(left,right); }
   )*
   {
     return left;
   }
 }
 
-Expression parseUnaryExpression() throws NumberFormatException:
+Expression comparativeExpressionParseAnd() throws NumberFormatException :
+{
+	Expression left;
+	Expression right;
+  }
+{
+  left = unaryExpressionParse()
+  (
+    (< AND > right = comparativeExpressionParseComparisons()) { left = new And(left,right); }
+  )*
+  {
+    return left;
+  }
+}
+
+Expression comparativeExpressionParseComparisons() throws NumberFormatException :
+{
+	Expression left;
+	Expression right;
+  }
+{
+  left = unaryExpressionParse()
+  (
+    (< LT > right = comparativeExpressionParseNot()) { left = new LessThan(left,right); }
+  | (< LE > right = comparativeExpressionParseNot()) { left = new LessEqual(left,right); }
+  | (< GE > right = comparativeExpressionParseNot()) { left = new GreaterEqual(left,right); }
+  | (< GT > right = comparativeExpressionParseNot()) { left = new GreaterThan(left,right); }
+  | (< EQ > right = comparativeExpressionParseNot()) { left = new Equal(left,right); }
+  | (< NE > right = comparativeExpressionParseNot()) { left = new NotEqual(left,right); }
+  )*
+  {
+    return left;
+  }
+}
+
+Expression comparativeExpressionParseNot() throws NumberFormatException :
+{
+	Expression left;
+  }
+{
+  left = unaryExpressionParse()
+  (
+    < NOT > left = unaryExpressionParse() { left = new Not(left); }
+  	|       left = unaryExpressionParse()
+  )*
+  {
+    return left;
+  }
+}
+
+Expression multiplicativeExpressionParse() throws NumberFormatException :
+{
+	Expression left;
+	Expression right;
+  }
+{
+  left = unaryExpressionParse()
+  (
+    (< MUL > right = unaryExpressionParse()) { left = new Mul(left,right); }
+  | (< DIV > right = unaryExpressionParse()) { left = new Div(left,right); }
+  | (< MOD > right = unaryExpressionParse()) { left = new Mod(left,right); }
+  )*
+  {
+    return left;
+  }
+}
+
+Expression unaryExpressionParse() throws NumberFormatException:
 {
 Expression e;
 }

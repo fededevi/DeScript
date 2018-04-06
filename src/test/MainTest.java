@@ -8,8 +8,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import ast.context.Context;
-import ast.expression.DInteger;
 import ast.expression.Variable;
+import ast.expression.literal.IntegerLiteral;
 import ast.expression.math.Add;
 import ast.expression.math.Mul;
 import ast.expression.math.Sqrt;

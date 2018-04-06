@@ -2,8 +2,8 @@ package ast.expression.math;
 
 import ast.context.Context;
 import ast.expression.Binary;
-import ast.expression.DInteger;
 import ast.expression.Expression;
+import ast.expression.literal.IntegerLiteral;
 
 public class Mul extends Binary {
 	public Mul(Expression l, Expression r) {
@@ -13,20 +13,10 @@ public class Mul extends Binary {
 
 	@Override
 	public Expression evaluate(Context c) {
-
-		Expression l = left.evaluate(c);
-		Expression r = right.evaluate(c);
+		IntegerLiteral l = (IntegerLiteral)left.evaluate(c);
+		IntegerLiteral r = (IntegerLiteral)right.evaluate(c);
 		
-		if (l instanceof DInteger && r instanceof DInteger)
-		{
-			int result = ((DInteger)l).value()*((DInteger)r).value();
-			return new DInteger(result);
-		}
-		else
-		{
-			//error
-			return null;
-		}
+		return new IntegerLiteral( l.value()*r.value());
 	}
 
 
