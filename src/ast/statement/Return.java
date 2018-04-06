@@ -14,8 +14,17 @@ public class Return extends Statement {
 	@Override
 	public void execute(Context c) {
 		c.setReturnValue(e.evaluate(c));
-
+		return;
 		//Do not call next, this is a return :)
 	}
-
+	
+	public String toString()
+	{
+		String a = "return " + e;
+		
+		if (next != null)
+			a += next;
+		return a;
+	}
+	
 }

@@ -43,6 +43,7 @@ PARSER_END(DeoclaParser)
 SKIP :{	" "}
 SKIP :{ "\t" | "\n" | "\r" | "\r\n" }
 
+TOKEN : { < RETURN : "return" > }
 TOKEN : { < VAR : "var" > }
 TOKEN : { < IF : "if" > }
 TOKEN : { < ELSE : "else" > }
@@ -111,18 +112,32 @@ Statement statementParse() throws NumberFormatException :
 }
 {
   (
+    LOOKAHEAD(2)
 	  s = declarationParse() |
 	  s = assignmenParse() |
 	  s = conditionParse() |
 	  s = loopParse() |
-	  s = functionDeclaration()
+	  s = functionDeclarationParse() |
+	  s = returnParse()
 	)
 	
 	{ return s; }
 
 }
 
-FunctionDeclaration functionDeclaration() throws NumberFormatException :
+Return returnParse() throws NumberFormatException :
+{
+  Expression e;
+  Return r;
+}
+{
+	  <RETURN> e = expressionParse() ";"
+{
+  return new Return(e);
+}
+}
+
+FunctionDeclaration functionDeclarationParse() throws NumberFormatException :
 {
   Identifier i;
   FormalParameter fp;
@@ -146,11 +161,13 @@ FormalParameter multiFormalParameter() throws NumberFormatException :
   FormalParameter next = null;
 }
 {
-	(next=formalParameterParse()  {
-		if (last != null)
-			last.next = next;
-		last = next;
-	  })*
+	  	  [ last = formalParameterParse() ("," next = formalParameterParse())* {
+				if (initial == null)
+					initial = last;
+				last.next = next;
+				last = next;
+				
+	  	    }]
 	{
 		return initial;
 	}
@@ -280,12 +297,61 @@ Expression e;
 }
 {
 	(
+	  LOOKAHEAD(2) //Because variable and function call start with <NAME>
 	  	e = literalParse()
+		| e = functionCallParse()
 	 	| e = variableParse()
 		| < LP > e = expressionParse() < RP >
 	)
 	{
 	  return e;
+	}
+}
+
+FunctionCall functionCallParse() throws NumberFormatException:
+{
+	ActualParameter ap = null;
+	Identifier id;
+}
+{
+	(
+	  	id = identifierParse() <LP> ap = actualParameterParseMulti() <RP>
+	)
+	{
+	  return new FunctionCall(id,ap);
+	}
+}
+
+ActualParameter actualParameterParseMulti() throws NumberFormatException:
+{
+  	ActualParameter initial = null;
+	ActualParameter last = null;
+	ActualParameter next = null;
+}
+{
+	(	  	  [ last = actualParameterParse() ("," next = actualParameterParse())* {
+				if (initial == null)
+					initial = last;
+				last.next = next;
+				last = next;
+				
+	  	    }]
+	)
+	{
+	  return initial;
+	}
+}
+
+ActualParameter actualParameterParse() throws NumberFormatException:
+{
+  	Expression e;
+}
+{
+	(
+	  	  e = expressionParse() 
+	)
+	{
+	  return new ActualParameter(e);
 	}
 }
 

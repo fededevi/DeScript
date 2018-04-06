@@ -8,7 +8,7 @@ public class FunctionCall extends Expression {
 	public  Identifier identifier;
 	public  ActualParameter parameters;
 	
-	FunctionCall(Identifier i, ActualParameter p)
+	public FunctionCall(Identifier i, ActualParameter p)
 	{
 		this.identifier = i;
 		this.parameters = p;
@@ -19,8 +19,8 @@ public class FunctionCall extends Expression {
 		//Get function declaration from implementation from this context
 		FunctionDeclaration fc = c.getFunction(identifier);
 		
-		//Create new context for execution of the function statement
-		Context functionContext = new Context(c);
+		//Create new empty context for execution of the function statement
+		Context functionContext = new Context();
 		
 		//Insert actual parameters in context
 		FormalParameter fp = fc.parameters;
@@ -40,4 +40,9 @@ public class FunctionCall extends Expression {
 		return functionContext.returnValue();
 	}
 	
+	public String toString()
+	{
+		return identifier + "(" + parameters.e +")\n";
+		
+	}
 }

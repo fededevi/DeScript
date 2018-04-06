@@ -1,18 +1,18 @@
-var a = 20;
-var b = 1;
+function multest (p,q)
+{
+return p*q;
+}
+
+function minusone (a)
+{
+return a-1;
+}
+
+var a = 3;
+var b = 0;
 
 while (a)
 {
-	var c = 20 - a;
-	a = a - 1;
-	
-	if (c - 10 )
-	{
-		b = a*a;
-	}
-}
-
-function  dosomething (s)
-{
-	a = b+c;
+	a = minusone(a);
+	b = multest(a + 1, multest(a,a) );
 }
