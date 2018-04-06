@@ -16,7 +16,7 @@ public class FunctionCallStatement extends Statement {
 
 	public String toString()
 	{
-		return f.identifier + "(" + f.parameters.e +")\n";
+		return f.identifier + "(" + f.parameters +")\n";
 		
 	}
 

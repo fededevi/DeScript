@@ -22,6 +22,16 @@ public class FunctionCallExpression extends Expression {
 		//Get function declaration from implementation from this context
 		FunctionDeclaration fc = c.getFunction(identifier);
 		
+		if (fc == null)
+		{
+			try {
+				throw new Exception ("Function Declaration not found: " + identifier);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 		//Create new empty context for execution of the function statement
 		Context functionContext = new Context(c);
 		
@@ -45,7 +55,7 @@ public class FunctionCallExpression extends Expression {
 	
 	public String toString()
 	{
-		return identifier + "(" + parameters.e +")\n";
+		return identifier + "(" + parameters +")";
 		
 	}
 }

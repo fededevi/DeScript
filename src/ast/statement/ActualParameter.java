@@ -10,4 +10,13 @@ public class ActualParameter {
 	{
 		this.e = e;
 	}
+	
+	public String toString()
+	{
+		String a = e.toString();
+		
+		if (next != null)
+			a += ","+next;
+		return a;
+	}
 }

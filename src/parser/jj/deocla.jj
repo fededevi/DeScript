@@ -4,7 +4,7 @@ options {
   CHOICE_AMBIGUITY_CHECK = 2;
   OTHER_AMBIGUITY_CHECK = 1;
   STATIC = false;
-  DEBUG_PARSER = true;
+  DEBUG_PARSER = false;
   DEBUG_LOOKAHEAD = false;
   DEBUG_TOKEN_MANAGER = false;
   ERROR_REPORTING = true;
@@ -82,7 +82,9 @@ TOKEN : { < OR : "||" > }
 
 TOKEN : { < NOT : "!" > }
 
-TOKEN : { < NUMBER : <DIG> | <DIG> "." <DIG> | <DIG> "." | "." <DIG> > }
+TOKEN : { < INTEGER : <DIG> > }
+TOKEN : { < FLOAT : <DIG> | <DIG> "." <DIG> | <DIG> "." | "." <DIG> > }
+
 TOKEN : { < #DIG : (["0"-"9"])+ > }
 TOKEN : { < #LET : (["a"-"z", "A"-"Z"])+> }
 TOKEN : { < OPERATOR : <ADD> | <SUB> > }
@@ -487,10 +489,10 @@ Literal literalParse() throws NumberFormatException :
 	Literal l;
 }
 {
-  	(    		l = integerLiteralParse()
+  	(    		l = floatingPointLiteralParse()
 		| 	l = booleanLiteralParse()
 		| 	l = stringLiteralParse()
-		| 	l = floatingPointLiteralParse()
+		| 	l = integerLiteralParse()
 	)
 	{
 		return l; 
@@ -503,7 +505,7 @@ IntegerLiteral integerLiteralParse() throws NumberFormatException :
 	Token t;
 }
 {
-	t = <NUMBER> {  return new IntegerLiteral(Integer.parseInt(t.image)); }
+	t = <INTEGER> {  return new IntegerLiteral(Integer.parseInt(t.image)); }
 }
 
 BooleanLiteral booleanLiteralParse() throws NumberFormatException :
@@ -528,7 +530,7 @@ FloatingPointLiteral floatingPointLiteralParse() throws NumberFormatException :
 	Token t;
 }
 {
-	t = <NUMBER>"."<NUMBER> {  return new FloatingPointLiteral( Double.parseDouble(t.image)); } 
+	t = <FLOAT>{  return new FloatingPointLiteral( Double.parseDouble(t.image)); } 
 }
 
 

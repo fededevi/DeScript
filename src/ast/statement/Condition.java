@@ -19,9 +19,6 @@ public class Condition extends Statement {
 	public void execute(Context c) {
 		Expression e = condition.evaluate(c);
 		
-		if (! (e instanceof IntegerLiteral))
-			return; //error
-		
 		BooleanLiteral i = (BooleanLiteral)e;
 		
 		Context localContext = new Context(c);
