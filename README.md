@@ -10,8 +10,14 @@ An **interpreter**: basically the **execute** and **evaluate** methods inside th
 
 #### Howto:
 In order to build the parser you need to preprocess the deocl.jj file with javacc and put the output files in the parser.jj package.
+Download javacc from javacc.org, then just call:
 
-Then just call:
+```batch
+java -cp javacc.jar javacc deocla.jj
+```
+This will generate a bunch of .java files including the parser class.
+
+Examples:
 ```java
 DeoclaParser p= new DeoclaParser(new FileReader("\\path\\to\\your\\program.dol"));
 //Parse program and create the AST, returns the first statement of the program.
