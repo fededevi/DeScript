@@ -8,23 +8,26 @@ function minusone (a)
 return a-1;
 }
 
-
 function testAdd(a,b)
 {
 	return a + b;
 }
+
 function testDiv(a,b)
 {
 	return a / b;
 }
+
 function testMod(a,b)
 {
 	return a % b;
 }
+
 function testMul(a,b)
 {
 	return a * b;
 }
+
 function testSub(a,b)
 {
 	return a - b;
@@ -44,9 +47,9 @@ var nn = true || false && true || false;
 var nn = true || false;
 var nn = 1 < 3;
 var nn = 1 > 3;
-
 while (a < 100)
 {
 	a = a + 1;
-	b = multest(a + 1, multest(a,a) );
+	b = multest(a + 1, multest(a*a+a/a,a) );
+	b = 	println(b);
 }

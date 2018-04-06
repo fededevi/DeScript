@@ -33,7 +33,6 @@ public class Context
 			return; //error;
 		}
 		
-		System.out.println("Declaring " + i + " as " + l);
 		data.put(i, l);
 	}
 	
@@ -41,7 +40,7 @@ public class Context
 	{
 		if (data.containsKey(i))
 		{
-			System.out.println("Assigning " + l + " to " + i);
+			//System.out.println(i + " = " + l);
 			data.put(i, l);
 			return;
 		}
@@ -71,7 +70,7 @@ public class Context
 			return; //error;
 		}
 		
-		System.out.println("Declaring " + functionDeclaration.id + " as " + "function");
+		//System.out.println("Declaring " + functionDeclaration.id + " as " + "function");
 		functions.put(functionDeclaration.id, functionDeclaration);
 		
 	}

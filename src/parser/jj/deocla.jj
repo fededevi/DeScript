@@ -4,7 +4,7 @@ options {
   CHOICE_AMBIGUITY_CHECK = 2;
   OTHER_AMBIGUITY_CHECK = 1;
   STATIC = false;
-  DEBUG_PARSER = true;
+  DEBUG_PARSER = false;
   DEBUG_LOOKAHEAD = false;
   DEBUG_TOKEN_MANAGER = false;
   ERROR_REPORTING = true;
