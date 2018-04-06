@@ -1,12 +1,29 @@
-DeOcLa (DOL): a Java / javacc interpreted language
 
-Main components:
-A lexer and parser based on javacc fon in the package  parser.jj, the language grammar is defined in deocla.jj file
-An abstract syntax tree written in Java
-An interpreter: basically the execut and evaluate methods inside the AST nodes.
+# DeOcLa (DOL) 
+#### a Java / javacc -very basic- interpreted language
 
-In order to build the parser you eed to preprocess the deocl.jj file with javacc and put the output files in the parser.jj package.
-The just call: (see MainTest.java)
-DeoclaParser deoclaParser = new DeoclaParser(new FileReader("\\path\\to\\your\\program.dol"));
-Statement stat = deoclaParser.Start(); //Parse program and create the AST, returns the first statement of the program
-stat.execute(new SystemContext()); //Run the program with a context containing a println() function to print stuff.
+#### Main components:
+A lexer and parser based on **javacc**, the language grammar is defined in file: **deocla.jj**
+An **abstract syntax tree** written in Java
+An **interpreter**: basically the **execute** and **evaluate** methods inside the **AST** nodes.
+
+
+#### Howto:
+In order to build the parser you need to preprocess the deocl.jj file with javacc and put the output files in the parser.jj package.
+
+Then just call:
+```java
+DeoclaParser p= new DeoclaParser(new FileReader("\\path\\to\\your\\program.dol"));
+//Parse program and create the AST, returns the first statement of the program.
+Statement stat = p.Start();
+//Run the program with a context containing a println() function to print stuff. 
+stat.execute(new SystemContext());
+```
+If you want to just parse expressions then:
+
+```java
+DeoclaParser p = new DeoclaParser(new StringReader("5 / 2"));
+Expression exp = p.expressionParse();
+exp = exp.evaluate(new Context());
+System.out.println(exp);
+```
