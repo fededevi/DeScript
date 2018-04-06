@@ -1,6 +1,6 @@
 
 options {
-  LOOKAHEAD = 2;
+  LOOKAHEAD = 1;
   CHOICE_AMBIGUITY_CHECK = 2;
   OTHER_AMBIGUITY_CHECK = 1;
   STATIC = false;
@@ -23,6 +23,10 @@ PARSER_BEGIN(DeoclaParser)
 
 package parser.jj;
 
+import ast.expression.*;
+import ast.expression.math.*;
+import ast.statement.*;
+
 public class DeoclaParser {
 
 	public static void main(String args[]) throws ParseException, TokenMgrError, NumberFormatException {
@@ -41,43 +45,60 @@ SKIP :
 	" "
 }
 
+TOKEN : { < VAR : "var" > }
 TOKEN : { < EOL : "\n" | "\r" | "\r\n" > }
 TOKEN : { < PLU : "+" > }
 TOKEN : { < MIN : "-" > }
-TOKEN : { < #DIG : (["0"-"9"])+ > }
 TOKEN : { < NUMBER : <DIG> | <DIG> "." <DIG> | <DIG> "." | "." <DIG> > }
+TOKEN : { < #DIG : (["0"-"9"])+ > }
+TOKEN : { < #LET : (["a"-"z"])+ > }
 TOKEN : { < OPERATOR : <PLU> | <MIN> > }
+TOKEN : { < NAME : <LET> > }
 
 
 /*Start -> (Expression EOL) * EOF*/
-void Start() :
+Statement Start() :
 {}
 {
-	(previousValue = Expression() <EOL> {System.out.println( previousValue );})* <EOF>
+	(statementParse() <EOL>)* <EOF>
+
+	{
+		return new Declaration(new Identifier("b"), new Mul(new DInteger(5), new DInteger(5)));
+
+	}
 }
 
 
 /*Expression -> Literal ( OPERATOR Literal )* EOL */
-double Expression() throws NumberFormatException :
+void statementParse() throws NumberFormatException :
 {
-	double i ;
-	double value ;
 }
 {
-	value = Literal()
-	(<OPERATOR>i = Literal(){ value += i; })*
-	{ return value; }
+	declarationParse()	//( <OPERATOR> Literal() )*
 }
 
+void declarationParse() throws NumberFormatException :
+{
+}
+{
+	<VAR> identifierParse() "=" expressionParse() ";"	//( <OPERATOR> Literal() )*
+}
+
+void identifierParse() throws NumberFormatException :
+{
+  	Token t;
+}
+{
+	t = <NAME>	
+}
 
 /* Literal -> NUMBER*/
-double Literal() throws NumberFormatException :
+void expressionParse() throws NumberFormatException :
 {
-	Token t ;
+	Token t;
 }
 {
 	t = <NUMBER>
-	{ return Double.parseDouble( t.image ); }
 }
 
 

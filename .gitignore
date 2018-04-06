@@ -16,3 +16,18 @@ hs_err_pid*
 \.project
 
 \.settings/
+/bin/
+
+src/parser/jj/TokenMgrError\.java
+
+src/parser/jj/Token\.java
+
+src/parser/jj/SimpleCharStream\.java
+
+src/parser/jj/ParseException\.java
+
+src/parser/jj/DeoclaParserTokenManager\.java
+
+src/parser/jj/DeoclaParserConstants\.java
+
+src/parser/jj/DeoclaParser\.java
