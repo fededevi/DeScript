@@ -15,13 +15,7 @@ public class Assignment extends Statement {
 	
 	public void execute(Context c) {
 		Expression e = expression.evaluate(c);
-		if (e instanceof Literal && c.contains(identifier))
-		{
-			c.assign(identifier, (Literal)e );
-		} else
-		{
-			//error
-		}
+		c.assign(identifier, (Literal)e );
 		
 		if (next != null)
 			next.execute(c);

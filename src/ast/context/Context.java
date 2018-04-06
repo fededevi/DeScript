@@ -3,11 +3,14 @@ package ast.context;
 import java.util.HashMap;
 
 import ast.expression.Literal;
+import ast.statement.FunctionDeclaration;
 import ast.statement.Identifier;
 
 public class Context
 {
 	HashMap<Identifier, Literal> data = new HashMap<>();
+	HashMap<Identifier, FunctionDeclaration> functions = new HashMap<>();
+	
 	Context parent;
 	
 	public Literal value(Identifier id)
@@ -24,8 +27,10 @@ public class Context
 	public void addNew(Identifier i, Literal l)
 	{
 		if (data.containsKey(i))
+		{
 			return; //error;
-
+		}
+		
 		System.out.println("Declaring " + i + " as " + l);
 		data.put(i, l);
 	}
@@ -58,13 +63,24 @@ public class Context
 		this.parent = parent;
 	}
 
-	public boolean contains(Identifier id) {
-		if (parent == null)
-			return data.containsKey(id);
+	public void addFunction(FunctionDeclaration functionDeclaration) {
+		if (functions.containsKey(functionDeclaration.id))
+		{
+			return; //error;
+		}
 		
-		if (data.containsKey(id))
-			return true;
+		System.out.println("Declaring " + functionDeclaration.id + " as " + "function");
+		functions.put(functionDeclaration.id, functionDeclaration);
+		
+	}
 
-		return parent.contains(id);		
+	public FunctionDeclaration getFunction(Identifier identifier) {
+		if (parent == null)
+			return functions.get(identifier);
+		
+		if (data.containsKey(identifier))
+			return functions.get(identifier);
+		
+		return parent.getFunction(identifier);
 	}
 }

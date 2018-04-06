@@ -13,14 +13,7 @@ public class Variable extends Expression {
 	
 	@Override
 	public Expression evaluate(Context c) {
-		if (c.contains(id))
-		{
 			return c.value(id);
-		} else
-		{
-			//error;
-			return null;
-		}
 	}
 	
 

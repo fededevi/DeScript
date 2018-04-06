@@ -52,7 +52,7 @@ public class MainTest {
 		
 		dec1.execute(new Context());*/
 		//String program= new String(Files.readAllBytes(new Path()));
-		DeoclaParser deoclaParser = new DeoclaParser(new FileReader("C:\\Users\\fededevi\\Desktop\\Workspace\\DeOcLa\\src\\test\\program.dol"));
+		DeoclaParser deoclaParser = new DeoclaParser(new FileReader("C:\\workspaceP\\deocla\\bin\\test\\program.dol"));
 				
 				/*Files.rea
 				    "var a = 6;"
@@ -64,6 +64,7 @@ public class MainTest {
 		try {
 			Statement stat = deoclaParser.Start();
 			System.out.println(stat);
+			stat.execute(new Context());
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

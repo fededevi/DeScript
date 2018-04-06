@@ -46,6 +46,7 @@ SKIP :{ "\t" | "\n" | "\r" | "\r\n" }
 TOKEN : { < VAR : "var" > }
 TOKEN : { < IF : "if" > }
 TOKEN : { < ELSE : "else" > }
+TOKEN : { < WHILE : "while" > }
 
 TOKEN : { < LP : "(" > }
 TOKEN : { < RP : ")" > }
@@ -56,18 +57,35 @@ TOKEN : { < RSP : "]" > }
 TOKEN : { < LPP : "<" > }
 TOKEN : { < RPP : ">" > }
 
-TOKEN : { < EOL : "\n" | "\r" | "\r\n" > }
-TOKEN : { < PLU : "+" > }
-TOKEN : { < MIN : "-" > }
+//TOKEN : { < EOL : "\n" | "\r" | "\r\n" > }
+
+TOKEN : { < ADD : "+" > }
+TOKEN : { < SUB : "-" > }
+TOKEN : { < MUL : "*" > }
+TOKEN : { < DIV : "/" > }
+
 TOKEN : { < NUMBER : <DIG> | <DIG> "." <DIG> | <DIG> "." | "." <DIG> > }
 TOKEN : { < #DIG : (["0"-"9"])+ > }
 TOKEN : { < #LET : (["a"-"z"])+ > }
-TOKEN : { < OPERATOR : <PLU> | <MIN> > }
+TOKEN : { < OPERATOR : <ADD> | <SUB> > }
 TOKEN : { < NAME : <LET> > }
 
 
 /*Start -> (Expression EOL) * EOF*/
+
 Statement Start() :
+{
+	Statement s = new EmptyStatement();
+}
+{
+	(s=multiStatement())<EOF>
+	{
+		return s;
+	}
+}
+
+
+Statement multiStatement() :
 {
 	Statement initial = new EmptyStatement();
 	Statement last = initial;
@@ -78,7 +96,6 @@ Statement Start() :
 		last.next = next;
 		last = next;
 	  })*
-	<EOF>
 	{
 		return initial;
 
@@ -92,13 +109,33 @@ Statement statementParse() throws NumberFormatException :
   Statement s = null;
 }
 {
+  (
 	  s = declarationParse() |
 	  s = assignmenParse() |
-	  s = conditionParse()
+	  s = conditionParse() |
+	  s = loopParse()
+	)
 	
 	{ return s; }
 
 }
+
+Loop loopParse() throws NumberFormatException :
+{
+  Expression condition = new DInteger(2);
+  Statement statement = new EmptyStatement();
+}
+{
+	(
+	  <WHILE> <LP> condition=expressionParse() <RP><LGP> 
+	statement=multiStatement() 
+	<RGP>
+	)
+{
+  return new Loop(condition,statement);
+}
+} 
+
 // Condition(Expression condition, Statement thenStatement, Statement elseStatement)
 Condition conditionParse() throws NumberFormatException :
 {
@@ -109,10 +146,10 @@ Condition conditionParse() throws NumberFormatException :
 {
 	
 	(	  <IF> <LP> condition=expressionParse() <RP><LGP> 
-	thenStatement=Start() 
+	thenStatement=multiStatement() 
 	<RGP> [ <ELSE> 
 	<LGP> 
-	elseStatement=Start() 
+	elseStatement=multiStatement() 
 	<RGP>]
 	)
 	
@@ -160,28 +197,75 @@ Identifier identifierParse() throws NumberFormatException :
 /* Literal -> NUMBER*/
 Expression expressionParse() throws NumberFormatException :
 {
-	Token t;
-	Expression e;
+	Expression left;
+	Expression right;
+  }
+{
+  left = parseMultiplicativeExpression()
+  (
+    (< ADD > right = parseMultiplicativeExpression()) { left = new Add(left,right); }
+  | (< SUB > right = parseMultiplicativeExpression()) { left = new Sub(left,right); }
+  )*
+  {
+    return left;
+  }
+}
+
+Expression parseMultiplicativeExpression() throws NumberFormatException :
+{
+	Expression left;
+	Expression right;
+  }
+{
+  left = parseUnaryExpression()
+  (
+    (< MUL > right = parseUnaryExpression()) { left = new Mul(left,right); }
+  | (< DIV > right = parseUnaryExpression()) { left = new Div(left,right); }
+  )*
+  {
+    return left;
+  }
+}
+
+Expression parseUnaryExpression() throws NumberFormatException:
+{
+Expression e;
 }
 {
-	t = <NUMBER>
+	(
+	  	e = literalParse()
+	 	| e = variableParse()
+		| < LP > e = expressionParse() < RP >
+	)
 	{
-	  return new DInteger(2);
+	  return e;
+	}
+}
+
+Expression variableParse() throws NumberFormatException:
+{
+	Identifier id;
+}
+{
+	(
+	  	id = identifierParse()
+	)
+	{
+	  return new Variable(id);
 	}
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+/* Literal -> NUMBER*/
+Literal literalParse() throws NumberFormatException :
+{
+	Token t;
+  }
+{
+	t = <NUMBER>
+	{
+	  return new DInteger(Integer.parseInt(t.image));
+	}
+}
 
 
