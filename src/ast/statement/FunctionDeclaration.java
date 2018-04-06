@@ -9,8 +9,10 @@ public class FunctionDeclaration extends Statement {
 	
 	public FunctionDeclaration(Identifier id, FormalParameter p, Statement s)
 	{
+			this.id = id;
 			this.parameters = p;
 			this.statement = s;
+
 	}
 
 	@Override
@@ -21,6 +23,15 @@ public class FunctionDeclaration extends Statement {
 
 		if (next != null)
 			next.execute(c);
+	}
+	
+	public String toString()
+	{
+		String a = "Function " + id + " declaration";
+		
+		if (next != null)
+			a += next;
+		return a;
 	}
 
 }

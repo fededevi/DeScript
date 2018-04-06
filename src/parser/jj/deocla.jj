@@ -47,6 +47,7 @@ TOKEN : { < VAR : "var" > }
 TOKEN : { < IF : "if" > }
 TOKEN : { < ELSE : "else" > }
 TOKEN : { < WHILE : "while" > }
+TOKEN : { < FUNCTION : "function" > }
 
 TOKEN : { < LP : "(" > }
 TOKEN : { < RP : ")" > }
@@ -113,11 +114,57 @@ Statement statementParse() throws NumberFormatException :
 	  s = declarationParse() |
 	  s = assignmenParse() |
 	  s = conditionParse() |
-	  s = loopParse()
+	  s = loopParse() |
+	  s = functionDeclaration()
 	)
 	
 	{ return s; }
 
+}
+
+FunctionDeclaration functionDeclaration() throws NumberFormatException :
+{
+  Identifier i;
+  FormalParameter fp;
+  Statement s;
+}
+{
+	
+	  <FUNCTION> i = identifierParse() <LP> fp=multiFormalParameter() <RP><LGP> 
+	s=multiStatement() 
+	<RGP>
+	
+{
+  return new FunctionDeclaration(i, fp, s);
+}
+}
+
+FormalParameter multiFormalParameter() throws NumberFormatException :
+{
+  FormalParameter initial = null;
+  FormalParameter last = null;
+  FormalParameter next = null;
+}
+{
+	(next=formalParameterParse()  {
+		if (last != null)
+			last.next = next;
+		last = next;
+	  })*
+	{
+		return initial;
+	}
+}
+
+FormalParameter formalParameterParse() throws NumberFormatException :
+{
+  Identifier i= null;
+}
+{
+	i = identifierParse()
+	{
+		return new FormalParameter( i);
+	}
 }
 
 Loop loopParse() throws NumberFormatException :

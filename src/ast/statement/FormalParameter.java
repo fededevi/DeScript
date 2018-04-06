@@ -1,6 +1,11 @@
 package ast.statement;
 
 public class FormalParameter {
-	Identifier i;
-	FormalParameter next;
+	public Identifier i;
+	public FormalParameter next;
+	
+	public FormalParameter(Identifier i)
+	{
+		this.i = i;
+	}
 }
