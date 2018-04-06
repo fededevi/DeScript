@@ -1,6 +1,10 @@
 package test;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.StringReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import ast.context.Context;
 import ast.expression.DInteger;
@@ -21,7 +25,7 @@ import parser.jj.DeoclaParserTokenManager;
 import parser.jj.ParseException;
 
 public class MainTest {
-	public static void main(String[] args)
+	public static void main(String[] args) throws FileNotFoundException
 	{
 		/*
 		System.out.println("Start");
@@ -47,13 +51,15 @@ public class MainTest {
 		System.out.println(dec1);
 		
 		dec1.execute(new Context());*/
-		
-		DeoclaParser deoclaParser = new DeoclaParser(new StringReader(
+		//String program= new String(Files.readAllBytes(new Path()));
+		DeoclaParser deoclaParser = new DeoclaParser(new FileReader("C:\\Users\\fededevi\\Desktop\\Workspace\\DeOcLa\\src\\test\\program.dol"));
+				
+				/*Files.rea
 				    "var a = 6;"
 				  + "    b = 6;"
 				  + "var c = 6;"
 				  + "    d = 32;"));
-		
+		*/
 		
 		try {
 			Statement stat = deoclaParser.Start();

@@ -1,6 +1,6 @@
 
 options {
-  LOOKAHEAD = 1;
+  LOOKAHEAD = 2;
   CHOICE_AMBIGUITY_CHECK = 2;
   OTHER_AMBIGUITY_CHECK = 1;
   STATIC = false;
@@ -41,9 +41,21 @@ public class DeoclaParser {
 PARSER_END(DeoclaParser)
 
 SKIP :{	" "}
-SKIP :{ "\n" | "\r" | "\r\n" }
+SKIP :{ "\t" | "\n" | "\r" | "\r\n" }
 
 TOKEN : { < VAR : "var" > }
+TOKEN : { < IF : "if" > }
+TOKEN : { < ELSE : "else" > }
+
+TOKEN : { < LP : "(" > }
+TOKEN : { < RP : ")" > }
+TOKEN : { < LGP : "{" > }
+TOKEN : { < RGP : "}" > }
+TOKEN : { < LSP : "[" > }
+TOKEN : { < RSP : "]" > }
+TOKEN : { < LPP : "<" > }
+TOKEN : { < RPP : ">" > }
+
 TOKEN : { < EOL : "\n" | "\r" | "\r\n" > }
 TOKEN : { < PLU : "+" > }
 TOKEN : { < MIN : "-" > }
@@ -74,27 +86,48 @@ Statement Start() :
 }
 
 
-/*Expression -> Literal ( OPERATOR Literal )* EOL */
+/* Statement -> Declaration | Assignment | Condition | Loop */
 Statement statementParse() throws NumberFormatException :
 {
   Statement s = null;
 }
 {
-		(
-	  (s = declarationParse()) |
-	  (s = assignmenParse())
-	)
+	  s = declarationParse() |
+	  s = assignmenParse() |
+	  s = conditionParse()
+	
 	{ return s; }
 
+}
+// Condition(Expression condition, Statement thenStatement, Statement elseStatement)
+Condition conditionParse() throws NumberFormatException :
+{
+  Expression condition = new DInteger(2);
+  Statement thenStatement = new EmptyStatement();
+  Statement elseStatement = new EmptyStatement();
+}
+{
+	
+	(	  <IF> <LP> condition=expressionParse() <RP><LGP> 
+	thenStatement=Start() 
+	<RGP> [ <ELSE> 
+	<LGP> 
+	elseStatement=Start() 
+	<RGP>]
+	)
+	
+{
+  return new Condition(condition,thenStatement,elseStatement);
+}
 }
 
 Assignment assignmenParse() throws NumberFormatException :
 {
   Identifier i;
-  Expression e= new DInteger(2);
+  Expression e;
 }
 {
-	i=identifierParse() "=" expressionParse() ";"	
+	i=identifierParse() "=" e= expressionParse() ";"	
 {
   return new Assignment(i,e);
 }
@@ -103,10 +136,10 @@ Assignment assignmenParse() throws NumberFormatException :
 Declaration declarationParse() throws NumberFormatException :
 {
   Identifier i;
-  Expression e= new DInteger(2);
+  Expression e;
 }
 {
-	<VAR> i=identifierParse() "=" expressionParse() ";"
+	<VAR> i=identifierParse() "=" e=expressionParse() ";"
 {
   return new Declaration(i,e);
 }
@@ -125,12 +158,16 @@ Identifier identifierParse() throws NumberFormatException :
 }
 
 /* Literal -> NUMBER*/
-void expressionParse() throws NumberFormatException :
+Expression expressionParse() throws NumberFormatException :
 {
 	Token t;
+	Expression e;
 }
 {
 	t = <NUMBER>
+	{
+	  return new DInteger(2);
+	}
 }
 
 
