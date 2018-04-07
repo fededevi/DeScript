@@ -13,7 +13,9 @@ public class Return extends Statement {
 	
 	@Override
 	public void execute(Context c) {
-		c.setReturnValue(e.evaluate(c));
+		FunctionCall f = Context.callStack.peek();
+		f.setReturnValue(e.evaluate(c));
+		
 		return;
 		//Do not call next, this is a return :)
 	}

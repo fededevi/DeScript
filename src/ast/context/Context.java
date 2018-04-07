@@ -1,9 +1,12 @@
 package ast.context;
 
+import java.util.Deque;
 import java.util.HashMap;
+import java.util.Stack;
 
 import ast.expression.Expression;
 import ast.expression.literal.Literal;
+import ast.statement.FunctionCall;
 import ast.statement.FunctionDeclaration;
 import ast.statement.Identifier;
 
@@ -11,9 +14,10 @@ public class Context
 {
 	HashMap<Identifier, Literal> data = new HashMap<>();
 	HashMap<Identifier, FunctionDeclaration> functions = new HashMap<>();
+
+	public static Stack<FunctionCall> callStack = new Stack<>();	
 	
 	Context parent;
-	private Expression returnValue = null;
 	
 	public Literal value(Identifier id)
 	{
@@ -85,11 +89,4 @@ public class Context
 		return parent.getFunction(identifier);
 	}
 
-	public Expression returnValue() {
-		return returnValue ;
-	}
-
-	public void setReturnValue(Expression evaluate) {
-		returnValue = evaluate;
-	}
 }

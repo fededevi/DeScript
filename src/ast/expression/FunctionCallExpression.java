@@ -4,12 +4,14 @@ import ast.context.Context;
 import ast.expression.literal.Literal;
 import ast.statement.ActualParameter;
 import ast.statement.FormalParameter;
+import ast.statement.FunctionCall;
 import ast.statement.FunctionDeclaration;
 import ast.statement.Identifier;
 
-public class FunctionCallExpression extends Expression {
+public class FunctionCallExpression extends Expression implements FunctionCall {
 	public  Identifier identifier;
 	public  ActualParameter parameters;
+	public  Expression returnValue;
 	
 	public FunctionCallExpression(Identifier i, ActualParameter p)
 	{
@@ -48,14 +50,22 @@ public class FunctionCallExpression extends Expression {
 		}
 		
 		//Finally execute function with the proper context
+		Context.callStack.push(this);
 		fc.statement.execute(functionContext);
+		Context.callStack.pop();
 		
-		return functionContext.returnValue();
+		return returnValue;
 	}
 	
 	public String toString()
 	{
 		return identifier + "(" + parameters +")";
 		
+	}
+
+	@Override
+	public void setReturnValue(Expression l) {
+		// TODO Auto-generated method stub
+		returnValue = l;
 	}
 }

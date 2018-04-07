@@ -1,53 +1,12 @@
-function multest(a,b){return a * b;}
-function addTest(a,b){return a + b;}
-function testDiv(a,b){return a / b;}
-function testMod(a,b){return a % b;}
-function testAnd(a,b){return a && b;}
-function testOr(a,b){return a || b;}
-function testLt(a,b){return a < b;}
-function testLe(a,b){return a <= b;}
-function testGt(a,b){return a > b;}
-function testGe(a,b){return a >= b;}
-function testNot(a){	return a;}
-
-function compare(a,b)
-{
-	if (a == b)	{
-		println("PASS");
-	} else {
-		println("FAIL");
-	}
+function fibonacci(n) {
+   if (n < 2){
+     return 1;
+   }else{
+     return fibonacci(n-2) + fibonacci(n-1);
+   }
 }
 
-compare(addTest(3,4),7);
-compare(testDiv(6,3),2);
-compare(testMod(5,2),1);
+var a = fibonacci(32);
+println("Res");
+println(a);
 
-compare(testAnd(true,false),false);
-compare(testAnd(true,true),true);
-
-compare(testOr(true,false),true);
-compare(testOr(true,true),true);
-compare(testOr(false,false),false);
-
-compare(testLt(3,4),true);
-
-compare(testLe(3,3),true);
-
-compare(testGt(5,6),false);
-compare(testGt(5,5),false);
-compare(testGt(5,4),true);
-
-compare(testGe(5,6),false);
-compare(testGe(5,5),true);
-compare(testGe(5,4),true);
-
-compare(testNot(true),false);
-compare(testNot(false),true);
-
-
-var a = 67 +5;
-if (a > 23)
-{
-	println(a);
-}
