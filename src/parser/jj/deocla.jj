@@ -1,0 +1,534 @@
+
+options {
+  LOOKAHEAD = 2;
+  CHOICE_AMBIGUITY_CHECK = 2;
+  OTHER_AMBIGUITY_CHECK = 1;
+  STATIC = false;
+  DEBUG_PARSER = true;
+  DEBUG_LOOKAHEAD = false;
+  DEBUG_TOKEN_MANAGER = false;
+  ERROR_REPORTING = true;
+  JAVA_UNICODE_ESCAPE = false;
+  UNICODE_INPUT = false;
+  IGNORE_CASE = false;
+  USER_TOKEN_MANAGER = false;
+  USER_CHAR_STREAM = false;
+  BUILD_PARSER = true;
+  BUILD_TOKEN_MANAGER = true;
+  SANITY_CHECK = true;
+  FORCE_LA_CHECK = true;
+}
+
+PARSER_BEGIN(DeoclaParser)
+
+package parser.jj;
+
+import ast.expression.*;
+import ast.expression.math.*;
+import ast.expression.bool.*;
+import ast.expression.literal.*;
+import ast.statement.*;
+
+public class DeoclaParser {
+
+	public static void main(String args[]) throws ParseException, TokenMgrError, NumberFormatException {
+		DeoclaParser parser = new DeoclaParser(System.in);
+		//parser.Input();
+	}
+	
+	Statement lastStatement;
+	
+}
+
+PARSER_END(DeoclaParser)
+
+SKIP :{	" "}
+SKIP :{ "\t" | "\n" | "\r" | "\r\n" }
+
+TOKEN : { < RETURN : "return" > }
+TOKEN : { < VAR : "var" > }
+TOKEN : { < IF : "if" > }
+TOKEN : { < ELSE : "else" > }
+TOKEN : { < WHILE : "while" > }
+TOKEN : { < FUNCTION : "function" > }
+
+TOKEN : { < TRUE : "true" > }
+TOKEN : { < FALSE : "false" > }
+
+TOKEN : { < LP : "(" > }
+TOKEN : { < RP : ")" > }
+TOKEN : { < LGP : "{" > }
+TOKEN : { < RGP : "}" > }
+TOKEN : { < LSP : "[" > }
+TOKEN : { < RSP : "]" > }
+
+//TOKEN : { < EOL : "\n" | "\r" | "\r\n" > }
+
+TOKEN : { < ADD : "+" > }
+TOKEN : { < SUB : "-" > }
+TOKEN : { < MUL : "*" > }
+TOKEN : { < DIV : "/" > }
+TOKEN : { < MOD : "%" > }
+
+TOKEN : { < LT : "<" > }
+TOKEN : { < LE : "<=" > }
+TOKEN : { < GE : ">=" > }
+TOKEN : { < GT : ">" > }
+TOKEN : { < EQ : "==" > }
+TOKEN : { < NE : "!=" > }
+
+TOKEN : { < AND : "&&" > }
+TOKEN : { < OR : "||" > }
+
+TOKEN : { < NOT : "!" > }
+
+TOKEN : { < NUMBER : <DIG> | <DIG> "." <DIG> | <DIG> "." | "." <DIG> > }
+TOKEN : { < #DIG : (["0"-"9"])+ > }
+TOKEN : { < #LET : (["a"-"z", "A"-"Z"])+> }
+TOKEN : { < OPERATOR : <ADD> | <SUB> > }
+TOKEN : { < NAME : <LET> > }
+
+
+/*Start -> (Expression EOL) * EOF*/
+
+Statement Start() :
+{
+	Statement s = new EmptyStatement();
+}
+{
+	(s=multiStatement())<EOF>
+	{
+		return s;
+	}
+}
+
+
+Statement multiStatement() :
+{
+	Statement initial = new EmptyStatement();
+	Statement last = initial;
+	Statement next = null;
+}
+{
+	(next=statementParse() {
+		last.next = next;
+		last = next;
+	  })*
+	{
+		return initial;
+
+	}
+}
+
+
+/* Statement -> Declaration | Assignment | Condition | Loop */
+Statement statementParse() throws NumberFormatException :
+{
+  Statement s = null;
+}
+{
+  (
+    LOOKAHEAD(2)
+	  s = declarationParse() |
+	  s = assignmenParse() |
+	  s = conditionParse() |
+	  s = loopParse() |
+	  s = functionDeclarationParse() |
+	  s = returnParse() |
+	  s = functionCallStatementParse()
+	)
+	
+	{ return s; }
+
+}
+
+FunctionCallStatement functionCallStatementParse() throws NumberFormatException:
+{
+	ActualParameter ap = null;
+	Identifier id;
+}
+{
+	(
+	  	id = identifierParse() <LP> ap = actualParameterParseMulti() <RP> ";"
+	)
+	{
+	  return new FunctionCallStatement(id,ap);
+	}
+}
+
+Return returnParse() throws NumberFormatException :
+{
+  Expression e;
+  Return r;
+}
+{
+	  <RETURN> e = expressionParse() ";"
+{
+  return new Return(e);
+}
+}
+
+FunctionDeclaration functionDeclarationParse() throws NumberFormatException :
+{
+  Identifier i;
+  FormalParameter fp;
+  Statement s;
+}
+{
+	
+	  <FUNCTION> i = identifierParse() <LP> fp=multiFormalParameter() <RP><LGP> 
+	s=multiStatement() 
+	<RGP>
+	
+{
+  return new FunctionDeclaration(i, fp, s);
+}
+}
+
+FormalParameter multiFormalParameter() throws NumberFormatException :
+{
+  FormalParameter initial = null;
+  FormalParameter last = null;
+  FormalParameter next = null;
+}
+{
+	  	  [ last = formalParameterParse() ("," next = formalParameterParse())* {
+				if (initial == null)
+					initial = last;
+				last.next = next;
+				last = next;
+				
+	  	    }]
+	{
+		return initial;
+	}
+}
+
+FormalParameter formalParameterParse() throws NumberFormatException :
+{
+  Identifier i= null;
+}
+{
+	i = identifierParse()
+	{
+		return new FormalParameter( i);
+	}
+}
+
+Loop loopParse() throws NumberFormatException :
+{
+  Expression condition = null;
+  Statement statement = new EmptyStatement();
+}
+{
+	(
+	  <WHILE> <LP> condition=expressionParse() <RP><LGP> 
+	statement=multiStatement() 
+	<RGP>
+	)
+{
+  return new Loop(condition,statement);
+}
+} 
+
+// Condition(Expression condition, Statement thenStatement, Statement elseStatement)
+Condition conditionParse() throws NumberFormatException :
+{
+  Expression condition = null;
+  Statement thenStatement = new EmptyStatement();
+  Statement elseStatement = new EmptyStatement();
+}
+{
+	
+	(	  <IF> <LP> condition=expressionParse() <RP><LGP> 
+	thenStatement=multiStatement() 
+	<RGP> [ <ELSE> 
+	<LGP> 
+	elseStatement=multiStatement() 
+	<RGP>]
+	)
+	
+{
+  return new Condition(condition,thenStatement,elseStatement);
+}
+}
+
+Assignment assignmenParse() throws NumberFormatException :
+{
+  Identifier i;
+  Expression e;
+}
+{
+	i=identifierParse() "=" e= expressionParse() ";"	
+{
+  return new Assignment(i,e);
+}
+}
+
+Declaration declarationParse() throws NumberFormatException :
+{
+  Identifier i;
+  Expression e;
+}
+{
+	<VAR> i=identifierParse() "=" e=expressionParse() ";"
+{
+  return new Declaration(i,e);
+}
+}
+
+Identifier identifierParse() throws NumberFormatException :
+{
+  	Token t;
+}
+{
+	t = <NAME>
+	{
+	  
+	return new Identifier(t.image);
+}
+}
+
+Expression expressionParse() throws NumberFormatException :
+{
+	Expression e;
+  }
+{
+  ( 
+   e = additiveExpressionParse()
+    
+  )  
+  {
+    return e;
+  }
+}
+
+/* Literal -> NUMBER*/
+Expression additiveExpressionParse() throws NumberFormatException :
+{
+	Expression left;
+	Expression right;
+  }
+{
+  left = multiplicativeExpressionParse()
+  (
+    (< ADD > right = multiplicativeExpressionParse()) { left = new Add(left,right); }
+  | (< SUB > right = multiplicativeExpressionParse()) { left = new Sub(left,right); }
+  )*
+  {
+    return left;
+  }
+}
+
+
+Expression multiplicativeExpressionParse() throws NumberFormatException :
+{
+	Expression left;
+	Expression right;
+  }
+{
+  left = comparativeExpressionParseOr()
+  (
+    (< MUL > right = comparativeExpressionParseOr()) { left = new Mul(left,right); }
+  | (< DIV > right = comparativeExpressionParseOr()) { left = new Div(left,right); }
+  | (< MOD > right = comparativeExpressionParseOr()) { left = new Mod(left,right); }
+  )*
+  {
+    return left;
+  }
+}
+
+Expression comparativeExpressionParseOr() throws NumberFormatException :
+{
+	Expression left;
+	Expression right;
+  }
+{
+  left = comparativeExpressionParseAnd()
+  (
+    (< OR > right = comparativeExpressionParseAnd()) { left = new Or(left,right); }
+  )*
+  {
+    return left;
+  }
+}
+
+Expression comparativeExpressionParseAnd() throws NumberFormatException :
+{
+	Expression left;
+	Expression right;
+  }
+{
+  left = comparativeExpressionParseComparisons()
+  (
+    (< AND > right = comparativeExpressionParseComparisons()) { left = new And(left,right); }
+  )*
+  {
+    return left;
+  }
+}
+
+Expression comparativeExpressionParseComparisons() throws NumberFormatException :
+{
+	Expression left;
+	Expression right;
+  }
+{
+  left = comparativeExpressionParseNot()
+  (
+    (< LT > right = comparativeExpressionParseNot()) { left = new LessThan(left,right); }
+  | (< LE > right = comparativeExpressionParseNot()) { left = new LessEqual(left,right); }
+  | (< GE > right = comparativeExpressionParseNot()) { left = new GreaterEqual(left,right); }
+  | (< GT > right = comparativeExpressionParseNot()) { left = new GreaterThan(left,right); }
+  | (< EQ > right = comparativeExpressionParseNot()) { left = new Equal(left,right); }
+  | (< NE > right = comparativeExpressionParseNot()) { left = new NotEqual(left,right); }
+  )*
+  {
+    return left;
+  }
+}
+
+Expression comparativeExpressionParseNot() throws NumberFormatException :
+{
+	Expression left;
+  }
+{
+  left = unaryExpressionParse()
+  (
+    < NOT > left = unaryExpressionParse() { left = new Not(left); }
+  	|       left = unaryExpressionParse() 
+  )*
+  {
+    return left;
+  }
+}
+
+Expression unaryExpressionParse() throws NumberFormatException:
+{
+Expression e;
+}
+{
+	(
+	  	LOOKAHEAD(2)
+	  	e = literalParse()
+		| e = functionCallExpressionParse()
+	 	| e = variableParse()
+		| < LP > e = expressionParse() < RP >
+	)
+	{
+	  return e;
+	}
+}
+
+FunctionCallExpression functionCallExpressionParse() throws NumberFormatException:
+{
+	ActualParameter ap = null;
+	Identifier id;
+}
+{
+	(
+	  	id = identifierParse() <LP> ap = actualParameterParseMulti() <RP>
+	)
+	{
+	  return new FunctionCallExpression(id,ap);
+	}
+}
+
+ActualParameter actualParameterParseMulti() throws NumberFormatException:
+{
+  	ActualParameter initial = null;
+	ActualParameter last = null;
+	ActualParameter next = null;
+}
+{
+	(	  	  [ last = actualParameterParse() ("," next = actualParameterParse())* {
+				if (initial == null)
+					initial = last;
+				last.next = next;
+				last = next;
+				
+	  	    }]
+	)
+	{
+	  return initial;
+	}
+}
+
+ActualParameter actualParameterParse() throws NumberFormatException:
+{
+  	Expression e;
+}
+{
+	(
+	  	  e = expressionParse() 
+	)
+	{
+	  return new ActualParameter(e);
+	}
+}
+
+Expression variableParse() throws NumberFormatException:
+{
+	Identifier id;
+}
+{
+	(
+	  	id = identifierParse()
+	)
+	{
+	  return new Variable(id);
+	}
+}
+
+
+/* Literal -> NUMBER*/
+Literal literalParse() throws NumberFormatException :
+{
+	Literal l;
+}
+{
+  	(    		l = integerLiteralParse()
+		| 	l = booleanLiteralParse()
+		| 	l = stringLiteralParse()
+		| 	l = floatingPointLiteralParse()
+	)
+	{
+		return l; 
+	}
+}
+
+
+IntegerLiteral integerLiteralParse() throws NumberFormatException :
+{
+	Token t;
+}
+{
+	t = <NUMBER> {  return new IntegerLiteral(Integer.parseInt(t.image)); }
+}
+
+BooleanLiteral booleanLiteralParse() throws NumberFormatException :
+{
+	Token t;
+}
+{
+	t = <TRUE> {  return new BooleanLiteral(true); } |
+	t = <FALSE> {  return new BooleanLiteral(false); }
+}
+
+StringLiteral stringLiteralParse() throws NumberFormatException :
+{
+	Token t;
+}
+{
+	 "\""t =<NAME>"\"" {  return new StringLiteral(t.image); }
+}
+
+FloatingPointLiteral floatingPointLiteralParse() throws NumberFormatException :
+{
+	Token t;
+}
+{
+	t = <NUMBER>"."<NUMBER> {  return new FloatingPointLiteral( Double.parseDouble(t.image)); } 
+}
+
+
