@@ -4,12 +4,14 @@ import ast.context.Context;
 import ast.expression.literal.Literal;
 import ast.statement.ActualParameter;
 import ast.statement.FormalParameter;
+import ast.statement.FunctionCall;
 import ast.statement.FunctionDeclaration;
 import ast.statement.Identifier;
 
-public class FunctionCallExpression extends Expression {
+public class FunctionCallExpression extends Expression implements FunctionCall {
 	public  Identifier identifier;
 	public  ActualParameter parameters;
+	public  Expression returnValue;
 	
 	public FunctionCallExpression(Identifier i, ActualParameter p)
 	{
@@ -21,6 +23,16 @@ public class FunctionCallExpression extends Expression {
 	public Expression evaluate(Context c) {
 		//Get function declaration from implementation from this context
 		FunctionDeclaration fc = c.getFunction(identifier);
+		
+		if (fc == null)
+		{
+			try {
+				throw new Exception ("Function Declaration not found: " + identifier);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 		//Create new empty context for execution of the function statement
 		Context functionContext = new Context(c);
@@ -38,14 +50,22 @@ public class FunctionCallExpression extends Expression {
 		}
 		
 		//Finally execute function with the proper context
+		Context.callStack.push(this);
 		fc.statement.execute(functionContext);
+		Context.callStack.pop();
 		
-		return functionContext.returnValue();
+		return returnValue;
 	}
 	
 	public String toString()
 	{
-		return identifier + "(" + parameters.e +")\n";
+		return identifier + "(" + parameters +")";
 		
+	}
+
+	@Override
+	public void setReturnValue(Expression l) {
+		// TODO Auto-generated method stub
+		returnValue = l;
 	}
 }

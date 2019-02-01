@@ -27,7 +27,7 @@ public class FunctionDeclaration extends Statement {
 	
 	public String toString()
 	{
-		String a = "function " + id + "(" + parameters.i +")\n{\n" + statement + "\n}\n";
+		String a = "function " + id + "(" + parameters +")\n{\n" + statement + "\n}\n";
 		
 		if (next != null)
 			a += next;
