@@ -12,7 +12,7 @@ public class MainTest {
 	public static void main(String[] args) throws Exception
 	{		
 		runFile("\\bin\\test\\test.dol");
-		runFile("\\bin\\test\\program.dol");
+		//runFile("\\bin\\test\\program.dol");
 	}
 	
 	public static void runFile(String path) throws FileNotFoundException, ParseException
@@ -22,8 +22,7 @@ public class MainTest {
 		DeoclaParser deoclaParser;
 		deoclaParser = new DeoclaParser(new FileReader(filePath+path));
 		Statement stat = deoclaParser.Start();
-		//System.out.println(stat);
+		System.out.println(stat);
 		stat.execute(new SystemContext());
-
 	};
 }

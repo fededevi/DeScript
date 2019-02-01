@@ -411,7 +411,7 @@ Expression e;
 }
 {
 	(
-	  	LOOKAHEAD(2)
+	  	LOOKAHEAD(1)
 	  	e = literalParse()
 		| e = functionCallExpressionParse()
 	 	| e = variableParse()
