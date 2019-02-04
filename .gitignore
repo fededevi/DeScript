@@ -31,3 +31,9 @@ src/parser/jj/DeoclaParserTokenManager\.java
 src/parser/jj/DeoclaParserConstants\.java
 
 src/parser/jj/DeoclaParser\.java
+
+\out/
+
+deocla\.iml
+
+\.idea/

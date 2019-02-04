@@ -1,8 +1,8 @@
 package ast.statement;
+
 import ast.context.Context;
 import ast.expression.Expression;
 import ast.expression.literal.BooleanLiteral;
-import ast.expression.literal.IntegerLiteral;
 
 public class Condition extends Statement {
 	public Expression condition;
