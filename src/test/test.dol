@@ -9,10 +9,7 @@ function testLt(a,b){return a < b;}
 function testLe(a,b){return a <= b;}
 function testGt(a,b){return a > b;}
 function testGe(a,b){return a >= b;}
-function testNot(a){  
-var b = true;
-var c = !b;
-return a; }
+function testNot(a){	return !a;}
 
 
 function compare(a,b)

@@ -242,7 +242,8 @@ Condition conditionParse() throws NumberFormatException :
 }
 {
 	
-	(	  <IF> <LP> condition=expressionParse() <RP><LGP> 
+	(
+	  <IF> <LP> condition=expressionParse() <RP><LGP> 
 	thenStatement=multiStatement() 
 	<RGP> [ <ELSE> 
 	<LGP> 
@@ -261,7 +262,7 @@ Assignment assignmenParse() throws NumberFormatException :
   Expression e;
 }
 {
-	i=identifierParse() "=" e= expressionParse() ";"	
+	i=identifierParse() "=" e= expressionParse() ";"
 {
   return new Assignment(i,e);
 }
@@ -392,14 +393,13 @@ Expression comparativeExpressionParseComparisons() throws NumberFormatException 
 
 Expression comparativeExpressionParseNot() throws NumberFormatException :
 {
-	Expression left;
+	Expression left = null;
   }
 {
-  left = unaryExpressionParse()
   (
     < NOT > left = unaryExpressionParse() { left = new Not(left); }
   	|       left = unaryExpressionParse() 
-  )*
+  )
   {
     return left;
   }
@@ -411,7 +411,6 @@ Expression e;
 }
 {
 	(
-	  	LOOKAHEAD(1)
 	  	e = literalParse()
 		| e = functionCallExpressionParse()
 	 	| e = variableParse()
@@ -443,7 +442,8 @@ ActualParameter actualParameterParseMulti() throws NumberFormatException:
 	ActualParameter next = null;
 }
 {
-	(	  	  [ last = actualParameterParse() ("," next = actualParameterParse())* {
+	(
+	  	  [ last = actualParameterParse() ("," next = actualParameterParse())* {
 				if (initial == null)
 					initial = last;
 				last.next = next;
@@ -489,7 +489,8 @@ Literal literalParse() throws NumberFormatException :
 	Literal l;
 }
 {
-  	(    		l = floatingPointLiteralParse()
+  	(
+    		l = floatingPointLiteralParse()
 		| 	l = booleanLiteralParse()
 		| 	l = stringLiteralParse()
 		| 	l = integerLiteralParse()

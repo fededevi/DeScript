@@ -11,7 +11,7 @@ import parser.jj.ParseException;
 public class MainTest {
 	public static void main(String[] args) throws Exception
 	{		
-		runFile("\\bin\\test\\test.dol");
+		runFile("\\src\\test\\test.dol");
 		//runFile("\\bin\\test\\program.dol");
 	}
 	
