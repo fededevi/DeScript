@@ -1,12 +1,12 @@
 package ast.context;
 
-import java.util.HashMap;
-import java.util.Stack;
-
 import ast.expression.literal.Literal;
 import ast.statement.FunctionCall;
 import ast.statement.FunctionDeclaration;
 import ast.statement.Identifier;
+
+import java.util.HashMap;
+import java.util.Stack;
 
 public class Context
 {

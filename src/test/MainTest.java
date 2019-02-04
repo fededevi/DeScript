@@ -1,12 +1,13 @@
 package test;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import ast.context.SystemContext;
 import ast.statement.Statement;
 import parser.jj.DeoclaParser;
 import parser.jj.ParseException;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 
 public class MainTest {
 	public static void main(String[] args) throws Exception

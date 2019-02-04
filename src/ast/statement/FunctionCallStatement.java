@@ -3,8 +3,6 @@ package ast.statement;
 import ast.context.Context;
 import ast.expression.Expression;
 import ast.expression.FunctionCallExpression;
-import ast.statement.ActualParameter;
-import ast.statement.Identifier;
 
 public class FunctionCallStatement extends Statement implements FunctionCall {
 	private FunctionCallExpression f;
