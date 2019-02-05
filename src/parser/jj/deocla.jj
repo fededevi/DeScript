@@ -274,10 +274,9 @@ Declaration declarationParse() throws NumberFormatException :
   Expression e;
 }
 {
-	<VAR> i=identifierParse() "=" e=expressionParse() ";"
-{
-  return new Declaration(i,e);
-}
+	<VAR> i=identifierParse()
+	  ( "=" e=expressionParse() ";" ) {return new Declaration(i,e);}
+	| ( "[];") {return new ArrayDeclaration(i)}
 }
 
 Identifier identifierParse() throws NumberFormatException :

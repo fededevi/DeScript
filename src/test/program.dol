@@ -10,3 +10,5 @@ var a = fibonacci(32);
 println("Res");
 println(a);
 
+var array[];
+
