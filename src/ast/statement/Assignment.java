@@ -14,6 +14,7 @@ public class Assignment extends Statement {
 	}
 	
 	public void execute(Context c) {
+
 		Expression e = expression.evaluate(c);
 		c.assign(identifier, (Literal)e );
 		
