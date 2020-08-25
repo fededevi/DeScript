@@ -1,5 +1,3 @@
-v00.00.01
-
 # DeOcLa (DOL) 
 #### a Java / javacc -very basic- interpreted language
 
