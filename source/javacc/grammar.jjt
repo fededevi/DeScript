@@ -24,11 +24,11 @@ options {
   OUTPUT_DIRECTORY="generated";
   
   //DEBUG STUFF
-  SANITY_CHECK = true;
-  FORCE_LA_CHECK = true;
-  DEBUG_PARSER = true;
-  DEBUG_LOOKAHEAD = true;
-  DEBUG_TOKEN_MANAGER = true;
+  //SANITY_CHECK = true;
+  //FORCE_LA_CHECK = true;
+  //DEBUG_PARSER = true;
+  //DEBUG_LOOKAHEAD = true;
+  //DEBUG_TOKEN_MANAGER = true;
 }
 
 PARSER_BEGIN(Parser)
@@ -55,6 +55,8 @@ TOKEN : { < RGP : "}" > }
 TOKEN : { < LSP : "[" > }
 TOKEN : { < RSP : "]" > }
 
+TOKEN : { < SMCL : ";" > }
+
 //TOKEN : { < EOL : "\n" | "\r" | "\r\n" > }
 
 TOKEN : { < ADD : "+" > }
@@ -79,14 +81,13 @@ TOKEN : { < INTEGER : <DIG> > }
 TOKEN : { < FLOAT : <DIG> | <DIG> "." <DIG> | <DIG> "." | "." <DIG> > }
 
 TOKEN : { < #DIG : (["0"-"9"])+ > }
-TOKEN : { < #LET : (["a"-"z", "A"-"Z"])+> }
+TOKEN : { < #LET : (["a"-"z", "A"-"Z"])> }
 TOKEN : { < OPERATOR : <ADD> | <SUB> > }
-TOKEN : { < NAME : <LET> > }
+TOKEN : { < NAME : <LET>(<LET> | <DIG>)+ > }
 
-ASTStart* parseProgram() : {}
+ASTProgram * parseProgram() #Program : {}
 {
-  multiStatement() ";"
-  { return jjtThis; }
+  (multiStatement()<SMCL>) { return jjtThis; }
 }
 
 
@@ -95,7 +96,7 @@ void multiStatement() : {}
 	(statementParse())*
 }
 
-Statement* statementParse() throws NumberFormatException : {}
+ASTStatement *  statementParse() #Statement  : {}
 {
-  (<LP><NAME><RP>) {}
+  (<LP><NAME><RP>) { return jjtThis; }
 }

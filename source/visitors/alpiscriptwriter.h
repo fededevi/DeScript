@@ -8,7 +8,10 @@ namespace AlpiScript {
 class AlpiScriptVisitor: public ParserVisitor {
 
 public:
-    void* visit(const SimpleNode *node, void * data);
+    virtual void * visit(const SimpleNode *node, void *data) override;
+    virtual void * visit(const ASTProgram *node, void *data) override;
+    virtual void * visit(const ASTStatement *node, void *data) override;
+
 };
 
 }

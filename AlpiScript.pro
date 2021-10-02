@@ -20,6 +20,8 @@ DISTFILES += \
 HEADERS += \
     source/ast/statement/astnode.h \
     source/ast/statement/statement.h \
+    source/javacc/generated/ASTProgram.h \
+    source/javacc/generated/ASTStatement.h \
     source/visitors/alpiscriptwriter.h \
     source/javacc/generated/CharStream.h \
     source/javacc/generated/ErrorHandler.h \
@@ -41,6 +43,8 @@ HEADERS += \
 SOURCES += \
         source/ast/statement/astnode.cpp \
         source/ast/statement/statement.cpp \
+    source/javacc/generated/ASTProgram.cc \
+    source/javacc/generated/ASTStatement.cc \
         source/main.cpp \
     source/visitors/alpiscriptwriter.cpp \
     source/javacc/generated/CharStream.cc \
