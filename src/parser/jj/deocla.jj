@@ -3,6 +3,7 @@ options {
   LOOKAHEAD = 2;
   CHOICE_AMBIGUITY_CHECK = 2;
   OTHER_AMBIGUITY_CHECK = 1;
+  OUTPUT_LANGUAGE = "c++";
   STATIC = false;
   DEBUG_PARSER = false;
   DEBUG_LOOKAHEAD = false;
