@@ -1,1 +1,0 @@
-java -cp javacc.jar javacc deocla.jj
