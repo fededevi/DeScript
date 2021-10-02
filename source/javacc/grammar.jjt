@@ -55,10 +55,6 @@ TOKEN : { < RGP : "}" > }
 TOKEN : { < LSP : "[" > }
 TOKEN : { < RSP : "]" > }
 
-TOKEN : { < SMCL : ";" > }
-
-//TOKEN : { < EOL : "\n" | "\r" | "\r\n" > }
-
 TOKEN : { < ADD : "+" > }
 TOKEN : { < SUB : "-" > }
 TOKEN : { < MUL : "*" > }
@@ -77,26 +73,76 @@ TOKEN : { < OR : "||" > }
 
 TOKEN : { < NOT : "!" > }
 
-TOKEN : { < INTEGER : <DIG> > }
-TOKEN : { < FLOAT : <DIG> | <DIG> "." <DIG> | <DIG> "." | "." <DIG> > }
+TOKEN : { < INTEGER : (["0"-"9"])+ > }
+TOKEN : { < FLOAT : <INTEGER> "." <INTEGER> | <INTEGER> "." | "." <INTEGER> > }
 
-TOKEN : { < #DIG : (["0"-"9"])+ > }
-TOKEN : { < #LET : (["a"-"z", "A"-"Z"])> }
-TOKEN : { < OPERATOR : <ADD> | <SUB> > }
-TOKEN : { < NAME : <LET>(<LET> | <DIG>)+ > }
+TOKEN : { < LETTER: ["_","a"-"z","A"-"Z"] >}
+TOKEN : { < IDENTIFIER : <LETTER>( <LETTER> | <INTEGER> )+ > }
 
-ASTProgram * parseProgram() #Program : {}
+ASTExpression* parse() #Expression : {}
 {
-  (multiStatement()<SMCL>) { return jjtThis; }
+  expression()
+  { return jjtThis; }
 }
 
-
-void multiStatement() : {}
+void expression() : {}
 {
-	(statementParse())*
+  additiveExpression()
 }
 
-ASTStatement *  statementParse() #Statement  : {}
+void additiveExpression() : {}
 {
-  (<LP><NAME><RP>) { return jjtThis; }
+  (
+	subtractiveExpression() ( "+" subtractiveExpression() )* 
+  ) #Add(>1)
+}
+
+void subtractiveExpression() : {}
+{
+  (
+	moduloExpression() ( "-" moduloExpression() )* 
+  ) #Sub(>1)
+}
+
+void moduloExpression() : {}
+{
+  (
+    multExpression() ( ( "%" ) multExpression() )*
+  ) #Module(>1)
+}
+
+void multExpression() : {}
+{
+  (
+    divExpression() ( ( "*" ) divExpression() )*
+  ) #Mult(>1)
+}
+
+void divExpression() : {}
+{
+  (
+    unaryExpression() ( ( "/" ) unaryExpression() )*
+  ) #Division(>1)
+}
+
+void unaryExpression() : {}
+{
+  "(" expression() ")" | identifier() | integer()
+}
+
+void identifier() #Identifier: {Token * t;}
+
+{
+  t=<IDENTIFIER>
+  {
+    jjtThis->jjtSetValue((void *)t->image.c_str());
+  }
+}
+
+void integer() #Integer : {Token * t;}
+{
+  t=<INTEGER>
+  {
+    jjtThis->jjtSetValue((void *)t->image.c_str());
+  }
 }

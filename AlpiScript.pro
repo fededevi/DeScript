@@ -19,9 +19,16 @@ DISTFILES += \
 
 HEADERS += \
     source/ast/statement/astnode.h \
+    source/ast/statement/expression.h \
     source/ast/statement/statement.h \
-    source/javacc/generated/ASTProgram.h \
-    source/javacc/generated/ASTStatement.h \
+    source/javacc/generated/ASTAdd.h \
+    source/javacc/generated/ASTDivision.h \
+    source/javacc/generated/ASTExpression.h \
+    source/javacc/generated/ASTIdentifier.h \
+    source/javacc/generated/ASTInteger.h \
+    source/javacc/generated/ASTModule.h \
+    source/javacc/generated/ASTMult.h \
+    source/javacc/generated/ASTSub.h \
     source/visitors/alpiscriptwriter.h \
     source/javacc/generated/CharStream.h \
     source/javacc/generated/ErrorHandler.h \
@@ -42,9 +49,16 @@ HEADERS += \
 
 SOURCES += \
         source/ast/statement/astnode.cpp \
+    source/ast/statement/expression.cpp \
         source/ast/statement/statement.cpp \
-    source/javacc/generated/ASTProgram.cc \
-    source/javacc/generated/ASTStatement.cc \
+    source/javacc/generated/ASTAdd.cc \
+    source/javacc/generated/ASTDivision.cc \
+    source/javacc/generated/ASTExpression.cc \
+    source/javacc/generated/ASTIdentifier.cc \
+    source/javacc/generated/ASTInteger.cc \
+    source/javacc/generated/ASTModule.cc \
+    source/javacc/generated/ASTMult.cc \
+    source/javacc/generated/ASTSub.cc \
         source/main.cpp \
     source/visitors/alpiscriptwriter.cpp \
     source/javacc/generated/CharStream.cc \
