@@ -36,12 +36,6 @@ void * AstConverter::visit(const ASTExpression *node, void *)
     return node->jjtGetChild(0)->jjtAccept(this, null);
 }
 
-void * AstConverter::visit(const ASTInteger *node, void *)
-{
-    char * c = (char *)(node->jjtGetValue());
-    return new Int(std::stoi(c));
-}
-
 void *AstConverter::visit(const ASTSub * node, void *)
 {
     MultiExpression * e = new Sub();
@@ -63,17 +57,6 @@ void *AstConverter::visit(const ASTDivision * node, void *)
     return e;
 }
 
-void *AstConverter::visit(const ASTFloat *node, void *)
-{
-    char * c = (char *)(node->jjtGetValue());
-    return new Float(std::stod(c));
-}
-
-void *AstConverter::visit(const ASTIdentifier *node, void *)
-{
-    return new Id((char *)(node->jjtGetValue()));
-}
-
 void *AstConverter::visit(const ASTMult * node, void *)
 {
     MultiExpression * e = new Mul();
@@ -86,6 +69,23 @@ void *AstConverter::visit(const ASTAdd *node, void *)
     MultiExpression * e = new Add();
     fillOperands(e, node);
     return e;
+}
+
+void * AstConverter::visit(const ASTInteger * node, void *)
+{
+    char * c = (char *)(node->jjtGetValue());
+    return new Int(std::stoi(c));
+}
+
+void *AstConverter::visit(const ASTFloat * node, void *)
+{
+    char * c = (char *)(node->jjtGetValue());
+    return new Float(std::stod(c));
+}
+
+void *AstConverter::visit(const ASTIdentifier * node, void *)
+{
+    return new Id((char *)(node->jjtGetValue()));
 }
 
 void AstConverter::fillOperands(MultiExpression * me, const SimpleNode * node)

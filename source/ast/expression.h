@@ -9,7 +9,6 @@
     virtual void* accept(const ExpressionVisitor * v, void * d) const { return v->visit(this, d);}
 
 class ExpressionVisitor;
-class Number;
 class Expression {
 public:
     virtual void* accept(const ExpressionVisitor * v, void * d) const = 0;
@@ -18,10 +17,10 @@ public:
     static Expression * parse(const std::string &);
     Expression * evaluate() const;
     std::string toString() const;
-    bool isNumber() { return (Number *) this;}
-    bool isId() { return (Id *) this;}
-    bool isInt() { return (Int *) this;}
-    bool isFloat() { return (Float *) this;}
+    bool isNumber();
+    bool isId();
+    bool isInt();
+    bool isFloat();
 };
 
 class MultiExpression : public Expression {

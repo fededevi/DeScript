@@ -131,8 +131,12 @@ void divExpression() : {}
 
 void unaryExpression() : {}
 {
-  "(" expression() ")" | identifier() | parseInteger() | parseFloat()
+  "(" expression() ")" | parseFloat() | parseInteger() | identifier()
 }
+
+
+void parseFloat() #Float: {Token * t;}
+{ t=<FLOAT> { jjtThis->jjtSetValue((void *)t->image.c_str()); } }
 
 void identifier() #Identifier: {Token * t;}
 { t=<IDENTIFIER> { jjtThis->jjtSetValue((void *)t->image.c_str()); } }
@@ -140,5 +144,16 @@ void identifier() #Identifier: {Token * t;}
 void parseInteger() #Integer : {Token * t;}
 { t=<INTEGER> { jjtThis->jjtSetValue((void *)t->image.c_str()); } }
 
-void parseFloat() #Float: {Token * t;}
-{ t=<FLOAT> { jjtThis->jjtSetValue((void *)t->image.c_str()); } }
+
+
+
+
+
+
+
+
+
+
+
+
+

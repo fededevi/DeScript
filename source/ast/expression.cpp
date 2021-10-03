@@ -26,3 +26,19 @@ std::string Expression::toString() const
     accept(&ew, &out);
     return out;
 }
+
+bool Expression::isNumber() {
+    return dynamic_cast<Number *>(this);
+}
+
+bool Expression::isId() {
+    return dynamic_cast<Id *>(this);
+}
+
+bool Expression::isInt() {
+    return dynamic_cast<Int *>(this);
+}
+
+bool Expression::isFloat() {
+    return dynamic_cast<Float *>(this);
+}
