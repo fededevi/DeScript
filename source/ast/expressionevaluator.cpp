@@ -13,7 +13,7 @@ void *ExpressionEvaluator::visit(const Add *node, void *data) const
         evaluatedOperands.push_back(ExpressionUPtr(e));
         if (!e->isNumber())
             cantCompute = true;
-        if (e->isFloat())
+        if (e->toFloat())
             computeFP = true;
     }
 
@@ -48,7 +48,7 @@ void *ExpressionEvaluator::visit(const Sub *node, void *data) const
         evaluatedOperands.push_back(ExpressionUPtr(e));
         if (!e->isNumber())
             cantCompute = true;
-        if (e->isFloat())
+        if (e->toFloat())
             computeFP = true;
     }
 
@@ -90,7 +90,7 @@ void *ExpressionEvaluator::visit(const Mul *node, void *data) const
         evaluatedOperands.push_back(ExpressionUPtr(e));
         if (!e->isNumber())
             cantCompute = true;
-        if (e->isFloat())
+        if (e->toFloat())
             computeFP = true;
     }
 
@@ -132,7 +132,7 @@ void *ExpressionEvaluator::visit(const Div *node, void *data) const
         evaluatedOperands.push_back(ExpressionUPtr(e));
         if (!e->isNumber())
             cantCompute = true;
-        if (e->isFloat())
+        if (e->toFloat())
             computeFP = true;
     }
 
@@ -174,7 +174,7 @@ void *ExpressionEvaluator::visit(const Mod *node, void *data) const
         evaluatedOperands.push_back(ExpressionUPtr(e));
         if (!e->isNumber())
             cantCompute = true;
-        if (e->isFloat())
+        if (e->toFloat())
             computeFP = true;
     }
 

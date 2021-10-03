@@ -18,6 +18,10 @@ Expression *Expression::evaluate() const
     return static_cast<Expression *>(accept(&evaluator, nullptr));
 }
 
+Expression *Expression::evaluate(const std::string & s)
+{
+    return ExpressionUPtr(parse(s))->evaluate();
+}
 
 std::string Expression::toString() const
 {
@@ -31,14 +35,14 @@ bool Expression::isNumber() {
     return dynamic_cast<Number *>(this);
 }
 
-bool Expression::isId() {
+Id * Expression::toId() {
     return dynamic_cast<Id *>(this);
 }
 
-bool Expression::isInt() {
+Int * Expression::toInt() {
     return dynamic_cast<Int *>(this);
 }
 
-bool Expression::isFloat() {
+Float * Expression::toFloat() {
     return dynamic_cast<Float *>(this);
 }

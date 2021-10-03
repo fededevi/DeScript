@@ -16,11 +16,12 @@ public:
     //virtual ~Expression() = 0;
     static Expression * parse(const std::string &);
     Expression * evaluate() const;
+    static Expression * evaluate(const std::string &);
     std::string toString() const;
     bool isNumber();
-    bool isId();
-    bool isInt();
-    bool isFloat();
+    Id * toId();
+    Int * toInt();
+    Float * toFloat();
 };
 
 class MultiExpression : public Expression {
