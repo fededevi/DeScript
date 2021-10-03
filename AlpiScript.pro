@@ -14,13 +14,13 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
-    source/javacc/generated/grammar.jj
+    source/javacc/buildParser.bat \
+    source/javacc/grammar.jjt
     source/javacc/buildParser.bat \
 
 HEADERS += \
-    source/ast/statement/astnode.h \
     source/ast/statement/expression.h \
-    source/ast/statement/statement.h \
+    source/ast/statement/expressionvisitor.h \
     source/javacc/generated/ASTAdd.h \
     source/javacc/generated/ASTDivision.h \
     source/javacc/generated/ASTExpression.h \
@@ -48,9 +48,8 @@ HEADERS += \
     source/javacc/generated/TokenMgrError.h
 
 SOURCES += \
-        source/ast/statement/astnode.cpp \
     source/ast/statement/expression.cpp \
-        source/ast/statement/statement.cpp \
+    source/ast/statement/expressionvisitor.cpp \
     source/javacc/generated/ASTAdd.cc \
     source/javacc/generated/ASTDivision.cc \
     source/javacc/generated/ASTExpression.cc \
@@ -59,7 +58,7 @@ SOURCES += \
     source/javacc/generated/ASTModule.cc \
     source/javacc/generated/ASTMult.cc \
     source/javacc/generated/ASTSub.cc \
-        source/main.cpp \
+    source/main.cpp \
     source/visitors/alpiscriptwriter.cpp \
     source/javacc/generated/CharStream.cc \
     source/javacc/generated/JJTParserState.cc \
@@ -69,3 +68,4 @@ SOURCES += \
     source/javacc/generated/SimpleNode.cc \
     source/javacc/generated/Token.cc \
     source/javacc/generated/TokenMgrError.cc
+    source/main.cpp \
