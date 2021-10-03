@@ -73,11 +73,15 @@ TOKEN : { < OR : "||" > }
 
 TOKEN : { < NOT : "!" > }
 
-TOKEN : { < INTEGER : (["0"-"9"])+ > }
+TOKEN : { < #DIGIT : ["0"-"9"] > }
+TOKEN : { < #LETTER : ["A"-"Z","_","a"-"z"] > }
+
+TOKEN : { < INTEGER : (<DIGIT>)+ > }
+
 TOKEN : { < FLOAT : <INTEGER> "." <INTEGER> | <INTEGER> "." | "." <INTEGER> > }
 
-TOKEN : { < LETTER: ["_","a"-"z","A"-"Z"] >}
-TOKEN : { < IDENTIFIER : <LETTER>( <LETTER> | <INTEGER> )+ > }
+TOKEN : { <IDENTIFIER: <LETTER> (<LETTER> | <DIGIT>)* > }
+
 
 ASTExpression* parse() #Expression : {}
 {

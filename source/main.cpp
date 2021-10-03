@@ -4,7 +4,7 @@
 
 int main(int , char** ) {
 
-    ExpressionUPtr e = ExpressionUPtr(Expression::parse("asd3 + 1 * 7 / c"));
+    ExpressionUPtr e = ExpressionUPtr(Expression::parse("a + 324 + 1 * 7 / c"));
     std::string out = e->toString();
     std::cout << out << std::endl;
 }

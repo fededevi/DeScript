@@ -6,6 +6,7 @@
 void * ExpressionWriter::writeMultiOperandOperation(const MultiExpression * node, void * data, const std::string & op) const
 {
     std::string * out = (std::string *)data;
+    out->append("(");
     node->operands[0]->accept(this, data);
     bool skipfirst = true;
     for (const auto & exp : node->operands) {
@@ -16,6 +17,7 @@ void * ExpressionWriter::writeMultiOperandOperation(const MultiExpression * node
         out->append(op);
         exp->accept(this, data);
     }
+    out->append(")");
     return data;
 }
 
