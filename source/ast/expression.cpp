@@ -2,6 +2,7 @@
 
 #include "source/visitors/astconverter.h"
 #include "source/ast/expressionwriter.h"
+#include "source/ast/expressionevaluator.h"
 
 using namespace AlpiScript;
 
@@ -13,8 +14,10 @@ Expression *Expression::parse(const std::string & input)
 
 Expression *Expression::evaluate() const
 {
-    return nullptr;
+    ExpressionEvaluator evaluator;
+    return static_cast<Expression *>(accept(&evaluator, nullptr));
 }
+
 
 std::string Expression::toString() const
 {

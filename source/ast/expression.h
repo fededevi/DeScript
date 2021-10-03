@@ -9,13 +9,19 @@
     virtual void* accept(const ExpressionVisitor * v, void * d) const { return v->visit(this, d);}
 
 class ExpressionVisitor;
+class Number;
 class Expression {
 public:
     virtual void* accept(const ExpressionVisitor * v, void * d) const = 0;
 public:
+    //virtual ~Expression() = 0;
     static Expression * parse(const std::string &);
     Expression * evaluate() const;
     std::string toString() const;
+    bool isNumber() { return (Number *) this;}
+    bool isId() { return (Id *) this;}
+    bool isInt() { return (Int *) this;}
+    bool isFloat() { return (Float *) this;}
 };
 
 class MultiExpression : public Expression {
@@ -32,10 +38,26 @@ class Mul : public MultiExpression { ACCEPT_VISITOR; };
 class Div : public MultiExpression { ACCEPT_VISITOR; };
 class Mod : public MultiExpression { ACCEPT_VISITOR; };
 
-class Int : public Expression {
+class Number : public Expression{
+public:
+    virtual int64_t intValue() = 0;
+    virtual double doubleValue() = 0;
+};
+
+class Int : public Number {
     ACCEPT_VISITOR;
     int64_t value;
     Int(int64_t v) : value(v) {}
+    virtual int64_t intValue() override {return value;}
+    virtual double doubleValue() override {return value;};
+};
+
+class Float : public Number {
+    ACCEPT_VISITOR;
+    double value;
+    Float(double v) : value(v) {}
+    virtual int64_t intValue() override {return value;};
+    virtual double doubleValue() override {return value;};
 };
 
 class Id  : public Expression {
@@ -45,4 +67,5 @@ class Id  : public Expression {
 };
 
 using ExpressionUPtr = std::unique_ptr<Expression>;
+using ExpressionList = std::vector<ExpressionUPtr>;
 

@@ -14,7 +14,7 @@ class Div;
 class Mod;
 class Int;
 
-class ExpressionWriter : public ExpressionVisitor
+class ExpressionEvaluator : public ExpressionVisitor
 {
 public:
     virtual void *visit(const Add * node, void *data) const;
@@ -22,10 +22,9 @@ public:
     virtual void *visit(const Mul * node, void *data) const;
     virtual void *visit(const Div * node, void *data) const;
     virtual void *visit(const Mod * node, void *data) const;
-    virtual void *visit(const Int * node, void *data) const;
     virtual void *visit(const Id * node, void *data) const;
+    virtual void *visit(const Int * node, void *data) const;
     virtual void *visit(const Float *node, void *data) const;
 
-private:
-    void * writeMultiOperandOperation(const MultiExpression * e, void * data, const std::string &  op) const;
+    Expression * evaluate(const Expression *) const;
 };

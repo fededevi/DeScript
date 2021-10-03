@@ -60,3 +60,10 @@ void *ExpressionWriter::visit(const Id *node, void *data) const
     return out;
 }
 
+void *ExpressionWriter::visit(const Float *node, void *data) const
+{
+    std::string * out = (std::string *)data;
+    out->append(std::to_string(node->value));
+    return out;
+}
+

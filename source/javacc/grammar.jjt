@@ -131,22 +131,14 @@ void divExpression() : {}
 
 void unaryExpression() : {}
 {
-  "(" expression() ")" | identifier() | integer()
+  "(" expression() ")" | identifier() | parseInteger() | parseFloat()
 }
 
 void identifier() #Identifier: {Token * t;}
+{ t=<IDENTIFIER> { jjtThis->jjtSetValue((void *)t->image.c_str()); } }
 
-{
-  t=<IDENTIFIER>
-  {
-    jjtThis->jjtSetValue((void *)t->image.c_str());
-  }
-}
+void parseInteger() #Integer : {Token * t;}
+{ t=<INTEGER> { jjtThis->jjtSetValue((void *)t->image.c_str()); } }
 
-void integer() #Integer : {Token * t;}
-{
-  t=<INTEGER>
-  {
-    jjtThis->jjtSetValue((void *)t->image.c_str());
-  }
-}
+void parseFloat() #Float: {Token * t;}
+{ t=<FLOAT> { jjtThis->jjtSetValue((void *)t->image.c_str()); } }

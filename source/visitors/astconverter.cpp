@@ -63,6 +63,11 @@ void *AstConverter::visit(const ASTDivision * node, void *)
     return e;
 }
 
+void *AstConverter::visit(const ASTFloat *node, void *)
+{
+    char * c = (char *)(node->jjtGetValue());
+    return new Float(std::stod(c));
+}
 
 void *AstConverter::visit(const ASTIdentifier *node, void *)
 {
