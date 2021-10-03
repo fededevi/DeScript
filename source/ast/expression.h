@@ -6,15 +6,16 @@
 #include "expressionvisitor.h"
 
 #define ACCEPT_VISITOR public: \
-    virtual void* accept(ExpressionVisitor * v, void * d) { return v->visit(this, d);}
+    virtual void* accept(const ExpressionVisitor * v, void * d) const { return v->visit(this, d);}
 
 class ExpressionVisitor;
 class Expression {
-    ACCEPT_VISITOR;
-
+public:
+    virtual void* accept(const ExpressionVisitor * v, void * d) const = 0;
 public:
     static Expression * parse(const std::string &);
     Expression * evaluate() const;
+    std::string toString() const;
 };
 
 class MultiExpression : public Expression {

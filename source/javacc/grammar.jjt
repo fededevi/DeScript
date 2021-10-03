@@ -12,17 +12,17 @@ options {
   //USER_CHAR_STREAM = false;
   //BUILD_PARSER = true;
   //BUILD_TOKEN_MANAGER = true;
-  
+
   MULTI=true;
   VISITOR=true;
   NODE_DEFAULT_VOID=true;
   VISITOR_DATA_TYPE="void*";
   VISITOR_RETURN_TYPE="void*";
-  
+
   OUTPUT_LANGUAGE = "c++";
   NAMESPACE="AlpiScript";
   OUTPUT_DIRECTORY="generated";
-  
+
   //DEBUG STUFF
   //SANITY_CHECK = true;
   //FORCE_LA_CHECK = true;
@@ -93,14 +93,14 @@ void expression() : {}
 void additiveExpression() : {}
 {
   (
-	subtractiveExpression() ( "+" subtractiveExpression() )* 
+    subtractiveExpression() ( "+" subtractiveExpression() )*
   ) #Add(>1)
 }
 
 void subtractiveExpression() : {}
 {
   (
-	moduloExpression() ( "-" moduloExpression() )* 
+    moduloExpression() ( "-" moduloExpression() )*
   ) #Sub(>1)
 }
 

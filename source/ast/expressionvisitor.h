@@ -13,16 +13,11 @@ class Int;
 class ExpressionVisitor
 {
 public:
-    virtual void *visit(const Expression * node, void *data) = 0;
-
-    virtual void *visit(const Add * node, void *data) = 0;
-    virtual void *visit(const Sub * node, void *data) = 0;
-
-    virtual void *visit(const Mul * node, void *data) = 0;
-    virtual void *visit(const Div * node, void *data) = 0;
-
-    virtual void *visit(const Mod * node, void *data) = 0;
-
-    virtual void *visit(const Int * node, void *data) = 0;
-    virtual void *visit(const Id * node, void *data) = 0;
+    virtual void *visit(const Add * node, void *data) const = 0;
+    virtual void *visit(const Sub * node, void *data) const = 0;
+    virtual void *visit(const Mul * node, void *data) const = 0;
+    virtual void *visit(const Div * node, void *data) const = 0;
+    virtual void *visit(const Mod * node, void *data) const = 0;
+    virtual void *visit(const Int * node, void *data) const = 0;
+    virtual void *visit(const Id * node, void *data) const = 0;
 };

@@ -1,7 +1,11 @@
  #include "source/ast/expression.h"
 
+#include <iostream>
+
 int main(int , char** ) {
 
-    ExpressionUPtr e = ExpressionUPtr(Expression::parse("6 + 34 * 3 + as"));
+    ExpressionUPtr e = ExpressionUPtr(Expression::parse("asd3 + 1 * 7 / c"));
+    std::string out = e->toString();
+    std::cout << out << std::endl;
 }
 

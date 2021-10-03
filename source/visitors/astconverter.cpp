@@ -33,7 +33,7 @@ void *AstConverter::visit(const SimpleNode *, void *)
 
 void * AstConverter::visit(const ASTExpression *node, void *)
 {
-    return node->jjtGetChild(0)->jjtAccept(this,null);
+    return node->jjtGetChild(0)->jjtAccept(this, null);
 }
 
 void * AstConverter::visit(const ASTInteger *node, void *)
