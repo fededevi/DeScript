@@ -19,8 +19,9 @@ DISTFILES += \
     source/javacc/buildParser.bat \
 
 HEADERS += \
-    source/ast/statement/expression.h \
-    source/ast/statement/expressionvisitor.h \
+    source/ast/expression.h \
+    source/ast/expressionvisitor.h \
+    source/ast/expressionwriter.h \
     source/javacc/generated/ASTAdd.h \
     source/javacc/generated/ASTDivision.h \
     source/javacc/generated/ASTExpression.h \
@@ -45,11 +46,13 @@ HEADERS += \
     source/javacc/generated/SimpleNode.h \
     source/javacc/generated/Token.h \
     source/javacc/generated/TokenManager.h \
-    source/javacc/generated/TokenMgrError.h
+    source/javacc/generated/TokenMgrError.h \
+    source/visitors/astconverter.h
 
 SOURCES += \
-    source/ast/statement/expression.cpp \
-    source/ast/statement/expressionvisitor.cpp \
+    source/ast/expression.cpp \
+    source/ast/expressionvisitor.cpp \
+    source/ast/expressionwriter.cpp \
     source/javacc/generated/ASTAdd.cc \
     source/javacc/generated/ASTDivision.cc \
     source/javacc/generated/ASTExpression.cc \
@@ -67,5 +70,6 @@ SOURCES += \
     source/javacc/generated/ParserTokenManager.cc \
     source/javacc/generated/SimpleNode.cc \
     source/javacc/generated/Token.cc \
-    source/javacc/generated/TokenMgrError.cc
+    source/javacc/generated/TokenMgrError.cc \
+    source/visitors/astconverter.cpp
     source/main.cpp \
