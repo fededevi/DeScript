@@ -25,9 +25,9 @@ void alpiScriptArithmeticTest02(){
 
 
 int main(int , char** ) {
-    std::cout << Expression::evaluate("3872 - 27  - 45 * (80 / 43) * 4*4")->toString() << std::endl;
 
     alpiScriptArithmeticTest01();
     alpiScriptArithmeticTest02();
+    std::cout << "All tests succesfull." << std::endl;
 }
 
