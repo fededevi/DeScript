@@ -25,13 +25,21 @@ HEADERS += \
     source/ast/expressionvisitor.h \
     source/ast/expressionwriter.h \
     source/javacc/generated/ASTAdd.h \
+    source/javacc/generated/ASTBoolean.h \
     source/javacc/generated/ASTDivision.h \
-    source/javacc/generated/ASTExpression.h \
+    source/javacc/generated/ASTEqual.h \
     source/javacc/generated/ASTFloat.h \
+    source/javacc/generated/ASTGreaterEqual.h \
+    source/javacc/generated/ASTGreaterThan.h \
     source/javacc/generated/ASTIdentifier.h \
     source/javacc/generated/ASTInteger.h \
+    source/javacc/generated/ASTLessEqual.h \
+    source/javacc/generated/ASTLessThan.h \
     source/javacc/generated/ASTModule.h \
     source/javacc/generated/ASTMult.h \
+    source/javacc/generated/ASTNot.h \
+    source/javacc/generated/ASTNotEqual.h \
+    source/javacc/generated/ASTStart.h \
     source/javacc/generated/ASTSub.h \
     source/javacc/generated/CharStream.h \
     source/javacc/generated/ErrorHandler.h \
@@ -57,15 +65,22 @@ SOURCES += \
     source/ast/expressionvisitor.cpp \
     source/ast/expressionwriter.cpp \
     source/javacc/generated/ASTAdd.cc \
+    source/javacc/generated/ASTBoolean.cc \
     source/javacc/generated/ASTDivision.cc \
-    source/javacc/generated/ASTExpression.cc \
+    source/javacc/generated/ASTEqual.cc \
     source/javacc/generated/ASTFloat.cc \
+    source/javacc/generated/ASTGreaterEqual.cc \
+    source/javacc/generated/ASTGreaterThan.cc \
     source/javacc/generated/ASTIdentifier.cc \
     source/javacc/generated/ASTInteger.cc \
+    source/javacc/generated/ASTLessEqual.cc \
+    source/javacc/generated/ASTLessThan.cc \
     source/javacc/generated/ASTModule.cc \
     source/javacc/generated/ASTMult.cc \
+    source/javacc/generated/ASTNot.cc \
+    source/javacc/generated/ASTNotEqual.cc \
+    source/javacc/generated/ASTStart.cc \
     source/javacc/generated/ASTSub.cc \
-    source/main.cpp \
     source/javacc/generated/CharStream.cc \
     source/javacc/generated/JJTParserState.cc \
     source/javacc/generated/ParseException.cc \
@@ -74,5 +89,5 @@ SOURCES += \
     source/javacc/generated/SimpleNode.cc \
     source/javacc/generated/Token.cc \
     source/javacc/generated/TokenMgrError.cc \
-    source/visitors/astconverter.cpp
     source/main.cpp \
+    source/visitors/astconverter.cpp

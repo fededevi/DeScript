@@ -13,7 +13,6 @@ class Expression {
 public:
     virtual void* accept(const ExpressionVisitor * v, void * d) const = 0;
 public:
-    //virtual ~Expression() = 0;
     static Expression * parse(const std::string &);
     Expression * evaluate() const;
     static Expression * evaluate(const std::string &);
@@ -22,45 +21,61 @@ public:
     Id * toId();
     Int * toInt();
     Float * toFloat();
+    Boolean * toBool();
 };
 
-class MultiExpression : public Expression {
-public: std::vector<std::unique_ptr<Expression>> operands;
+class BinaryExpression : public Expression {
+public:
+    std::unique_ptr<Expression> left;
+    std::unique_ptr<Expression> right;
+
 };
 
 class UnaryExpression : public Expression {
-public: std::unique_ptr<Expression> operand;
+public:
+    std::unique_ptr<Expression> operand;
 };
 
-class Add : public MultiExpression { ACCEPT_VISITOR; };
-class Sub : public MultiExpression { ACCEPT_VISITOR; };
-class Mul : public MultiExpression { ACCEPT_VISITOR; };
-class Div : public MultiExpression { ACCEPT_VISITOR; };
-class Mod : public MultiExpression { ACCEPT_VISITOR; };
+class Add : public BinaryExpression { ACCEPT_VISITOR; };
+class Sub : public BinaryExpression { ACCEPT_VISITOR; };
+class Mul : public BinaryExpression { ACCEPT_VISITOR; };
+class Div : public BinaryExpression { ACCEPT_VISITOR; };
+class Mod : public BinaryExpression { ACCEPT_VISITOR; };
 
-class Number : public Expression{
-public:
-    virtual int64_t intValue() = 0;
-    virtual double doubleValue() = 0;
+class BooleanExpression : public BinaryExpression {};
+
+class LessThan     : public BooleanExpression { ACCEPT_VISITOR; };
+class LessEqual    : public BooleanExpression { ACCEPT_VISITOR; };
+class GreaterEqual : public BooleanExpression { ACCEPT_VISITOR; };
+class GreaterThan  : public BooleanExpression { ACCEPT_VISITOR; };
+class Equal        : public BooleanExpression { ACCEPT_VISITOR; };
+class NotEqual     : public BooleanExpression { ACCEPT_VISITOR; };
+class Not          : public BooleanExpression { ACCEPT_VISITOR; };
+
+class Literal : public Expression {};
+
+class Number : public Literal{
 };
 
 class Int : public Number {
     ACCEPT_VISITOR;
     int64_t value;
     Int(int64_t v) : value(v) {}
-    virtual int64_t intValue() override {return value;}
-    virtual double doubleValue() override {return value;};
 };
 
 class Float : public Number {
     ACCEPT_VISITOR;
     double value;
     Float(double v) : value(v) {}
-    virtual int64_t intValue() override {return value;};
-    virtual double doubleValue() override {return value;};
 };
 
-class Id  : public Expression {
+class Boolean : public Literal {
+    ACCEPT_VISITOR;
+    bool value;
+    Boolean(bool v) : value(v) {}
+};
+
+class Id : public Literal {
     ACCEPT_VISITOR;
     std::string value;
     Id(const std::string & v) : value(v) {}

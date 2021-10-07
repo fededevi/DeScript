@@ -26,76 +26,117 @@ Expression *AstConverter::parse(const std::string &input)
     }
 }
 
-void *AstConverter::visit(const SimpleNode *, void *)
+template<typename T>
+T * fill(AstConverter * astConv, const SimpleNode * node)
 {
-    return nullptr;
+    int c = 0;
+    T * l = (T *)node->jjtGetChild(c++)->jjtAccept(astConv, null);
+
+    while (c < node->jjtGetNumChildren()) {
+        auto sub = new T();
+        sub->left = std::unique_ptr<Expression>(l);
+        sub->right =   std::unique_ptr<Expression>((Expression*)node->jjtGetChild(c++)->jjtAccept(astConv, null));
+        l = sub;
+    }
+
+    return l;
+}
+/*
+void AstConverter::fillOperands(UnaryExpression * me, const SimpleNode * node)
+{
+    Expression * e = (Expression*)node->jjtGetChild(0)->jjtAccept(this, null);
+    me->operand = std::unique_ptr<Expression>(e);
 }
 
-void * AstConverter::visit(const ASTExpression *node, void *)
+void AstConverter::fillOperands(BinaryExpression * me, const SimpleNode * node)
+{
+    Expression * l = (Expression*)node->jjtGetChild(0)->jjtAccept(this, null);
+    me->left= std::unique_ptr<Expression>(l);
+    Expression * r = (Expression*)node->jjtGetChild(1)->jjtAccept(this, null);
+    me->right= std::unique_ptr<Expression>(r);
+}*/
+
+void *AstConverter::visit(const SimpleNode *, void *){ return nullptr; }
+
+void *AstConverter::visit(const ASTStart *node, void *)
 {
     return node->jjtGetChild(0)->jjtAccept(this, null);
 }
 
-void *AstConverter::visit(const ASTSub * node, void *)
-{
-    MultiExpression * e = new Sub();
-    fillOperands(e, node);
-    return e;
+void *AstConverter::visit(const ASTSub * node, void *){
+    return fill<Sub>(this, node);
 }
 
-void *AstConverter::visit(const ASTModule * node, void *)
-{
-    MultiExpression * e = new Mod();
-    fillOperands(e, node);
-    return e;
+void *AstConverter::visit(const ASTModule * node, void *){
+    return fill<Mod>(this, node);
 }
 
-void *AstConverter::visit(const ASTDivision * node, void *)
-{
-    MultiExpression * e = new Div();
-    fillOperands(e, node);
-    return e;
+void *AstConverter::visit(const ASTDivision * node, void *){
+    return fill<Div>(this, node);
 }
 
-void *AstConverter::visit(const ASTMult * node, void *)
-{
-    MultiExpression * e = new Mul();
-    fillOperands(e, node);
-    return e;
+void *AstConverter::visit(const ASTMult * node, void *){
+    return fill<Mul>(this, node);
 }
 
-void *AstConverter::visit(const ASTAdd *node, void *)
-{
-    MultiExpression * e = new Add();
-    fillOperands(e, node);
-    return e;
+void *AstConverter::visit(const ASTAdd *node, void *){
+    return fill<Add>(this, node);
 }
 
-void * AstConverter::visit(const ASTInteger * node, void *)
-{
-    char * c = (char *)(node->jjtGetValue());
-    return new Int(std::stoi(c));
+void *AstConverter::visit(const ASTLessThan *node, void *){
+    return fill<LessThan>(this, node);
 }
 
-void *AstConverter::visit(const ASTFloat * node, void *)
-{
+void *AstConverter::visit(const ASTLessEqual *node, void *) {
+    return fill<LessEqual>(this, node);
+}
+
+void *AstConverter::visit(const ASTGreaterEqual *node, void *){
+    return fill<GreaterEqual>(this, node);
+}
+
+void *AstConverter::visit(const ASTGreaterThan *node, void *){
+    return fill<GreaterThan>(this, node);
+}
+
+void *AstConverter::visit(const ASTEqual *node, void *) {
+    return fill<Equal>(this, node);
+}
+
+void *AstConverter::visit(const ASTNotEqual *node, void *){
+    return fill<NotEqual>(this, node);
+}
+
+void *AstConverter::visit(const ASTNot *node, void *){
+    return fill<Not>(this, node);
+}
+
+void *AstConverter::visit(const ASTFloat * node, void *){
     char * c = (char *)(node->jjtGetValue());
     return new Float(std::stod(c));
+}
+
+void *AstConverter::visit(const ASTBoolean *node, void *){
+    char * c = (char *)(node->jjtGetValue());
+
+    if (std::string(c) == "true")
+        return new Boolean(true);
+
+    if (std::string(c) == "false")
+        return new Boolean(false);
+
+    throw runtime_error("Invalid boolean.");
+    return nullptr;
+}
+
+void * AstConverter::visit(const ASTInteger * node, void *){
+    char * c = (char *)(node->jjtGetValue());
+    return new Int(std::stoi(c));
 }
 
 void *AstConverter::visit(const ASTIdentifier * node, void *)
 {
     return new Id((char *)(node->jjtGetValue()));
-}
-
-void AstConverter::fillOperands(MultiExpression * me, const SimpleNode * node)
-{
-    int i = 0;
-    while ( i < node->jjtGetNumChildren() ) {
-        Expression * e = (Expression*)node->jjtGetChild(i)->jjtAccept(this, null);
-        me->operands.push_back(std::unique_ptr<Expression>(e));
-        ++i;
-    }
 }
 
 }

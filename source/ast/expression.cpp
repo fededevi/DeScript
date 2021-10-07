@@ -1,4 +1,5 @@
 #include "expression.h"
+#include <iostream>
 
 #include "source/visitors/astconverter.h"
 #include "source/ast/expressionwriter.h"
@@ -20,7 +21,11 @@ Expression *Expression::evaluate() const
 
 Expression *Expression::evaluate(const std::string & s)
 {
-    return ExpressionUPtr(parse(s))->evaluate();
+    ExpressionUPtr toEvaluate (parse(s));
+    std::cout << toEvaluate->toString() << std::endl;
+    Expression * evaluated = toEvaluate->evaluate();
+    std::cout << evaluated->toString();
+    return nullptr;
 }
 
 std::string Expression::toString() const
@@ -45,4 +50,8 @@ Int * Expression::toInt() {
 
 Float * Expression::toFloat() {
     return dynamic_cast<Float *>(this);
+}
+
+Boolean * Expression::toBool() {
+    return dynamic_cast<Boolean *>(this);
 }
