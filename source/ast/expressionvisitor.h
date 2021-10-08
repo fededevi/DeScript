@@ -20,6 +20,9 @@ class Not;
 class Boolean;
 class And;
 class Or;
+class TypeId;
+class Parameter;
+class Method;
 
 class ExpressionVisitor
 {
@@ -31,6 +34,9 @@ public:
     virtual void *visit(const Mod          * node, void *data) const = 0;
 
     virtual void *visit(const Id           * node, void *data) const = 0;
+    virtual void *visit(const TypeId       * node, void *data) const = 0;
+    virtual void *visit(const Parameter    * node, void *data) const = 0;
+    virtual void *visit(const Method       * node, void *data) const = 0;
 
     virtual void *visit(const Int          * node, void *data) const = 0;
     virtual void *visit(const Float        * node, void *data) const = 0;

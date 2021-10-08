@@ -5,6 +5,8 @@
 #include "source/ast/expressionwriter.h"
 #include "source/ast/expressionevaluator.h"
 
+#include "type.h"
+
 using namespace AlpiScript;
 
 Expression *Expression::parse(const std::string & input)
@@ -54,4 +56,16 @@ Float * Expression::toFloat() {
 
 Boolean * Expression::toBool() {
     return dynamic_cast<Boolean *>(this);
+}
+
+Int::Int(int64_t v) : value(v) {
+    type = Type::baseTypeInt();
+}
+
+Float::Float(double v) : value(v) {
+    type = Type::baseTypeInt();
+}
+
+Boolean::Boolean(bool v) : value(v) {
+    type = Type::baseTypeInt();
 }

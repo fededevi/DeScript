@@ -40,46 +40,47 @@ void *ExpressionEvaluator::visit(const Boolean *node, void *) const{
 }
 
 
-void *ExpressionEvaluator::visit(const LessThan *node, void *data) const
+void *ExpressionEvaluator::visit(const LessThan *node, void *) const
 {
+    node
 }
 
-void *ExpressionEvaluator::visit(const LessEqual *node, void *data) const
+void *ExpressionEvaluator::visit(const LessEqual *node, void *) const
 {
-
+    node->accept(this, nullptr)
 }
 
-void *ExpressionEvaluator::visit(const GreaterEqual *node, void *data) const
-{
-
-}
-
-void *ExpressionEvaluator::visit(const GreaterThan *node, void *data) const
+void *ExpressionEvaluator::visit(const GreaterEqual *node, void *) const
 {
 
 }
 
-void *ExpressionEvaluator::visit(const Equal *node, void *data) const
+void *ExpressionEvaluator::visit(const GreaterThan *node, void *) const
 {
 
 }
 
-void *ExpressionEvaluator::visit(const NotEqual *node, void *data) const
+void *ExpressionEvaluator::visit(const Equal *node, void *) const
 {
 
 }
 
-void *ExpressionEvaluator::visit(const Not *node, void *data) const
+void *ExpressionEvaluator::visit(const NotEqual *node, void *) const
 {
 
 }
 
-void *ExpressionEvaluator::visit(const And *node, void *data) const
+void *ExpressionEvaluator::visit(const Not *node, void *) const
 {
 
 }
 
-void *ExpressionEvaluator::visit(const Or *node, void *data) const
+void *ExpressionEvaluator::visit(const And *node, void *) const
+{
+
+}
+
+void *ExpressionEvaluator::visit(const Or *node, void *) const
 {
 
 }

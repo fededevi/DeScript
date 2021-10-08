@@ -1,14 +1,19 @@
 #pragma once
 
+#include "visitormacros.h"
+#include "expressionvisitor.h"
+
 #include <memory>
 #include <string>
 #include <vector>
-#include "expressionvisitor.h"
-
-#define ACCEPT_VISITOR public: \
-    virtual void* accept(const ExpressionVisitor * v, void * d) const { return v->visit(this, d);}
 
 class ExpressionVisitor;
+class Id;
+class Int;
+class Float;
+class Boolean;
+class Type;
+
 class Expression {
 public:
     virtual void* accept(const ExpressionVisitor * v, void * d) const = 0;
@@ -36,53 +41,58 @@ public:
     std::unique_ptr<Expression> operand;
 };
 
-class Add : public BinaryExpression { ACCEPT_VISITOR; };
-class Sub : public BinaryExpression { ACCEPT_VISITOR; };
-class Mul : public BinaryExpression { ACCEPT_VISITOR; };
-class Div : public BinaryExpression { ACCEPT_VISITOR; };
-class Mod : public BinaryExpression { ACCEPT_VISITOR; };
+class Add : public BinaryExpression { VISITOR_ACCEPT(ExpressionVisitor); };
+class Sub : public BinaryExpression { VISITOR_ACCEPT(ExpressionVisitor); };
+class Mul : public BinaryExpression { VISITOR_ACCEPT(ExpressionVisitor); };
+class Div : public BinaryExpression { VISITOR_ACCEPT(ExpressionVisitor); };
+class Mod : public BinaryExpression { VISITOR_ACCEPT(ExpressionVisitor); };
 
 class BooleanExpression : public BinaryExpression {};
 
-class LessThan     : public BooleanExpression { ACCEPT_VISITOR; };
-class LessEqual    : public BooleanExpression { ACCEPT_VISITOR; };
-class GreaterEqual : public BooleanExpression { ACCEPT_VISITOR; };
-class GreaterThan  : public BooleanExpression { ACCEPT_VISITOR; };
-class Equal        : public BooleanExpression { ACCEPT_VISITOR; };
-class NotEqual     : public BooleanExpression { ACCEPT_VISITOR; };
-class Not          : public BooleanExpression { ACCEPT_VISITOR; };
+class LessThan     : public BooleanExpression { VISITOR_ACCEPT(ExpressionVisitor); };
+class LessEqual    : public BooleanExpression { VISITOR_ACCEPT(ExpressionVisitor); };
+class GreaterEqual : public BooleanExpression { VISITOR_ACCEPT(ExpressionVisitor); };
+class GreaterThan  : public BooleanExpression { VISITOR_ACCEPT(ExpressionVisitor); };
+class Equal        : public BooleanExpression { VISITOR_ACCEPT(ExpressionVisitor); };
+class NotEqual     : public BooleanExpression { VISITOR_ACCEPT(ExpressionVisitor); };
+class Not          : public BooleanExpression { VISITOR_ACCEPT(ExpressionVisitor); };
 
-class And          : public BooleanExpression { ACCEPT_VISITOR; };
-class Or           : public BooleanExpression { ACCEPT_VISITOR; };
+class And          : public BooleanExpression { VISITOR_ACCEPT(ExpressionVisitor); };
+class Or           : public BooleanExpression { VISITOR_ACCEPT(ExpressionVisitor); };
 
-class Literal : public Expression {};
+class Literal : public Expression {
+public:
+    Type * type;
+};
 
 class Number : public Literal{
 };
 
 class Int : public Number {
-    ACCEPT_VISITOR;
+    VISITOR_ACCEPT(ExpressionVisitor);
     int64_t value;
-    Int(int64_t v) : value(v) {}
+    Int(int64_t v);
 };
 
 class Float : public Number {
-    ACCEPT_VISITOR;
+    VISITOR_ACCEPT(ExpressionVisitor);
+
     double value;
-    Float(double v) : value(v) {}
+    Float(double v);
 };
 
 class Boolean : public Literal {
-    ACCEPT_VISITOR;
+    VISITOR_ACCEPT(ExpressionVisitor);
     bool value;
-    Boolean(bool v) : value(v) {}
+    Boolean(bool v);
 };
 
 class Id : public Literal {
-    ACCEPT_VISITOR;
+    VISITOR_ACCEPT(ExpressionVisitor);
     std::string value;
     Id(const std::string & v) : value(v) {}
 };
+
 
 using ExpressionUPtr = std::unique_ptr<Expression>;
 using ExpressionList = std::vector<ExpressionUPtr>;

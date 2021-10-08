@@ -20,11 +20,13 @@ DISTFILES += \
     source/javacc/buildParser.bat \
 
 HEADERS += \
+    source/ast/basetypes.h \
     source/ast/expression.h \
     source/ast/expressionevaluator.h \
     source/ast/expressionvisitor.h \
     source/ast/expressionwriter.h \
     source/ast/type.h \
+    source/ast/visitormacros.h \
     source/javacc/generated/ASTAdd.h \
     source/javacc/generated/ASTAnd.h \
     source/javacc/generated/ASTBoolean.h \
@@ -63,9 +65,9 @@ HEADERS += \
     source/visitors/astconverter.h
 
 SOURCES += \
+    source/ast/basetypes.cpp \
     source/ast/expression.cpp \
     source/ast/expressionevaluator.cpp \
-    source/ast/expressionvisitor.cpp \
     source/ast/expressionwriter.cpp \
     source/ast/type.cpp \
     source/javacc/generated/ASTAdd.cc \
