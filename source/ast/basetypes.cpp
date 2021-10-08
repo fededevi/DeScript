@@ -17,16 +17,30 @@ TypeBool::TypeBool() {
 void TypeFloat::load()
 {
     addMethod( Method(FLOAT,  Name("+"), {FLOAT, FLOAT}, [](std::vector<void *> params) -> Float *{
-                  Float * left = static_cast<Float *>(params[0]);
-                  Float * right = static_cast<Float *>(params[1]);
-                  return new Float(left->value + right->value);
-              }));
-
+                   return new Float(static_cast<Float *>(params[0])->value + static_cast<Float *>(params[1])->value);
+               }));
     addMethod( Method(FLOAT,  Name("+"), {FLOAT, INT}, [](std::vector<void *> params) -> Float *{
-                  Float * left = static_cast<Float *>(params[0]);
-                  Int * right = static_cast<Int *>(params[1]);
-                  return new Float(left->value + right->value);
-              }));
+                   return new Float(static_cast<Float *>(params[0])->value + static_cast<Int *>(params[1])->value);
+               }));
+    addMethod( Method(FLOAT,  Name("-"), {FLOAT, FLOAT}, [](std::vector<void *> params) -> Float *{
+                   return new Float(static_cast<Float *>(params[0])->value - static_cast<Float *>(params[1])->value);
+               }));
+    addMethod( Method(FLOAT,  Name("-"), {FLOAT, INT}, [](std::vector<void *> params) -> Float *{
+                   return new Float(static_cast<Float *>(params[0])->value - static_cast<Int *>(params[1])->value);
+               }));
+    addMethod( Method(FLOAT,  Name("*"), {FLOAT, FLOAT}, [](std::vector<void *> params) -> Float *{
+                   return new Float(static_cast<Float *>(params[0])->value * static_cast<Float *>(params[1])->value);
+               }));
+    addMethod( Method(FLOAT,  Name("*"), {FLOAT, INT}, [](std::vector<void *> params) -> Float *{
+                   return new Float(static_cast<Float *>(params[0])->value * static_cast<Int *>(params[1])->value);
+               }));
+    addMethod( Method(FLOAT,  Name("/"), {FLOAT, FLOAT}, [](std::vector<void *> params) -> Float *{
+                   return new Float(static_cast<Float *>(params[0])->value / static_cast<Float *>(params[1])->value);
+               }));
+    addMethod( Method(FLOAT,  Name("/"), {FLOAT, INT}, [](std::vector<void *> params) -> Float *{
+                   return new Float(static_cast<Float *>(params[0])->value / static_cast<Int *>(params[1])->value);
+               }));
+
 }
 
 TypeFloat::TypeFloat()
@@ -37,16 +51,32 @@ TypeFloat::TypeFloat()
 void TypeInt::load()
 {
     addMethod( Method(INT,  Name("+"), {INT, INT}, [](std::vector<void *> params) -> Int *{
-                  Int * left = static_cast<Int *>(params[0]);
-                  Int * right = static_cast<Int *>(params[1]);
-                  return new Int(left->value + right->value);
-              }));
-
+                   return new Int(static_cast<Int *>(params[0])->value + static_cast<Int *>(params[1])->value);
+               }));
     addMethod( Method(FLOAT,  Name("+"), {INT, FLOAT}, [](std::vector<void *> params) -> Float *{
-                  Int * left = static_cast<Int *>(params[0]);
-                  Float * right = static_cast<Float *>(params[1]);
-                  return new Float(left->value + right->value);
-              }));
+                   return new Float(static_cast<Int *>(params[0])->value + static_cast<Float *>(params[1])->value);
+               }));
+    addMethod( Method(INT,  Name("-"), {INT, INT}, [](std::vector<void *> params) -> Int *{
+                   return new Int(static_cast<Int *>(params[0])->value - static_cast<Int *>(params[1])->value);
+               }));
+    addMethod( Method(FLOAT,  Name("-"), {INT, FLOAT}, [](std::vector<void *> params) -> Float *{
+                   return new Float(static_cast<Int *>(params[0])->value - static_cast<Float *>(params[1])->value);
+               }));
+    addMethod( Method(INT,  Name("*"), {INT, INT}, [](std::vector<void *> params) -> Int *{
+                   return new Int(static_cast<Int *>(params[0])->value * static_cast<Int *>(params[1])->value);
+               }));
+    addMethod( Method(FLOAT,  Name("*"), {INT, FLOAT}, [](std::vector<void *> params) -> Float *{
+                   return new Float(static_cast<Int *>(params[0])->value * static_cast<Float *>(params[1])->value);
+               }));
+    addMethod( Method(INT,  Name("/"), {INT, INT}, [](std::vector<void *> params) -> Int *{
+                   return new Int(static_cast<Int *>(params[0])->value / static_cast<Int *>(params[1])->value);
+               }));
+    addMethod( Method(FLOAT,  Name("/"), {INT, FLOAT}, [](std::vector<void *> params) -> Float *{
+                   return new Float(static_cast<Int *>(params[0])->value / static_cast<Float *>(params[1])->value);
+               }));
+    addMethod( Method(INT,  Name("%"), {INT, INT}, [](std::vector<void *> params) -> Int *{
+                   return new Int(static_cast<Int *>(params[0])->value % static_cast<Int *>(params[1])->value);
+               }));
 }
 
 TypeInt::TypeInt()

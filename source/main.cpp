@@ -5,7 +5,7 @@
 #include <assert.h>
 
 void alpiScriptArithmeticTest01(){
-    int i = 1+6;
+    int i = (1-5+7) + 34 + (1 * 45)+ 3- 3* (8*45)+(56/7) + 43 % 99;
     int j = Expression::evaluate("(1-5+7) + 34 + (1 * 45)+ 3- 3* (8*45)+(56/7) + 43 % 99")->toInt()->value;
     assert(i == j);
 
@@ -34,10 +34,10 @@ int main(int , char** ) {
     TypeFloat::instance()->load();
     TypeBool::instance()->load();
 
-    std::cout <<  Expression::evaluate("1 + 1")->toString() << std::endl;
-    std::cout <<  Expression::evaluate(".1 + 2")->toString() << std::endl;
-    //alpiScriptArithmeticTest01();
-    //alpiScriptArithmeticTest02();
+    //std::cout <<  Expression::evaluate("1 + 1")->toString() << std::endl;
+    //std::cout <<  Expression::evaluate(".1 + 2")->toString() << std::endl;
+    alpiScriptArithmeticTest01();
+    alpiScriptArithmeticTest02();
     //alpiScriptBooleanTest01();
     std::cout << "All tests succesfull." << std::endl;
     return 0;
