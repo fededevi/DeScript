@@ -5,8 +5,8 @@
 #include <iostream>
 
 void * evaluateBinaryMethodCall(const BinaryExpression *node, const Name & name) {
-    Literal * left  = static_cast<Literal *>(node->left->evaluate());
-    Literal * right = static_cast<Literal *>(node->right->evaluate());
+    std::unique_ptr<Literal> left  = std::unique_ptr<Literal>(static_cast<Literal *>(node->left->evaluate()));
+    std::unique_ptr<Literal> right = std::unique_ptr<Literal>(static_cast<Literal *>(node->right->evaluate()));
 
     MethodSignature ms = MethodSignature({name, {left->type, right->type}});
 
@@ -15,7 +15,7 @@ void * evaluateBinaryMethodCall(const BinaryExpression *node, const Name & name)
 
     Method method(left->type->methods.at(ms));
 
-    return method.implementation({(void*)left, (void*)right});
+    return method.implementation({left.get(), right.get()});
 }
 
 void *ExpressionEvaluator::visit(const Add *node, void *) const{
@@ -76,17 +76,18 @@ void *ExpressionEvaluator::visit(const Equal *node, void *) const{
 }
 
 void *ExpressionEvaluator::visit(const NotEqual *node, void *) const{
+    return evaluateBinaryMethodCall(node, Name("!="));
 }
 
 void *ExpressionEvaluator::visit(const Not *node, void *) const{
 }
 
 void *ExpressionEvaluator::visit(const And *node, void *) const{
-    return evaluateBinaryMethodCall(node, Name(" AND "));
+    return evaluateBinaryMethodCall(node, Name("&&"));
 }
 
 void *ExpressionEvaluator::visit(const Or *node, void *) const{
-    return evaluateBinaryMethodCall(node, Name(" OR "));
+    return evaluateBinaryMethodCall(node, Name("||"));
 }
 
 void *ExpressionEvaluator::visit(const TypeId *node, void *data) const

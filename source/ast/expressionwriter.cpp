@@ -63,7 +63,7 @@ void *ExpressionWriter::visit(const Float *node, void *data) const
 void *ExpressionWriter::visit(const Boolean *node, void *data) const
 {
     std::string * out = (std::string *)data;
-    out->append(std::to_string(node->value));
+    out->append(node->value ? "true" : "false");
     return out;
 }
 

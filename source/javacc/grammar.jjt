@@ -77,7 +77,7 @@ TOKEN : { < NOT : "!" > }
 TOKEN : { < #DIGIT : ["0"-"9"] > }
 TOKEN : { < #LETTER : ["A"-"Z","_","a"-"z"] > }
 
-TOKEN : { < BOOLEAN : "true" | "false" > }
+TOKEN : { < BOOLEAN : <FALSE> | <TRUE> > }
 
 TOKEN : { < INTEGER : (<DIGIT>)+ > }
 
