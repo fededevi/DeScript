@@ -21,11 +21,11 @@ DISTFILES += \
 
 HEADERS += \
     source/ast/basetypes.h \
+    source/ast/datatype.h \
     source/ast/expression.h \
     source/ast/expressionevaluator.h \
     source/ast/expressionvisitor.h \
     source/ast/expressionwriter.h \
-    source/ast/type.h \
     source/ast/visitormacros.h \
     source/javacc/generated/ASTAdd.h \
     source/javacc/generated/ASTAnd.h \
@@ -66,10 +66,10 @@ HEADERS += \
 
 SOURCES += \
     source/ast/basetypes.cpp \
+    source/ast/datatype.cpp \
     source/ast/expression.cpp \
     source/ast/expressionevaluator.cpp \
     source/ast/expressionwriter.cpp \
-    source/ast/type.cpp \
     source/javacc/generated/ASTAdd.cc \
     source/javacc/generated/ASTAnd.cc \
     source/javacc/generated/ASTBoolean.cc \

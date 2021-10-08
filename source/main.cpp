@@ -28,7 +28,7 @@ void alpiScriptBooleanTest01(){
 }
 
 int main(int , char** ) {
-    std::cout <<  Expression::parse("1 + (5 + 7) + 34 + 1 * 45 && 3 > 3 * 8 * 45 + 56 / 7 + 43 % 99")->toString() << std::endl;
+    std::cout <<  Expression::evaluate("1 + (5 + 7) + 34 + 1")->toString() << std::endl;
     //alpiScriptArithmeticTest01();
     //alpiScriptArithmeticTest02();
     //alpiScriptBooleanTest01();

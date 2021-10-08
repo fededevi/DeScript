@@ -1,13 +1,11 @@
 #pragma once
 
-#include "type.h"
+#include "datatype.h"
 
-#define INT TypeInt::instance()
-#define FLOAT TypeInt::instance()
-#define BOOL TypeInt::instance()
 
-class TypeInt : public Type
+class TypeInt : public DataType
 {
+public:
     static TypeInt * instance() {
         static TypeInt instance;
         return &instance;
@@ -17,14 +15,26 @@ private:
     TypeInt();
 };
 
-class TypeFloat : public Type
+class TypeFloat : public DataType
 {
+public:
+    static TypeFloat * instance() {
+        static TypeFloat instance;
+        return &instance;
+    }
+
 private:
     TypeFloat();
 };
 
-class TypeBool : public Type
+class TypeBool : public DataType
 {
+public:
+    static TypeBool * instance() {
+        static TypeBool instance;
+        return &instance;
+    }
+
 private:
     TypeBool();
 };

@@ -40,6 +40,12 @@ public:
     virtual void *visit(const NotEqual *node, void *data) const;
     virtual void *visit(const Not *node, void *data) const;
 
+public:
     virtual void *visit(const And *node, void *data) const;
     virtual void *visit(const Or *node, void *data) const;
+
+public:
+    void *visit(const TypeId *node, void *data) const;
+    void *visit(const Parameter *node, void *data) const;
+    void *visit(const Method *node, void *data) const;
 };

@@ -12,11 +12,11 @@ class Id;
 class Int;
 class Float;
 class Boolean;
-class Type;
+class DataType;
 
 class Expression {
 public:
-    virtual void* accept(const ExpressionVisitor * v, void * d) const = 0;
+    virtual void* accept(const ExpressionVisitor * v, void * d = nullptr) const = 0;
 public:
     static Expression * parse(const std::string &);
     Expression * evaluate() const;
@@ -62,7 +62,7 @@ class Or           : public BooleanExpression { VISITOR_ACCEPT(ExpressionVisitor
 
 class Literal : public Expression {
 public:
-    Type * type;
+    DataType * type;
 };
 
 class Number : public Literal{

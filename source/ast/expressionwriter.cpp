@@ -112,3 +112,18 @@ void *ExpressionWriter::visit(const Or *node, void *data) const
     return writeBinaryOperation(node, data, " OR ");
 }
 
+void *ExpressionWriter::visit(const TypeId *node, void *data) const
+{
+
+}
+
+void *ExpressionWriter::visit(const Parameter *node, void *data) const
+{
+
+}
+
+void *ExpressionWriter::visit(const Method *node, void *data) const
+{
+
+}
+

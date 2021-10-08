@@ -1,9 +1,16 @@
 #include "expressionevaluator.h"
 #include "expression.h"
+#include "datatype.h"
 #include <stdexcept>
 
 void *ExpressionEvaluator::visit(const Add *node, void *data) const
 {
+    Literal * left  = static_cast<Literal *>(left->evaluate());
+    Literal * right = static_cast<Literal *>(right->evaluate());
+
+    const Method & method(left->type->methods.at(MethodSignature("operator+", {left->type, right->type})));
+    return method.implementation({(void*)left, (void*)right});
+
 }
 
 void *ExpressionEvaluator::visit(const Sub *node, void *data) const
@@ -42,12 +49,12 @@ void *ExpressionEvaluator::visit(const Boolean *node, void *) const{
 
 void *ExpressionEvaluator::visit(const LessThan *node, void *) const
 {
-    node
+
 }
 
 void *ExpressionEvaluator::visit(const LessEqual *node, void *) const
 {
-    node->accept(this, nullptr)
+
 }
 
 void *ExpressionEvaluator::visit(const GreaterEqual *node, void *) const
@@ -81,6 +88,21 @@ void *ExpressionEvaluator::visit(const And *node, void *) const
 }
 
 void *ExpressionEvaluator::visit(const Or *node, void *) const
+{
+
+}
+
+void *ExpressionEvaluator::visit(const TypeId *node, void *data) const
+{
+
+}
+
+void *ExpressionEvaluator::visit(const Parameter *node, void *data) const
+{
+
+}
+
+void *ExpressionEvaluator::visit(const Method *node, void *data) const
 {
 
 }

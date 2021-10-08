@@ -5,7 +5,8 @@
 #include "source/ast/expressionwriter.h"
 #include "source/ast/expressionevaluator.h"
 
-#include "type.h"
+#include "datatype.h"
+#include "basetypes.h"
 
 using namespace AlpiScript;
 
@@ -17,7 +18,7 @@ Expression *Expression::parse(const std::string & input)
 
 Expression *Expression::evaluate() const
 {
-    ExpressionEvaluator evaluator;
+    static ExpressionEvaluator evaluator;
     return static_cast<Expression *>(accept(&evaluator, nullptr));
 }
 
@@ -32,7 +33,7 @@ Expression *Expression::evaluate(const std::string & s)
 
 std::string Expression::toString() const
 {
-    ExpressionWriter ew;
+    static ExpressionWriter ew;
     std::string out;
     accept(&ew, &out);
     return out;
@@ -59,13 +60,13 @@ Boolean * Expression::toBool() {
 }
 
 Int::Int(int64_t v) : value(v) {
-    type = Type::baseTypeInt();
+    type = TypeInt::instance();
 }
 
 Float::Float(double v) : value(v) {
-    type = Type::baseTypeInt();
+    type = TypeFloat::instance();
 }
 
 Boolean::Boolean(bool v) : value(v) {
-    type = Type::baseTypeInt();
+    type = TypeBool::instance();
 }
