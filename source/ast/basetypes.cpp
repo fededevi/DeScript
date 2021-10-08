@@ -15,7 +15,12 @@ TypeFloat::TypeFloat()
 
 }
 
-TypeInt::TypeInt()
+TypeInt *TypeInt::instance() {
+    static TypeInt instance;
+    return &instance;
+}
+
+void TypeInt::load()
 {
     Method *m = new Method(INT,  Name("operator+"), {INT, INT}, [](std::vector<void *> params) -> Int *{
                       Int * left = static_cast<Int *>(params[0]);
@@ -23,5 +28,7 @@ TypeInt::TypeInt()
                       return new Int(left->value + right->value);
                   });
     addMethod(*m);
-
 }
+
+TypeInt::TypeInt()
+{}

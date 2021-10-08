@@ -6,11 +6,10 @@
 class TypeInt : public DataType
 {
 public:
-    static TypeInt * instance() {
-        static TypeInt instance;
-        return &instance;
-    }
+    static TypeInt *instance();
 
+public:
+    void load();
 private:
     TypeInt();
 };

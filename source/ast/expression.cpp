@@ -27,8 +27,7 @@ Expression *Expression::evaluate(const std::string & s)
     ExpressionUPtr toEvaluate (parse(s));
     std::cout << toEvaluate->toString() << std::endl;
     Expression * evaluated = toEvaluate->evaluate();
-    std::cout << evaluated->toString();
-    return nullptr;
+    return evaluated;
 }
 
 std::string Expression::toString() const

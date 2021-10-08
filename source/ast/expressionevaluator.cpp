@@ -5,8 +5,8 @@
 
 void *ExpressionEvaluator::visit(const Add *node, void *data) const
 {
-    Literal * left  = static_cast<Literal *>(left->evaluate());
-    Literal * right = static_cast<Literal *>(right->evaluate());
+    Literal * left  = static_cast<Literal *>(node->left->evaluate());
+    Literal * right = static_cast<Literal *>(node->right->evaluate());
 
     const Method & method(left->type->methods.at(MethodSignature("operator+", {left->type, right->type})));
     return method.implementation({(void*)left, (void*)right});

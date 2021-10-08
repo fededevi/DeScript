@@ -1,4 +1,5 @@
 #include "source/ast/expression.h"
+#include "source/ast/basetypes.h"
 
 #include <iostream>
 #include <assert.h>
@@ -28,7 +29,10 @@ void alpiScriptBooleanTest01(){
 }
 
 int main(int , char** ) {
-    std::cout <<  Expression::evaluate("1 + (5 + 7) + 34 + 1")->toString() << std::endl;
+
+    TypeInt::instance()->load();
+
+    std::cout <<  Expression::evaluate("1 + 1")->toString() << std::endl;
     //alpiScriptArithmeticTest01();
     //alpiScriptArithmeticTest02();
     //alpiScriptBooleanTest01();
