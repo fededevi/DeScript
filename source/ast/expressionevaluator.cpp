@@ -2,32 +2,40 @@
 #include "expression.h"
 #include "datatype.h"
 #include <stdexcept>
+#include <iostream>
 
-void *ExpressionEvaluator::visit(const Add *node, void *data) const
-{
+void * evaluateBinaryMethodCall(const BinaryExpression *node, const Name & name) {
     Literal * left  = static_cast<Literal *>(node->left->evaluate());
     Literal * right = static_cast<Literal *>(node->right->evaluate());
 
-    const Method & method(left->type->methods.at(MethodSignature("operator+", {left->type, right->type})));
+    MethodSignature ms = MethodSignature({name, {left->type, right->type}});
+
+    if (!left->type->contains(ms))
+        std::cout << "Undefined method -> " <<left->type->name << ":" << Method::signature(ms) << std::endl;
+
+    Method method(left->type->methods.at(ms));
+
     return method.implementation({(void*)left, (void*)right});
-
 }
 
-void *ExpressionEvaluator::visit(const Sub *node, void *data) const
-{
+void *ExpressionEvaluator::visit(const Add *node, void *) const{
+    return evaluateBinaryMethodCall(node, Name("+"));
 }
 
-void *ExpressionEvaluator::visit(const Mul *node, void *data) const
-{
+void *ExpressionEvaluator::visit(const Sub *node, void *data) const{
+    return evaluateBinaryMethodCall(node, Name("-"));
 }
 
-void *ExpressionEvaluator::visit(const Div *node, void *data) const
-{
+void *ExpressionEvaluator::visit(const Mul *node, void *data) const{
+    return evaluateBinaryMethodCall(node, Name("*"));
 }
 
-void *ExpressionEvaluator::visit(const Mod *node, void *data) const
-{
+void *ExpressionEvaluator::visit(const Div *node, void *data) const{
+    return evaluateBinaryMethodCall(node, Name("/"));
+}
 
+void *ExpressionEvaluator::visit(const Mod *node, void *data) const{
+    return evaluateBinaryMethodCall(node, Name("%"));
 }
 
 void *ExpressionEvaluator::visit(const Int *node, void *) const{
@@ -47,49 +55,38 @@ void *ExpressionEvaluator::visit(const Boolean *node, void *) const{
 }
 
 
-void *ExpressionEvaluator::visit(const LessThan *node, void *) const
-{
-
+void *ExpressionEvaluator::visit(const LessThan *node, void *) const{
+    return evaluateBinaryMethodCall(node, Name("<"));
 }
 
-void *ExpressionEvaluator::visit(const LessEqual *node, void *) const
-{
-
+void *ExpressionEvaluator::visit(const LessEqual *node, void *) const{
+    return evaluateBinaryMethodCall(node, Name("<="));
 }
 
-void *ExpressionEvaluator::visit(const GreaterEqual *node, void *) const
-{
-
+void *ExpressionEvaluator::visit(const GreaterEqual *node, void *) const{
+    return evaluateBinaryMethodCall(node, Name(">="));
 }
 
-void *ExpressionEvaluator::visit(const GreaterThan *node, void *) const
-{
-
+void *ExpressionEvaluator::visit(const GreaterThan *node, void *) const{
+    return evaluateBinaryMethodCall(node, Name(">"));
 }
 
-void *ExpressionEvaluator::visit(const Equal *node, void *) const
-{
-
+void *ExpressionEvaluator::visit(const Equal *node, void *) const{
+    return evaluateBinaryMethodCall(node, Name("=="));
 }
 
-void *ExpressionEvaluator::visit(const NotEqual *node, void *) const
-{
-
+void *ExpressionEvaluator::visit(const NotEqual *node, void *) const{
 }
 
-void *ExpressionEvaluator::visit(const Not *node, void *) const
-{
-
+void *ExpressionEvaluator::visit(const Not *node, void *) const{
 }
 
-void *ExpressionEvaluator::visit(const And *node, void *) const
-{
-
+void *ExpressionEvaluator::visit(const And *node, void *) const{
+    return evaluateBinaryMethodCall(node, Name(" AND "));
 }
 
-void *ExpressionEvaluator::visit(const Or *node, void *) const
-{
-
+void *ExpressionEvaluator::visit(const Or *node, void *) const{
+    return evaluateBinaryMethodCall(node, Name(" OR "));
 }
 
 void *ExpressionEvaluator::visit(const TypeId *node, void *data) const

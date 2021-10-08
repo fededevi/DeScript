@@ -6,9 +6,11 @@
 class TypeInt : public DataType
 {
 public:
-    static TypeInt *instance();
+    static TypeInt *instance() {
+        static TypeInt instance;
+        return &instance;
+    }
 
-public:
     void load();
 private:
     TypeInt();
@@ -22,6 +24,7 @@ public:
         return &instance;
     }
 
+    void load();
 private:
     TypeFloat();
 };
@@ -34,6 +37,7 @@ public:
         return &instance;
     }
 
+    void load();
 private:
     TypeBool();
 };

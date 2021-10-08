@@ -31,8 +31,11 @@ void alpiScriptBooleanTest01(){
 int main(int , char** ) {
 
     TypeInt::instance()->load();
+    TypeFloat::instance()->load();
+    TypeBool::instance()->load();
 
     std::cout <<  Expression::evaluate("1 + 1")->toString() << std::endl;
+    std::cout <<  Expression::evaluate(".1 + 2")->toString() << std::endl;
     //alpiScriptArithmeticTest01();
     //alpiScriptArithmeticTest02();
     //alpiScriptBooleanTest01();
