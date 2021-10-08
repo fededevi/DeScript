@@ -5,27 +5,18 @@
 #include <assert.h>
 
 void alpiScriptArithmeticTest01(){
-    int i, j;
+    assert(Expression::evaluate("(1-.5-7) * .34")->toFloat()->value == ((1-.5-7) * .34));
+    assert(Expression::evaluate("(8*45) * (1-.5-7) * .34")->toFloat()->value == (8*45) * (1-.5-7) * .34);
 
-    i = (1-5+7) + 34 + (1 * 45)+ 3- 3* (8*45)+(56/7) + 43 % 99;
-    j = Expression::evaluate("(1-5+7) + 34 + (1 * 45)+ 3- 3* (8*45)+(56/7) + 43 % 99")->toInt()->value;
-    assert(i == j);
+    assert(Expression::evaluate("(1-5+7) + 34 + (1 * 45)+ 3- 3* (8*45)+(56/7) + 43 % 99")->toInt()->value == (1-5+7) + 34 + (1 * 45)+ 3- 3* (8*45)+(56/7) + 43 % 99);
+    assert(Expression::evaluate("(1-5-7) % 34")->toInt()->value == (1-5-7) % 34);
 
-    i = (1-5-7) % 34;
-    j = Expression::evaluate("(1-5-7) % 34")->toInt()->value;
-    assert(i == j);
+    assert(Expression::evaluate("10 % 1")->toInt()->value == (10 % 1));
+    assert(Expression::evaluate("10 % 100")->toInt()->value == (10 % 100));
 }
 
 void alpiScriptArithmeticTest02(){
-    double x,y;
 
-    x = (1-.5-7) * .34;
-    y = Expression::evaluate("(1-.5-7) * .34")->toFloat()->value;
-    assert(x == y);
-
-    x = (8*45) * (1-.5-7) * .34;
-    y = Expression::evaluate("(8*45) * (1-.5-7) * .34")->toFloat()->value;
-    assert(x == y);
 }
 
 void alpiScriptBooleanTest01(){
@@ -133,14 +124,25 @@ void alpiScriptBooleanTest01(){
 
 }
 
+void alpiScriptBooleanTest02(){
+    assert( Expression::evaluate("true || false")->toBool()->value == (true || false) );
+    assert( Expression::evaluate("false || true")->toBool()->value == (false || true) );
+    assert( Expression::evaluate("false || false")->toBool()->value == (false || false) );
+    assert( Expression::evaluate("true || true")->toBool()->value == (true || true) );
+
+    assert( Expression::evaluate("false && true")->toBool()->value == (false && true) );
+    assert( Expression::evaluate("true && false")->toBool()->value == (true && false) );
+    assert( Expression::evaluate("false && false")->toBool()->value == (false && false) );
+    assert( Expression::evaluate("true && true")->toBool()->value == (true && true) );
+}
+
 int main(int , char** ) {
 
     TypeInt::instance()->load();
     TypeFloat::instance()->load();
     TypeBool::instance()->load();
 
-    //std::cout <<  Expression::evaluate("1 + 1")->toString() << std::endl;
-    //std::cout <<  Expression::evaluate(".1 + 2")->toString() << std::endl;
+    alpiScriptBooleanTest02();
     alpiScriptArithmeticTest01();
     alpiScriptArithmeticTest02();
     alpiScriptBooleanTest01();

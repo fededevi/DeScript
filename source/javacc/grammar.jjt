@@ -1,6 +1,6 @@
 
 options {
-  LOOKAHEAD = 30;
+  LOOKAHEAD = 3;
   FORCE_LA_CHECK = true;
 
   //#CHOICE_AMBIGUITY_CHECK = 2;
@@ -46,9 +46,6 @@ TOKEN : { < ELSE : "else" > }
 TOKEN : { < WHILE : "while" > }
 TOKEN : { < FUNCTION : "function" > }
 
-TOKEN : { < TRUE : "true" > }
-TOKEN : { < FALSE : "false" > }
-
 TOKEN : { < LP : "(" > }
 TOKEN : { < RP : ")" > }
 TOKEN : { < LGP : "{" > }
@@ -77,7 +74,7 @@ TOKEN : { < NOT : "!" > }
 TOKEN : { < #DIGIT : ["0"-"9"] > }
 TOKEN : { < #LETTER : ["A"-"Z","_","a"-"z"] > }
 
-TOKEN : { < BOOLEAN : <FALSE> | <TRUE> > }
+TOKEN : { < BOOLEAN : "true" | "false" > }
 
 TOKEN : { < INTEGER : (<DIGIT>)+ > }
 
@@ -109,12 +106,6 @@ void SUB_parse()      : {} { ( MUL_parse() ( <SUB> MUL_parse()  )* )  #Sub(>1)  
 void MUL_parse()      : {} { ( DIV_parse() ( <MUL> DIV_parse()  )* )  #Mult(>1)          }
 void DIV_parse()      : {} { ( MOD_parse() ( <DIV> MOD_parse()  )* )  #Division(>1)      }
 void MOD_parse()      : {} { ( unary()     ( <MOD> unary()      )* )  #Module(>1)        }
-
-
-
-
-
-
 
 void unary() : {}
 {
