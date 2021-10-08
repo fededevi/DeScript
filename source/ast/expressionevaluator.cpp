@@ -74,5 +74,15 @@ void *ExpressionEvaluator::visit(const Not *node, void *data) const
 
 }
 
+void *ExpressionEvaluator::visit(const And *node, void *data) const
+{
+
+}
+
+void *ExpressionEvaluator::visit(const Or *node, void *data) const
+{
+
+}
+
 
 

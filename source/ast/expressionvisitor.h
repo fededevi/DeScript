@@ -18,6 +18,8 @@ class Equal;
 class NotEqual;
 class Not;
 class Boolean;
+class And;
+class Or;
 
 class ExpressionVisitor
 {
@@ -41,4 +43,7 @@ public:
     virtual void *visit(const Equal        * node, void *data) const = 0;
     virtual void *visit(const NotEqual     * node, void *data) const = 0;
     virtual void *visit(const Not          * node, void *data) const = 0;
+
+    virtual void *visit(const And          * node, void *data) const = 0;
+    virtual void *visit(const Or           * node, void *data) const = 0;
 };

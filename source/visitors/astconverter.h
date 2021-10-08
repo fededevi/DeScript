@@ -25,7 +25,6 @@ public:
     virtual void *visit(const ASTFloat *node, void *data) override;
     virtual void *visit(const ASTBoolean *node, void *data) override;
 
-    // Booleans
     virtual void *visit(const ASTLessThan *node, void *data) override;
     virtual void *visit(const ASTLessEqual *node, void *data) override;
     virtual void *visit(const ASTGreaterEqual *node, void *data) override;
@@ -33,11 +32,9 @@ public:
     virtual void *visit(const ASTEqual *node, void *data) override;
     virtual void *visit(const ASTNotEqual *node, void *data) override;
     virtual void *visit(const ASTNot *node, void *data) override;
-/*
-private:
-    void fillOperands(BinaryExpression * e, const AlpiScript::SimpleNode * node);
-    void fillOperands(UnaryExpression * e, const AlpiScript::SimpleNode * node);
-*/
+
+    virtual void *visit(const ASTAnd *node, void *data) override;
+    virtual void *visit(const ASTOr *node, void *data) override;
 };
 
 }

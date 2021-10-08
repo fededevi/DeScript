@@ -25,14 +25,12 @@ void alpiScriptArithmeticTest02(){
 
 void alpiScriptBooleanTest01(){
     bool value = Expression::evaluate("1.0 < as()")->toBool()->value;
-    //assert(value);
 }
 
-
 int main(int , char** ) {
-    std::cout <<  Expression::evaluate("1 + (5 + 7) + 34 + 1 * 45 + 3 > 3 * 8 * 45 + 56 / 7 + 43 % 99")->toString() << std::endl;
-    alpiScriptArithmeticTest01();
-    alpiScriptArithmeticTest02();
+    std::cout <<  Expression::parse("1 + (5 + 7) + 34 + 1 * 45 && 3 > 3 * 8 * 45 + 56 / 7 + 43 % 99")->toString() << std::endl;
+    //alpiScriptArithmeticTest01();
+    //alpiScriptArithmeticTest02();
     //alpiScriptBooleanTest01();
     std::cout << "All tests succesfull." << std::endl;
     return 0;

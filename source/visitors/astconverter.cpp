@@ -111,6 +111,14 @@ void *AstConverter::visit(const ASTNot *node, void *){
     return fill<Not>(this, node);
 }
 
+void *AstConverter::visit(const ASTAnd *node, void *) {
+    return fill<And>(this, node);
+}
+
+void *AstConverter::visit(const ASTOr *node, void * ) {
+    return fill<Or>(this, node);
+}
+
 void *AstConverter::visit(const ASTFloat * node, void *){
     char * c = (char *)(node->jjtGetValue());
     return new Float(std::stod(c));
@@ -121,12 +129,8 @@ void *AstConverter::visit(const ASTBoolean *node, void *){
 
     if (std::string(c) == "true")
         return new Boolean(true);
-
-    if (std::string(c) == "false")
+    else
         return new Boolean(false);
-
-    throw runtime_error("Invalid boolean.");
-    return nullptr;
 }
 
 void * AstConverter::visit(const ASTInteger * node, void *){

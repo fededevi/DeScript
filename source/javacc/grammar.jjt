@@ -87,19 +87,22 @@ TOKEN : { <IDENTIFIER: <LETTER> (<LETTER> | <DIGIT>)* > }
 
 
 ASTStart * parse() #Start : {} {
-    expression() { return jjtThis; }
+    expression()  { return jjtThis; }
 }
 
 void expression() : {} {
-  LT_parse()
+  AND_parse()
 }
 
-void LT_parse()       : {} { ( LE_parse()  ( <LT> LE_parse()    )* )  #LessThan(>1)      }
-void LE_parse()       : {} { ( GE_parse()  ( <LE> GE_parse()    )* )  #LessEqual(>1)     }
-void GE_parse()       : {} { ( GT_parse()  ( <GE> GT_parse()    )* )  #GreaterEqual(>1)  }
-void GT_parse()       : {} { ( EQ_parse()  ( <GT> EQ_parse()    )* )  #GreaterThan(>1)   }
-void EQ_parse()       : {} { ( NE_parse()  ( <EQ> NE_parse()    )* )  #Equal(>1)         }
-void NE_parse()       : {} { ( ADD_parse() ( <NE> ADD_parse()   )* )  #NotEqual(>1)      }
+void AND_parse()      : {} { ( OR_parse()  ( <AND> OR_parse()   )* )  #And(>1)           }
+void OR_parse()       : {} { ( LT_parse()  ( <OR>  LT_parse()   )* )  #Or(>1)            }
+
+void LT_parse()       : {} { ( LE_parse()  ( <LT>  LE_parse()   )* )  #LessThan(>1)      }
+void LE_parse()       : {} { ( GE_parse()  ( <LE>  GE_parse()   )* )  #LessEqual(>1)     }
+void GE_parse()       : {} { ( GT_parse()  ( <GE>  GT_parse()   )* )  #GreaterEqual(>1)  }
+void GT_parse()       : {} { ( EQ_parse()  ( <GT>  EQ_parse()   )* )  #GreaterThan(>1)   }
+void EQ_parse()       : {} { ( NE_parse()  ( <EQ>  NE_parse()   )* )  #Equal(>1)         }
+void NE_parse()       : {} { ( ADD_parse() ( <NE>  ADD_parse()  )* )  #NotEqual(>1)      }
 
 void ADD_parse()      : {} { ( SUB_parse() ( <ADD> SUB_parse()  )* )  #Add(>1)           }
 void SUB_parse()      : {} { ( MUL_parse() ( <SUB> MUL_parse()  )* )  #Sub(>1)           }

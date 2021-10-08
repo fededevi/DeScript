@@ -102,3 +102,13 @@ void *ExpressionWriter::visit(const Not *node, void *data) const
     return writeBinaryOperation(node, data, "!");
 }
 
+void *ExpressionWriter::visit(const And *node, void *data) const
+{
+    return writeBinaryOperation(node, data, " AND ");
+}
+
+void *ExpressionWriter::visit(const Or *node, void *data) const
+{
+    return writeBinaryOperation(node, data, " OR ");
+}
+

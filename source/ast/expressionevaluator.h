@@ -39,4 +39,7 @@ public:
     virtual void *visit(const Equal *node, void *data) const;
     virtual void *visit(const NotEqual *node, void *data) const;
     virtual void *visit(const Not *node, void *data) const;
+
+    virtual void *visit(const And *node, void *data) const;
+    virtual void *visit(const Or *node, void *data) const;
 };

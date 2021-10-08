@@ -24,7 +24,9 @@ HEADERS += \
     source/ast/expressionevaluator.h \
     source/ast/expressionvisitor.h \
     source/ast/expressionwriter.h \
+    source/ast/type.h \
     source/javacc/generated/ASTAdd.h \
+    source/javacc/generated/ASTAnd.h \
     source/javacc/generated/ASTBoolean.h \
     source/javacc/generated/ASTDivision.h \
     source/javacc/generated/ASTEqual.h \
@@ -39,6 +41,7 @@ HEADERS += \
     source/javacc/generated/ASTMult.h \
     source/javacc/generated/ASTNot.h \
     source/javacc/generated/ASTNotEqual.h \
+    source/javacc/generated/ASTOr.h \
     source/javacc/generated/ASTStart.h \
     source/javacc/generated/ASTSub.h \
     source/javacc/generated/CharStream.h \
@@ -64,7 +67,9 @@ SOURCES += \
     source/ast/expressionevaluator.cpp \
     source/ast/expressionvisitor.cpp \
     source/ast/expressionwriter.cpp \
+    source/ast/type.cpp \
     source/javacc/generated/ASTAdd.cc \
+    source/javacc/generated/ASTAnd.cc \
     source/javacc/generated/ASTBoolean.cc \
     source/javacc/generated/ASTDivision.cc \
     source/javacc/generated/ASTEqual.cc \
@@ -79,6 +84,7 @@ SOURCES += \
     source/javacc/generated/ASTMult.cc \
     source/javacc/generated/ASTNot.cc \
     source/javacc/generated/ASTNotEqual.cc \
+    source/javacc/generated/ASTOr.cc \
     source/javacc/generated/ASTStart.cc \
     source/javacc/generated/ASTSub.cc \
     source/javacc/generated/CharStream.cc \

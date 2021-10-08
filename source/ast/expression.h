@@ -52,6 +52,9 @@ class Equal        : public BooleanExpression { ACCEPT_VISITOR; };
 class NotEqual     : public BooleanExpression { ACCEPT_VISITOR; };
 class Not          : public BooleanExpression { ACCEPT_VISITOR; };
 
+class And          : public BooleanExpression { ACCEPT_VISITOR; };
+class Or           : public BooleanExpression { ACCEPT_VISITOR; };
+
 class Literal : public Expression {};
 
 class Number : public Literal{
