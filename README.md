@@ -1,11 +1,5 @@
-# DeOcLa (DOL) 
-#### a Java / javacc -very basic- interpreted language
-
-#### Main components:
-A lexer and parser based on **javacc**, the language grammar is defined in file: **deocla.jj**
-An **abstract syntax tree** written in Java
-An **interpreter**: basically the **execute** and **evaluate** methods inside the **AST** nodes.
-
+# DeScript  
+#### An interpreted language
 
 #### Howto:
 In order to build the parser you need to preprocess the deocl.jj file with javacc and put the output files in the parser.jj package.
