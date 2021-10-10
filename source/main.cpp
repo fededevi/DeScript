@@ -16,10 +16,41 @@ void alpiScriptArithmeticTest01(){
 }
 
 void alpiScriptArithmeticTest02(){
+    assert(Expression::evaluate("-1 + -1")->toInt()->value  == -1 + -1);
+    assert(Expression::evaluate("-1 + 0 " )->toInt()->value == -1 + 0);
+    assert(Expression::evaluate("-1 + 1 " )->toInt()->value == -1 + 1);
+    assert(Expression::evaluate(" 0 + -1")->toInt()->value  ==  0 + -1);
+    assert(Expression::evaluate(" 0 + 0 " )->toInt()->value ==  0 + 0);
+    assert(Expression::evaluate(" 0 + 1 " )->toInt()->value ==  0 + 1);
+    assert(Expression::evaluate(" 1 + -1")->toInt()->value  ==  1 + -1);
+    assert(Expression::evaluate(" 1 + 0 " )->toInt()->value ==  1 + 0);
+    assert(Expression::evaluate(" 1 + 1 " )->toInt()->value ==  1 + 1);
     assert(Expression::evaluate("10 - -6")->toInt()->value == (10 - -6));
     assert(Expression::evaluate("10 * -6")->toInt()->value == (10 * -6));
     assert(Expression::evaluate("-10 - -6")->toInt()->value == (-10 - -6));
     assert(Expression::evaluate("-10 * -6")->toInt()->value == (-10 * -6));
+    assert(Expression::evaluate("10 - -6 + -8")->toInt()->value == (10 - -6 + -8));
+    assert(Expression::evaluate("10 * -6 + -8")->toInt()->value == (10 * -6 + -8));
+    assert(Expression::evaluate("-10 - -6 + -8")->toInt()->value == (-10 - -6 + -8));
+    assert(Expression::evaluate("-10 * -6 + -8")->toInt()->value == (-10 * -6 + -8));
+
+    assert(Expression::evaluate("-.1 + -.1")->toFloat()->value  == - .1 + -.1);
+    assert(Expression::evaluate("-.1 +  .0 " )->toFloat()->value == -.1 +  .0);
+    assert(Expression::evaluate("-.1 +  .1 " )->toFloat()->value == -.1 +  .1);
+    assert(Expression::evaluate(" .0 + -.1")->toFloat()->value  ==   .0 + -.1);
+    assert(Expression::evaluate(" .0 +  .0 " )->toFloat()->value ==  .0 +  .0);
+    assert(Expression::evaluate(" .0 +  .1 " )->toFloat()->value ==  .0 +  .1);
+    assert(Expression::evaluate(" .1 + -.1")->toFloat()->value  ==   .1 + -.1);
+    assert(Expression::evaluate(" .1 +  .0 " )->toFloat()->value ==  .1 +  .0);
+    assert(Expression::evaluate(" .1 +  .1 " )->toFloat()->value ==  .1 +  .1);
+    assert(Expression::evaluate(" .10 - -.6")->toFloat()->value == (.10 - -.6));
+    assert(Expression::evaluate(" .10 * -.6")->toFloat()->value == (.10 * -.6));
+    assert(Expression::evaluate("-.10 - -.6")->toFloat()->value == (-.10 - -.6));
+    assert(Expression::evaluate("-.10 * -.6")->toFloat()->value == (-.10 * -.6));
+    assert(Expression::evaluate(" .10 - -.6 + -.8")->toFloat()->value == (.10 - -.6 + -.8));
+    assert(Expression::evaluate(" .10 * -.6 + -.8")->toFloat()->value == (.10 * -.6 + -.8));
+    assert(Expression::evaluate("-.10 - -.6 + -.8")->toFloat()->value == (-.10 - -.6 + -.8));
+    assert(Expression::evaluate("-.10 * -.6 + -.8")->toFloat()->value == (-.10 * -.6 + -.8));
 }
 
 void alpiScriptBooleanTest01(){
