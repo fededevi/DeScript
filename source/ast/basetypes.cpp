@@ -7,6 +7,9 @@
 
 void TypeBool::load()
 {
+    addMethod( Method(BOOL,  Name("!"), {BOOL}, [](std::vector<void *> params) -> Boolean *{
+                   return new Boolean(!static_cast<Boolean *>(params[0])->value);
+               }));
     addMethod( Method(BOOL,  Name("=="), {BOOL, BOOL}, [](std::vector<void *> params) -> Boolean *{
                    return new Boolean(static_cast<Boolean *>(params[0])->value == static_cast<Boolean *>(params[1])->value);
                }));

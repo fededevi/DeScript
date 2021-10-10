@@ -125,6 +125,22 @@ void alpiScriptBooleanTest01(){
     assert( Expression::evaluate(" 1 != .2")->toBool()->value == (1  != .2) );
     assert( Expression::evaluate(" 2 != .1")->toBool()->value == (2  != .1) );
 
+    assert( Expression::evaluate("!( 1 !=  1)")->toBool()->value ==  !(1  != 1) );
+    assert( Expression::evaluate("!( 1 !=  1)")->toBool()->value ==  !(1  != 1) );
+    assert( Expression::evaluate("!(.1 !=  1)")->toBool()->value ==  !(.1 != 1) );
+    assert( Expression::evaluate("!(.1 !=  1)")->toBool()->value ==  !(.1 != 1) );
+    assert( Expression::evaluate("!(.1 != .1)")->toBool()->value ==  !(.1 != .1) );
+    assert( Expression::evaluate("!(.1 != .1)")->toBool()->value ==  !(.1 != .1) );
+    assert( Expression::evaluate("!( 1 != .1)")->toBool()->value ==  !(1  != .1) );
+    assert( Expression::evaluate("!( 1 != .1)")->toBool()->value ==  !(1  != .1) );
+    assert( Expression::evaluate("!( 1 !=  2)")->toBool()->value ==  !(1  != 2) );
+    assert( Expression::evaluate("!( 2 !=  1)")->toBool()->value ==  !(2  != 1) );
+    assert( Expression::evaluate("!(.1 !=  2)")->toBool()->value ==  !(.1 != 2) );
+    assert( Expression::evaluate("!(.2 !=  1)")->toBool()->value ==  !(.2 != 1) );
+    assert( Expression::evaluate("!(.1 != .2)")->toBool()->value ==  !(.1 != .2) );
+    assert( Expression::evaluate("!(.2 != .1)")->toBool()->value ==  !(.2 != .1) );
+    assert( Expression::evaluate("!( 1 != .2)")->toBool()->value ==  !(1  != .2) );
+    assert( Expression::evaluate("!( 2 != .1)")->toBool()->value ==  !(2  != .1) );
 }
 
 void alpiScriptBooleanTest02(){
@@ -137,6 +153,16 @@ void alpiScriptBooleanTest02(){
     assert( Expression::evaluate("true && false")->toBool()->value == (true && false) );
     assert( Expression::evaluate("false && false")->toBool()->value == (false && false) );
     assert( Expression::evaluate("true && true")->toBool()->value == (true && true) );
+
+    assert( Expression::evaluate("(true || false ) && !(true || false)")->toBool()->value == ((true || false ) && !(true || false)) );
+    assert( Expression::evaluate("(false || true ) && !(false || true)")->toBool()->value == ((false || true ) && !(false || true)) );
+    assert( Expression::evaluate("(false || false) && !(false || true)")->toBool()->value == ((false || false) && !(false || true)) );
+    assert( Expression::evaluate("(true || true  ) && !(false || true)")->toBool()->value == ((true || true  ) && !(false || true)) );
+
+    assert( Expression::evaluate("(false && true ) && !(true || false)")->toBool()->value == ((false && true ) && !(true || false)) );
+    assert( Expression::evaluate("(true && false ) && !(false || true)")->toBool()->value == ((true && false ) && !(false || true)) );
+    assert( Expression::evaluate("(false && false) && !(false || true)")->toBool()->value == ((false && false) && !(false || true)) );
+    assert( Expression::evaluate("(true && true  ) && !(false || true)")->toBool()->value == ((true && true  ) && !(false || true)) );
 }
 
 int main(int , char** ) {
