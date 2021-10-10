@@ -4,9 +4,9 @@
 #include <stdexcept>
 #include <iostream>
 
-void * evaluateBinaryMethodCall(const BinaryExpression *node, const Name & name) {
-    std::unique_ptr<Literal> left  = std::unique_ptr<Literal>(static_cast<Literal *>(node->left->evaluate()));
-    std::unique_ptr<Literal> right = std::unique_ptr<Literal>(static_cast<Literal *>(node->right->evaluate()));
+void * evaluateBinaryMethodCall(const BinaryExpression *node, const Name & name, Context * ctx) {
+    std::unique_ptr<Literal> left  = std::unique_ptr<Literal>(static_cast<Literal *>(node->left->evaluate(ctx)));
+    std::unique_ptr<Literal> right = std::unique_ptr<Literal>(static_cast<Literal *>(node->right->evaluate(ctx)));
 
     MethodSignature ms = MethodSignature({name, {left->type, right->type}});
 
@@ -18,8 +18,8 @@ void * evaluateBinaryMethodCall(const BinaryExpression *node, const Name & name)
     return method.implementation({left.get(), right.get()});
 }
 
-void * evaluateUnaryMethodCall(const UnaryExpression *node, const Name & name) {
-    std::unique_ptr<Literal> op  = std::unique_ptr<Literal>(static_cast<Literal *>(node->operand->evaluate()));
+void * evaluateUnaryMethodCall(const UnaryExpression *node, const Name & name, Context * ctx) {
+    std::unique_ptr<Literal> op  = std::unique_ptr<Literal>(static_cast<Literal *>(node->operand->evaluate(ctx)));
 
     MethodSignature ms = MethodSignature({name, {op->type}});
 
@@ -32,32 +32,33 @@ void * evaluateUnaryMethodCall(const UnaryExpression *node, const Name & name) {
 
 }
 
-void *ExpressionEvaluator::visit(const Add *node, void *) const{
-    return evaluateBinaryMethodCall(node, Name("+"));
+void *ExpressionEvaluator::visit(const Add *node, void * data) const{
+    return evaluateBinaryMethodCall(node, Name("+"), static_cast<Context *>(data) );
 }
 
 void *ExpressionEvaluator::visit(const Sub *node, void *data) const{
-    return evaluateBinaryMethodCall(node, Name("-"));
+    return evaluateBinaryMethodCall(node, Name("-"), static_cast<Context *>(data));
 }
 
 void *ExpressionEvaluator::visit(const Mul *node, void *data) const{
-    return evaluateBinaryMethodCall(node, Name("*"));
+    return evaluateBinaryMethodCall(node, Name("*"), static_cast<Context *>(data));
 }
 
 void *ExpressionEvaluator::visit(const Div *node, void *data) const{
-    return evaluateBinaryMethodCall(node, Name("/"));
+    return evaluateBinaryMethodCall(node, Name("/"), static_cast<Context *>(data));
 }
 
 void *ExpressionEvaluator::visit(const Mod *node, void *data) const{
-    return evaluateBinaryMethodCall(node, Name("%"));
+    return evaluateBinaryMethodCall(node, Name("%"), static_cast<Context *>(data));
 }
 
 void *ExpressionEvaluator::visit(const Int *node, void *) const{
     return new Int(node->value);
 }
 
-void *ExpressionEvaluator::visit(const Id *node, void *) const{
-    return new Id(node->value);
+void *ExpressionEvaluator::visit(const Id *node, void * data) const{
+    Context * c = static_cast<Context *>(data);
+    return c->data.at(node->value).get();
 }
 
 void *ExpressionEvaluator::visit(const Float *node, void *) const{
@@ -69,45 +70,45 @@ void *ExpressionEvaluator::visit(const Boolean *node, void *) const{
 }
 
 
-void *ExpressionEvaluator::visit(const LessThan *node, void *) const{
-    return evaluateBinaryMethodCall(node, Name("<"));
+void *ExpressionEvaluator::visit(const LessThan *node, void * data) const{
+    return evaluateBinaryMethodCall(node, Name("<"), static_cast<Context *>(data));
 }
 
-void *ExpressionEvaluator::visit(const LessEqual *node, void *) const{
-    return evaluateBinaryMethodCall(node, Name("<="));
+void *ExpressionEvaluator::visit(const LessEqual *node, void * data) const{
+    return evaluateBinaryMethodCall(node, Name("<="), static_cast<Context *>(data));
 }
 
-void *ExpressionEvaluator::visit(const GreaterEqual *node, void *) const{
-    return evaluateBinaryMethodCall(node, Name(">="));
+void *ExpressionEvaluator::visit(const GreaterEqual *node, void * data) const{
+    return evaluateBinaryMethodCall(node, Name(">="), static_cast<Context *>(data));
 }
 
-void *ExpressionEvaluator::visit(const GreaterThan *node, void *) const{
-    return evaluateBinaryMethodCall(node, Name(">"));
+void *ExpressionEvaluator::visit(const GreaterThan *node, void * data) const{
+    return evaluateBinaryMethodCall(node, Name(">"), static_cast<Context *>(data));
 }
 
-void *ExpressionEvaluator::visit(const Equal *node, void *) const{
-    return evaluateBinaryMethodCall(node, Name("=="));
+void *ExpressionEvaluator::visit(const Equal *node, void * data) const{
+    return evaluateBinaryMethodCall(node, Name("=="), static_cast<Context *>(data));
 }
 
-void *ExpressionEvaluator::visit(const NotEqual *node, void *) const{
-    return evaluateBinaryMethodCall(node, Name("!="));
+void *ExpressionEvaluator::visit(const NotEqual *node, void * data) const{
+    return evaluateBinaryMethodCall(node, Name("!="), static_cast<Context *>(data));
 }
 
-void *ExpressionEvaluator::visit(const Not *node, void *) const{
-    return evaluateUnaryMethodCall(node, Name("!"));
+void *ExpressionEvaluator::visit(const Not *node, void * data) const{
+    return evaluateUnaryMethodCall(node, Name("!"), static_cast<Context *>(data));
 }
 
-void *ExpressionEvaluator::visit(const Neg *node, void *) const
+void *ExpressionEvaluator::visit(const Neg *node, void * data) const
 {
-    return evaluateUnaryMethodCall(node, Name("-"));
+    return evaluateUnaryMethodCall(node, Name("-"), static_cast<Context *>(data));
 }
 
-void *ExpressionEvaluator::visit(const And *node, void *) const{
-    return evaluateBinaryMethodCall(node, Name("&&"));
+void *ExpressionEvaluator::visit(const And *node, void * data) const{
+    return evaluateBinaryMethodCall(node, Name("&&"), static_cast<Context *>(data));
 }
 
-void *ExpressionEvaluator::visit(const Or *node, void *) const{
-    return evaluateBinaryMethodCall(node, Name("||"));
+void *ExpressionEvaluator::visit(const Or *node, void * data) const{
+    return evaluateBinaryMethodCall(node, Name("||"), static_cast<Context *>(data));
 }
 
 void *ExpressionEvaluator::visit(const TypeId *node, void *data) const

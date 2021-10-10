@@ -21,6 +21,7 @@ DISTFILES += \
 
 HEADERS += \
     source/ast/basetypes.h \
+    source/ast/context.h \
     source/ast/datatype.h \
     source/ast/expression.h \
     source/ast/expressionevaluator.h \
@@ -67,6 +68,7 @@ HEADERS += \
 
 SOURCES += \
     source/ast/basetypes.cpp \
+    source/ast/context.cpp \
     source/ast/datatype.cpp \
     source/ast/expression.cpp \
     source/ast/expressionevaluator.cpp \

@@ -16,18 +16,24 @@ Expression *Expression::parse(const std::string & input)
     return astconv.parse(input + "\n");
 }
 
-Expression *Expression::evaluate() const
+Expression *Expression::evaluate( Context * ctx ) const
 {
     static ExpressionEvaluator evaluator;
-    return static_cast<Expression *>(accept(&evaluator, nullptr));
+    return static_cast<Expression *>(accept(&evaluator, &ctx));
 }
 
-Expression *Expression::evaluate(const std::string & s)
+Expression * Expression::compile( Context * ctx )
+{
+    static ExpressionEvaluator evaluator;
+    return static_cast<Expression *>(accept(&evaluator, &ctx));
+}
+
+Expression *Expression::evaluate(const std::string & s, Context * ctx)
 {
     std::cout << s << " -> " << std::flush;
     ExpressionUPtr toEvaluate (parse(s));
-    std::cout << toEvaluate->toString() << " -> " << std::endl;
-    Expression * evaluated = toEvaluate->evaluate();
+    std::cout << toEvaluate->toString() << " -> " << std::flush;
+    Expression * evaluated = toEvaluate->evaluate(ctx);
     std::cout << evaluated->toString() << std::endl;
     return evaluated;
 }

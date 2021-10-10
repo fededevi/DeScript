@@ -2,6 +2,7 @@
 
 #include "visitormacros.h"
 #include "expressionvisitor.h"
+#include "context.h"
 
 #include <memory>
 #include <string>
@@ -12,21 +13,25 @@ class Id;
 class Int;
 class Float;
 class Boolean;
+class Context;
 class DataType;
-
 class Expression {
 public:
     virtual void* accept(const ExpressionVisitor * v, void * d = nullptr) const = 0;
 public:
     static Expression * parse(const std::string &);
-    Expression * evaluate() const;
-    static Expression * evaluate(const std::string &);
+    Expression * compile( Context * ctx = nullptr );
+    Expression * evaluate( Context * ctx = nullptr ) const;
+    static Expression * evaluate(const std::string &, Context * ctx  = nullptr);
     std::string toString() const;
     bool isNumber();
     Id * toId();
     Int * toInt();
     Float * toFloat();
     Boolean * toBool();
+
+public:
+    DataType * type;
 };
 
 class BinaryExpression : public Expression {
@@ -61,13 +66,9 @@ class Not          : public UnaryExpression { VISITOR_ACCEPT(ExpressionVisitor);
 class And          : public BooleanExpression { VISITOR_ACCEPT(ExpressionVisitor); };
 class Or           : public BooleanExpression { VISITOR_ACCEPT(ExpressionVisitor); };
 
-class Literal : public Expression {
-public:
-    DataType * type;
-};
+class Literal : public Expression {};
 
-class Number : public Literal{
-};
+class Number : public Literal{};
 
 class Int : public Number {
     VISITOR_ACCEPT(ExpressionVisitor);

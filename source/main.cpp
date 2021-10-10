@@ -7,10 +7,8 @@
 void alpiScriptArithmeticTest01(){
     assert(Expression::evaluate("(1-.5-7) * .34")->toFloat()->value == ((1-.5-7) * .34));
     assert(Expression::evaluate("(8*45) * (1-.5-7) * .34")->toFloat()->value == (8*45) * (1-.5-7) * .34);
-
     assert(Expression::evaluate("(1-5+7) + 34 + (1 * 45)+ 3- 3* (8*45)+(56/7) + 43 % 99")->toInt()->value == (1-5+7) + 34 + (1 * 45)+ 3- 3* (8*45)+(56/7) + 43 % 99);
     assert(Expression::evaluate("(1-5-7) % 34")->toInt()->value == (1-5-7) % 34);
-
     assert(Expression::evaluate("10 % (1)")->toInt()->value == (10 % 1));
     assert(Expression::evaluate("10 % 100")->toInt()->value == (10 % 100));
 }
@@ -196,6 +194,15 @@ void alpiScriptBooleanTest02(){
     assert( Expression::evaluate("(true && true  ) && !(false || true)")->toBool()->value == ((true && true  ) && !(false || true)) );
 }
 
+void alpiScriptArithmeticTest03(){
+    Context ctx;
+    ctx.data.insert({"a", std::unique_ptr<Literal>(static_cast<Literal *>(Expression::evaluate("41")))});
+    ctx.data.insert({"b", std::unique_ptr<Literal>(static_cast<Literal *>(Expression::evaluate("85")))});
+
+    assert( Expression::evaluate("a + b", &ctx)->toInt()->value ==  41 + 85);
+
+}
+
 int main(int , char** ) {
 
     TypeInt::instance()->load();
@@ -206,6 +213,7 @@ int main(int , char** ) {
     alpiScriptBooleanTest01();
     alpiScriptArithmeticTest01();
     alpiScriptArithmeticTest02();
+    alpiScriptArithmeticTest03();
 
     std::cout << "All tests succesfull." << std::endl;
 
