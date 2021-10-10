@@ -23,6 +23,7 @@ class Or;
 class TypeId;
 class Parameter;
 class Method;
+class Neg;
 
 class ExpressionVisitor
 {
@@ -32,6 +33,7 @@ public:
     virtual void *visit(const Mul          * node, void *data) const = 0;
     virtual void *visit(const Div          * node, void *data) const = 0;
     virtual void *visit(const Mod          * node, void *data) const = 0;
+    virtual void *visit(const Neg          * node, void *data) const = 0;
 
     virtual void *visit(const Id           * node, void *data) const = 0;
     virtual void *visit(const TypeId       * node, void *data) const = 0;

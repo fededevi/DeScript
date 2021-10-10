@@ -22,6 +22,8 @@ public:
     virtual void *visit(const ASTSub *node, void *data) override;
     virtual void *visit(const ASTModule *node, void *data) override;
     virtual void *visit(const ASTDivision *node, void *data) override;
+    virtual void *visit(const ASTNegative *node, void *data) override;
+
     virtual void *visit(const ASTFloat *node, void *data) override;
     virtual void *visit(const ASTBoolean *node, void *data) override;
 
@@ -35,6 +37,7 @@ public:
 
     virtual void *visit(const ASTAnd *node, void *data) override;
     virtual void *visit(const ASTOr *node, void *data) override;
+
 };
 
 }

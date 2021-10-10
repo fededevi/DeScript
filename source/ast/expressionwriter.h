@@ -27,6 +27,7 @@ public:
     virtual void *visit(const Mul * node, void *data) const;
     virtual void *visit(const Div * node, void *data) const;
     virtual void *visit(const Mod * node, void *data) const;
+    virtual void *visit(const Neg * node, void *data) const;
 
 public:
     virtual void *visit(const Int * node, void *data) const;

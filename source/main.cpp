@@ -11,12 +11,15 @@ void alpiScriptArithmeticTest01(){
     assert(Expression::evaluate("(1-5+7) + 34 + (1 * 45)+ 3- 3* (8*45)+(56/7) + 43 % 99")->toInt()->value == (1-5+7) + 34 + (1 * 45)+ 3- 3* (8*45)+(56/7) + 43 % 99);
     assert(Expression::evaluate("(1-5-7) % 34")->toInt()->value == (1-5-7) % 34);
 
-    assert(Expression::evaluate("10 % 1")->toInt()->value == (10 % 1));
+    assert(Expression::evaluate("10 % (1)")->toInt()->value == (10 % 1));
     assert(Expression::evaluate("10 % 100")->toInt()->value == (10 % 100));
 }
 
 void alpiScriptArithmeticTest02(){
-
+    assert(Expression::evaluate("10 - -6")->toInt()->value == (10 - -6));
+    assert(Expression::evaluate("10 * -6")->toInt()->value == (10 * -6));
+    assert(Expression::evaluate("-10 - -6")->toInt()->value == (-10 - -6));
+    assert(Expression::evaluate("-10 * -6")->toInt()->value == (-10 * -6));
 }
 
 void alpiScriptBooleanTest01(){
@@ -143,9 +146,9 @@ int main(int , char** ) {
     TypeBool::instance()->load();
 
     alpiScriptBooleanTest02();
+    alpiScriptBooleanTest01();
     alpiScriptArithmeticTest01();
     alpiScriptArithmeticTest02();
-    alpiScriptBooleanTest01();
 
     std::cout << "All tests succesfull." << std::endl;
 

@@ -60,6 +60,10 @@ void *AstConverter::visit(const SimpleNode *, void *){ return nullptr; }
 
 void *AstConverter::visit(const ASTStart *node, void *)
 {
+    if (node->jjtGetNumChildren() != 1) {
+        std::cout << "Start node have " << node->jjtGetNumChildren() <<
+                     " children, abort." << std::endl;
+    }
     return node->jjtGetChild(0)->jjtAccept(this, null);
 }
 
@@ -73,6 +77,13 @@ void *AstConverter::visit(const ASTModule * node, void *){
 
 void *AstConverter::visit(const ASTDivision * node, void *){
     return fill<Div>(this, node);
+}
+
+void *AstConverter::visit(const ASTNegative *node, void *data)
+{
+    Neg * n = new Neg();
+    n->operand = std::unique_ptr<Expression>((Expression*)node->jjtGetChild(0)->jjtAccept(this, null));
+    return n;
 }
 
 void *AstConverter::visit(const ASTMult * node, void *){
@@ -108,7 +119,9 @@ void *AstConverter::visit(const ASTNotEqual *node, void *){
 }
 
 void *AstConverter::visit(const ASTNot *node, void *){
-    return fill<Not>(this, node);
+    Not * n = new Not();
+    n->operand = std::unique_ptr<Expression>((Expression*)node->jjtGetChild(0)->jjtAccept(this, null));
+    return n;
 }
 
 void *AstConverter::visit(const ASTAnd *node, void *) {

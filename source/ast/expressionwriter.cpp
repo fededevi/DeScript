@@ -39,6 +39,14 @@ void *ExpressionWriter::visit(const Mod *node, void *data) const
     return writeBinaryOperation(node, data, "%");
 }
 
+void *ExpressionWriter::visit(const Neg *node, void *data) const
+{
+    std::string * out = (std::string *)data;
+    out->append("-");
+    node->operand->accept(this, data);
+    return out;
+}
+
 void *ExpressionWriter::visit(const Int *node, void *data) const
 {
     std::string * out = (std::string *)data;
@@ -99,7 +107,10 @@ void *ExpressionWriter::visit(const NotEqual *node, void *data) const
 
 void *ExpressionWriter::visit(const Not *node, void *data) const
 {
-    return writeBinaryOperation(node, data, "!");
+    std::string * out = (std::string *)data;
+    out->append("!");
+    node->operand->accept(this, data);
+    return out;
 }
 
 void *ExpressionWriter::visit(const And *node, void *data) const

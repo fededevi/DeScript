@@ -41,6 +41,7 @@ HEADERS += \
     source/javacc/generated/ASTLessThan.h \
     source/javacc/generated/ASTModule.h \
     source/javacc/generated/ASTMult.h \
+    source/javacc/generated/ASTNegative.h \
     source/javacc/generated/ASTNot.h \
     source/javacc/generated/ASTNotEqual.h \
     source/javacc/generated/ASTOr.h \
@@ -84,6 +85,7 @@ SOURCES += \
     source/javacc/generated/ASTLessThan.cc \
     source/javacc/generated/ASTModule.cc \
     source/javacc/generated/ASTMult.cc \
+    source/javacc/generated/ASTNegative.cc \
     source/javacc/generated/ASTNot.cc \
     source/javacc/generated/ASTNotEqual.cc \
     source/javacc/generated/ASTOr.cc \

@@ -24,6 +24,7 @@ public:
     virtual void *visit(const Mul * node, void *data) const;
     virtual void *visit(const Div * node, void *data) const;
     virtual void *visit(const Mod * node, void *data) const;
+    virtual void *visit(const Neg *node, void *data) const override;
 
 public:
     virtual void *visit(const Id * node, void *data) const;
@@ -48,4 +49,5 @@ public:
     void *visit(const TypeId *node, void *data) const;
     void *visit(const Parameter *node, void *data) const;
     void *visit(const Method *node, void *data) const;
+
 };

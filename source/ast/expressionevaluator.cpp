@@ -18,6 +18,20 @@ void * evaluateBinaryMethodCall(const BinaryExpression *node, const Name & name)
     return method.implementation({left.get(), right.get()});
 }
 
+void * evaluateUnaryMethodCall(const UnaryExpression *node, const Name & name) {
+    std::unique_ptr<Literal> op  = std::unique_ptr<Literal>(static_cast<Literal *>(node->operand->evaluate()));
+
+    MethodSignature ms = MethodSignature({name, {op->type}});
+
+    if (!op->type->contains(ms))
+        std::cout << "Undefined method -> " <<op->type->name << ":" << Method::signature(ms) << std::endl;
+
+    Method method(op->type->methods.at(ms));
+
+    return method.implementation({op.get()});
+
+}
+
 void *ExpressionEvaluator::visit(const Add *node, void *) const{
     return evaluateBinaryMethodCall(node, Name("+"));
 }
@@ -80,6 +94,12 @@ void *ExpressionEvaluator::visit(const NotEqual *node, void *) const{
 }
 
 void *ExpressionEvaluator::visit(const Not *node, void *) const{
+    return evaluateUnaryMethodCall(node, Name("!"));
+}
+
+void *ExpressionEvaluator::visit(const Neg *node, void *) const
+{
+    return evaluateUnaryMethodCall(node, Name("-"));
 }
 
 void *ExpressionEvaluator::visit(const And *node, void *) const{

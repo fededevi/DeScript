@@ -1,35 +1,35 @@
 
 options {
-  LOOKAHEAD = 3;
-  FORCE_LA_CHECK = true;
+LOOKAHEAD = 13;
+FORCE_LA_CHECK = true;
 
-  //#CHOICE_AMBIGUITY_CHECK = 2;
-  //#OTHER_AMBIGUITY_CHECK = 1;
-  //#STATIC = false;
-  //ERROR_REPORTING = true;
-  //JAVA_UNICODE_ESCAPE = false;
-  //UNICODE_INPUT = false;
-  //IGNORE_CASE = false;
-  //USER_TOKEN_MANAGER = false;
-  //USER_CHAR_STREAM = false;
-  //BUILD_PARSER = true;
-  //BUILD_TOKEN_MANAGER = true;
+//#CHOICE_AMBIGUITY_CHECK = 2;
+//#OTHER_AMBIGUITY_CHECK = 1;
+//#STATIC = false;
+//ERROR_REPORTING = true;
+//JAVA_UNICODE_ESCAPE = false;
+//UNICODE_INPUT = false;
+//IGNORE_CASE = false;
+//USER_TOKEN_MANAGER = false;
+//USER_CHAR_STREAM = false;
+//BUILD_PARSER = true;
+//BUILD_TOKEN_MANAGER = true;
 
-  MULTI=true;
-  VISITOR=true;
-  NODE_DEFAULT_VOID=true;
-  VISITOR_DATA_TYPE="void*";
-  VISITOR_RETURN_TYPE="void*";
+MULTI=true;
+VISITOR=true;
+NODE_DEFAULT_VOID=true;
+VISITOR_DATA_TYPE="void*";
+VISITOR_RETURN_TYPE="void*";
 
-  OUTPUT_LANGUAGE = "c++";
-  NAMESPACE="AlpiScript";
-  OUTPUT_DIRECTORY="generated";
+OUTPUT_LANGUAGE = "c++";
+NAMESPACE="AlpiScript";
+OUTPUT_DIRECTORY="generated";
 
-  //DEBUG STUFF
-  //SANITY_CHECK = true;
-  //DEBUG_PARSER = true;
-  //DEBUG_LOOKAHEAD = true;
-  //DEBUG_TOKEN_MANAGER = true;
+//DEBUG STUFF
+//SANITY_CHECK = true;
+//DEBUG_PARSER = true;
+//DEBUG_LOOKAHEAD = true;
+//DEBUG_TOKEN_MANAGER = true;
 }
 
 PARSER_BEGIN(Parser)
@@ -76,19 +76,28 @@ TOKEN : { < #LETTER : ["A"-"Z","_","a"-"z"] > }
 
 TOKEN : { < BOOLEAN : "true" | "false" > }
 
-TOKEN : { < INTEGER : (<DIGIT>)+ > }
 
-TOKEN : { < FLOAT : <INTEGER> "." <INTEGER> | <INTEGER> "." | "." <INTEGER> > }
+TOKEN : {
+<INTEGER_LITERAL: <DECIMAL_LITERAL> (["l","L"])? | <HEX_LITERAL> (["l","L"])? | <OCTAL_LITERAL> (["l","L"])?>
+|  <#DECIMAL_LITERAL: ["1"-"9"] (["0"-"9"])*>
+|  <#HEX_LITERAL: "0" ["x","X"] (["0"-"9","a"-"f","A"-"F"])+>
+|  <#OCTAL_LITERAL: "0" (["0"-"7"])*>
+|  <FLOATING_POINT_LITERAL: (["0"-"9"])+ "." (["0"-"9"])* (<EXPONENT>)? (["f","F","d","D"])? | "." (["0"-"9"])+ (<EXPONENT>)? (["f","F","d","D"])? | (["0"-"9"])+ <EXPONENT> (["f","F","d","D"])? | (["0"-"9"])+ (<EXPONENT>)? ["f","F","d","D"]>
+|  <#EXPONENT: ["e","E"] (["+","-"])? (["0"-"9"])+>
+|  <CHARACTER_LITERAL: "\'" (~["\'","\\","\n","\r"] | "\\" (["n","t","b","r","f","\\","\'","\""] | ["0"-"7"] (["0"-"7"])? | ["0"-"3"] ["0"-"7"] ["0"-"7"])) "\'">
+|  <STRING_LITERAL: "\"" ( ~["\"","\\","\n","\r"] | "\\" ( ["n","t","b","r","f","\\","\'","\""] | ["0"-"7"] (["0"-"7"])?  | ["0"-"3"] ["0"-"7"] ["0"-"7"] | ( ["\n","\r"] | "\r\n")))* "\"">
+}
+
 
 TOKEN : { <IDENTIFIER: <LETTER> (<LETTER> | <DIGIT>)* > }
 
 
 ASTStart * parse() #Start : {} {
-    expression()  { return jjtThis; }
+expression()  { return jjtThis; }
 }
 
 void expression() : {} {
-  AND_parse()
+AND_parse()
 }
 
 void AND_parse()      : {} { ( OR_parse()  ( <AND> OR_parse()   )* )  #And(>1)           }
@@ -100,7 +109,6 @@ void GE_parse()       : {} { ( GT_parse()  ( <GE>  GT_parse()   )* )  #GreaterEq
 void GT_parse()       : {} { ( EQ_parse()  ( <GT>  EQ_parse()   )* )  #GreaterThan(>1)   }
 void EQ_parse()       : {} { ( NE_parse()  ( <EQ>  NE_parse()   )* )  #Equal(>1)         }
 void NE_parse()       : {} { ( ADD_parse() ( <NE>  ADD_parse()  )* )  #NotEqual(>1)      }
-
 void ADD_parse()      : {} { ( SUB_parse() ( <ADD> SUB_parse()  )* )  #Add(>1)           }
 void SUB_parse()      : {} { ( MUL_parse() ( <SUB> MUL_parse()  )* )  #Sub(>1)           }
 void MUL_parse()      : {} { ( DIV_parse() ( <MUL> DIV_parse()  )* )  #Mult(>1)          }
@@ -109,8 +117,10 @@ void MOD_parse()      : {} { ( unary()     ( <MOD> unary()      )* )  #Module(>1
 
 void unary() : {}
 {
-   parseFloat()
+ parseFloat()
+ | ( "-" parseFloat() ) #Negative(1)
  | parseInteger()
+ | ( "-" parseInteger() ) #Negative(1)
  | parseBoolean()
  | identifier()
  | <LP> expression() <RP>
@@ -118,10 +128,10 @@ void unary() : {}
 }
 
 void parseFloat() #Float: {Token * t;}
-{ t=<FLOAT> { jjtThis->jjtSetValue((void *)t->image.c_str()); } }
+{ t=<FLOATING_POINT_LITERAL> { jjtThis->jjtSetValue((void *)t->image.c_str()); } }
 
 void parseInteger() #Integer : {Token * t;}
-{ t=<INTEGER> { jjtThis->jjtSetValue((void *)t->image.c_str()); } }
+{(t=<INTEGER_LITERAL>){ jjtThis->jjtSetValue((void *)t->image.c_str()); } }
 
 void parseBoolean() #Boolean : {Token * t;}
 { t=<BOOLEAN> { jjtThis->jjtSetValue((void *)t->image.c_str()); } }

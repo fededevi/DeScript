@@ -46,6 +46,7 @@ class Sub : public BinaryExpression { VISITOR_ACCEPT(ExpressionVisitor); };
 class Mul : public BinaryExpression { VISITOR_ACCEPT(ExpressionVisitor); };
 class Div : public BinaryExpression { VISITOR_ACCEPT(ExpressionVisitor); };
 class Mod : public BinaryExpression { VISITOR_ACCEPT(ExpressionVisitor); };
+class Neg : public UnaryExpression  { VISITOR_ACCEPT(ExpressionVisitor); };
 
 class BooleanExpression : public BinaryExpression {};
 
@@ -55,7 +56,7 @@ class GreaterEqual : public BooleanExpression { VISITOR_ACCEPT(ExpressionVisitor
 class GreaterThan  : public BooleanExpression { VISITOR_ACCEPT(ExpressionVisitor); };
 class Equal        : public BooleanExpression { VISITOR_ACCEPT(ExpressionVisitor); };
 class NotEqual     : public BooleanExpression { VISITOR_ACCEPT(ExpressionVisitor); };
-class Not          : public BooleanExpression { VISITOR_ACCEPT(ExpressionVisitor); };
+class Not          : public UnaryExpression { VISITOR_ACCEPT(ExpressionVisitor); };
 
 class And          : public BooleanExpression { VISITOR_ACCEPT(ExpressionVisitor); };
 class Or           : public BooleanExpression { VISITOR_ACCEPT(ExpressionVisitor); };
